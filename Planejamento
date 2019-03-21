@@ -1,0 +1,36 @@
+Tópicos que devem ser contemplados no planejamento inicial.
+
+O que será necessário:
+    - Banco de dados
+    - Back-end framework
+    - Front-end framework
+  
+Decisão das tecnologias que serão utilizadas:
+    - Banco de dados: banco relacional ou não relacional (estudo necessário)
+        - Relacional: MYSQL, POSTGRES, ...
+            - Vantagens: maior exemplos disponíveis, ORM, linguagem SQL
+            - Desvantagens: esquemas rígidos de dados
+        - Não relacional: MongoDB, Cassandra, ...
+            - Vantagens: maior liberdade ao salvar dados,  esquemas flexíveis
+            - Menos exemplos disponíveis, sem ORM (?)
+            
+    - Back-end framework:
+        -Asp.Net
+            - C#
+            - :
+        - Spring
+            - Java
+            - Robusto
+            - Requer grande estudo antes da implementação
+       - JSF
+            - Java
+            - Problemas por conta de componentes
+            - Rápido aprendizado
+       - Django
+            - Python
+            - Maior rapidez entre o aprendizado e implementação
+            
+    - Front-end framework:
+        - Bootstrap 4 + Jquery (biblioteca JavaScript)
+        
+   - Divisão de responsabilidades
