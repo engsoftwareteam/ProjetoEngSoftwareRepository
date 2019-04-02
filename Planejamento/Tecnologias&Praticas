@@ -1,1 +1,6 @@
-Nesse documento deverão estar as tecnologias e práticas que serão utilizadas no desenvolvimento do software.
+- Django (framework back+front)
+- Bootstrap 4 (framework html)
+- Jquery (biblioteca javascript)
+- PostGres (banco de dados)
+- Heroku (deploy)
+- Git (controle de versão)
