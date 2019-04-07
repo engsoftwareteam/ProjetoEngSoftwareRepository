@@ -15,3 +15,4 @@
 
 # Links importantes:
 - Repositorio da disciplina: https://github.com/aserg-ufmg/CursoEngenhariaSoftware
+- Aplicativo no Heroku: https://eng-software-qa.herokuapp.com/
