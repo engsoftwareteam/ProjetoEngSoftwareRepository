@@ -1,0 +1,11 @@
+# requirements.txt
+
+Django
+django-compressor
+libsass
+
+# settings.py
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-sass', 'sassc {infile} {outfile}'),
+)
