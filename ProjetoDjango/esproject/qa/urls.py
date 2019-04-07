@@ -10,4 +10,5 @@ urlpatterns = [
     path('salvar_pergunta', views.salvar_pergunta, name='salvar_pergunta'),
     path('pergunta_salva/<int:pergunta_id>', views.confirmar_pergunta, name='confirmar_pergunta'),
     path('listar_perguntas', views.listar_perguntas, name='listar_perguntas'),
+    path('selecionar_pergunta/<int:pergunta_id>', views.selecionar_pergunta, name='selecionar_pergunta'),
 ]

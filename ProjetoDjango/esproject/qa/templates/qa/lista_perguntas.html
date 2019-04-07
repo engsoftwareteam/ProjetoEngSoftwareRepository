@@ -18,11 +18,13 @@
         <div class='container-fluid ml-3'>
             <ul>
                 {% for pergunta in perguntas %}
-                <li>{{pergunta.texto}}</li>
+                <li>
+                    <a href='/qa/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
+                </li>
                 {% endfor %}
             </ul>
             <div class='row'>
-                <a href='menu'>Voltar ao menu</a>
+                <a href='/qa/menu'>Voltar ao menu</a>
             </div>
         </div>
     </body>

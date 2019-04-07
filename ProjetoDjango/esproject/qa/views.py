@@ -30,3 +30,8 @@ def listar_perguntas(request):
     perguntas = Pergunta.objects.all()
     context = {'perguntas': perguntas}
     return render(request, 'qa/lista_perguntas.html', context)
+
+def selecionar_pergunta(request, pergunta_id):
+    pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+    context = {'pergunta': pergunta}    
+    return render(request, 'qa/pergunta_selecionada.html', context)
