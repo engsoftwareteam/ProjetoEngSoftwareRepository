@@ -38,6 +38,32 @@
                     <input type='submit' value='Deletar pergunta'/>
                 </div>
             </form>
+            <hr/>
+            <div class='row'>
+                <p style='font-weight:bold'>Postar Pergunta</p>
+            </div>
+            <form action='{% url "qa:salvar_resposta" pergunta.id %}' method='post'>
+                    {% csrf_token %}
+                    <div class='row'>
+                        <label>
+                            Usuario:
+                            <input type='text' name='usuario' value='{{usuario}}'/>
+                        </label>
+                    </div>
+                    <div class='row'>
+                            <label>
+                                Texto:
+                                <input type='text' name='texto' value='{{texto}}'/>
+                            </label>
+                        </div>
+                    <div class='row mt-2'>
+                        <input type='submit' value='Postar Resposta'/>
+                    </div>
+                </form>
+            <hr/>
+            <div class='row'>
+                <p style='font-weight:bold'>Backlinks</p>
+            </div>
             <div class='row'>
                 <a href='/qa/listar_perguntas'>Mostrar perguntas feitas</a>
             </div>
