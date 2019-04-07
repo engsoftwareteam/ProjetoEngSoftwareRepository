@@ -6,7 +6,7 @@
         <meta name='viewport" content="width=device-width, initial-scale=1.0'/>
         <meta http-equiv='X-UA-Compatible" content='IE=edge'/>
 
-        <title>Pergunta Selecionada</title>
+        <title>Confirmacao Pergunta Deletada</title>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -17,27 +17,8 @@
     <body>
         <div class='container-fluid ml-3'>
             <div class='row'>
-                <p style='font-weight:bold'>Informações da pergunta selecionada</p>
+                <p style='font-weight:bold'>Sua pergunta foi deletada</p>
             </div>
-            <div class='row'>
-                Usuario: {{pergunta.usuario}}
-            </div>
-            <form action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'>
-                    {% csrf_token %}
-                <div class='row'>
-                    <label>
-                        Pergunta:
-                        <input type='text' name='texto_alterado' value='{{pergunta.texto}}'/>
-                        <input type='submit' value='Alterar pergunta'/>
-                    </label>
-                </div>
-            </form>
-            <form action='{% url "qa:deletar_pergunta" pergunta.id %}' method='post'>
-                {% csrf_token %}
-                <div>
-                    <input type='submit' value='Deletar pergunta'/>
-                </div>
-            </form>
             <div class='row'>
                 <a href='/qa/listar_perguntas'>Mostrar perguntas feitas</a>
             </div>
