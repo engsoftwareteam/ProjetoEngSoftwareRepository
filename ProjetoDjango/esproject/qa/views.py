@@ -39,7 +39,8 @@ def listar_perguntas(request):
 # busca pergunta selecionada no BD e renderiza o html com informacoes dela
 def selecionar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
-    context = {'pergunta': pergunta}    
+    lista_respostas = pergunta.resposta_set.all()
+    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -74,3 +75,27 @@ def confirmar_resposta(request, pergunta_id, resposta_id):
     resposta = pergunta.resposta_set.get(pk=resposta_id)
     context = {'pergunta': pergunta, 'resposta': resposta}    
     return render(request, 'qa/confirmacao_resposta_postada.html', context)
+
+# busca pergunta selecionada no BD e renderiza o html com informacoes dela
+def selecionar_resposta(request, resposta_id):
+    resposta = get_object_or_404(Resposta, pk=resposta_id)
+    pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
+    context = {'pergunta': pergunta, 'resposta': resposta}    
+    return render(request, 'qa/resposta_selecionada.html', context)
+
+# responsavel por deletar a pergunta selecionada do BD
+def deletar_resposta(request, resposta_id):
+    resposta = get_object_or_404(Resposta, pk=resposta_id)
+    try:
+        resposta.delete()
+    except (KeyError, resposta.pk != None):
+        return HttpResponse("Pergunta nao foi deletada")
+    return render(request, 'qa/confirmacao_resposta_deletada.html')
+
+# responsavel por alterar o texto da pergunta selecionada no BD
+def alterar_resposta(request, resposta_id):
+    resposta = get_object_or_404(Resposta, pk=resposta_id)
+    resposta.texto = request.POST['texto_alterado']
+    resposta.save()
+    context = {'resposta': resposta}    
+    return render(request, 'qa/confirmacao_resposta_alterada.html', context)
