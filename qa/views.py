@@ -22,7 +22,7 @@ def salvar_pergunta(request):
         pergunta.save()
     except (KeyError, pergunta.pk == None):
         return HttpResponse("Pergunta nao foi salva")
-    return HttpResponseRedirect('/qa/pergunta_postada/%s' %pergunta.id)
+    return HttpResponseRedirect('/pergunta_postada/%s' %pergunta.id)
 
 # renderiza html com confirmacao que a pergunta foi salva
 def confirmar_pergunta(request, pergunta_id):
@@ -67,7 +67,7 @@ def salvar_resposta(request, pergunta_id):
         resposta = pergunta.resposta_set.create(usuario=request.POST['usuario'], texto=request.POST['texto'])
     except (KeyError):
         return HttpResponse("Pergunta nao foi salva")
-    return HttpResponseRedirect('/qa/resposta_postada/%s/%s' % (pergunta.id, resposta.id))
+    return HttpResponseRedirect('/resposta_postada/%s/%s' % (pergunta.id, resposta.id))
 
 # renderiza html com confirmacao que a pergunta foi salva
 def confirmar_resposta(request, pergunta_id, resposta_id):

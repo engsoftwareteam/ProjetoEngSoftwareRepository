@@ -46,7 +46,7 @@
         {% if lista_respostas %}
             {% for resposta in lista_respostas %}
                 <div class='row'>
-                    <a href='/qa/selecionar_resposta/{{resposta.id}}'>Resposta {{forloop.counter}}</a>     
+                    <a href='/selecionar_resposta/{{resposta.id}}'>Resposta {{forloop.counter}}</a>     
                 </div>
                 <div class='row'>
                     Usuario: {{resposta.usuario}}
@@ -84,10 +84,10 @@
             <p style='font-weight:bold'>Backlinks</p>
         </div>
         <div class='row'>
-            <a href='/qa/listar_perguntas'>Mostrar perguntas feitas</a>
+            <a href='/listar_perguntas'>Mostrar perguntas feitas</a>
         </div>
         <div class='row'>
-            <a href='/qa/menu'>Voltar para o menu</a>
+            <a href='/menu'>Voltar para o menu</a>
         </div>
     </div>
 </body>
