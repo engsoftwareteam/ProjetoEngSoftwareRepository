@@ -1,1 +1,1 @@
-web: gunicorn esproject.wsgi --log-file -
+web: gunicorn esproject.wsgi
