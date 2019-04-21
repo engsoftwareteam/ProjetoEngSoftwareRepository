@@ -4,7 +4,7 @@ from . import views
 
 app_name = 'qa'
 urlpatterns = [
-    path('', views.menu, name='menu'),
+    path('', views.login, name='login'),
     path('menu', views.menu, name='menu'),
     path('postar_pergunta', views.postar_pergunta, name='postar_pergunta'),
     path('salvar_pergunta', views.salvar_pergunta, name='salvar_pergunta'),
@@ -20,4 +20,6 @@ urlpatterns = [
     path('deletar_resposta/<int:resposta_id>', views.deletar_resposta, name='deletar_resposta'),
     path('cadastrar_usuario', views.cadastrar_usuario, name='cadastrar_usuario'),
     path('salvar_usuario', views.salvar_usuario, name='salvar_usuario'),
+	path('autenticar_usuario', views.autenticar_usuario, name='autenticar_usuario'),
+	path('login', views.login, name='login'),
 ]

@@ -115,3 +115,14 @@ def salvar_usuario(request):
     except (KeyError, usuario.pk == None):
         return HttpResponse("Usuario nao foi salva")
     return HttpResponse("Usuario foi cadastrado, olhar no admin")
+	
+# renderiza html com login
+def login(request):
+    return render(request, 'qa/login.html')
+	
+# busca usuario e verifica se a senha e igual a cadastrada
+def autenticar_usuario(request):
+    if Usuario.objects.filter(usuario=request.POST['usuario'], senha=request.POST['senha']):
+        return render(request, 'qa/menu.html')
+    else:
+        return HttpResponse('Usuario ou senha invalidos')
