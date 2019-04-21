@@ -15,5 +15,5 @@
 
 # Links importantes:
 - Repositorio da disciplina: https://github.com/aserg-ufmg/CursoEngenhariaSoftware
-- Aplicativo no Heroku: https://eng-software-qa.herokuapp.com/
+- Aplicativo no Heroku: https://qa-project.herokuapp.com/
 - Trello com o quadro de atividades: https://trello.com/b/zcjO5a7d/qa-engenharia-de-software
