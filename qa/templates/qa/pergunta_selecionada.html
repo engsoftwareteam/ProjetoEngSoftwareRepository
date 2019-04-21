@@ -61,7 +61,7 @@
         <div class='row'>
             <p style='font-weight:bold'>Postar Resposta</p>
         </div>
-        <form action='{% url "qa:salvar_resposta" pergunta.id %}' method='post'>
+        <form action='{% url "qa:postar_resposta" pergunta.id %}' method='post'>
             {% csrf_token %}
             <div class='row'>
                 <label>

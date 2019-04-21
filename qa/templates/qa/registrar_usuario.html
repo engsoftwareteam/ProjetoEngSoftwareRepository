@@ -16,7 +16,7 @@
             <div class='row'>
                 <p style='font-weight:bold'>Essa e' a pagina onde se cadastra usuarios</p>
             </div>
-            <form action='{% url "qa:salvar_usuario" %}' method='post'>
+            <form action='{% url "qa:registrar_usuario" %}' method='post'>
                 {% csrf_token %}
                 <div class='row'>
                     <label>
