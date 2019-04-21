@@ -9,20 +9,20 @@ from .models import Pergunta, Resposta
 
 # responsavel por salvar a pergunta no BD
 def postar_pergunta(request):
-    if request.method == 'POST':
-        usuario = None
-        if request.user.is_authenticated:
-            usuario = request.user.get_username()
+    if request.user.is_authenticated:
+        usuario = request.user.get_username()
+        if request.method == 'POST':
+            try:
+                pergunta = Pergunta(usuario=usuario, texto=request.POST['texto'])
+                pergunta.save()
+            except (KeyError, pergunta.pk == None):
+                return HttpResponse("Pergunta nao foi salva")
+            return HttpResponseRedirect('/pergunta_postada/%s' %pergunta.pk)
         else:
-            return HttpResponse("Voce precisa estar logado para fazer uma pergunta")
-        try:
-            pergunta = Pergunta(usuario=usuario, texto=request.POST['texto'])
-            pergunta.save()
-        except (KeyError, pergunta.pk == None):
-            return HttpResponse("Pergunta nao foi salva")
-        return HttpResponseRedirect('/pergunta_postada/%s' %pergunta.pk)
+            return render(request, 'qa/postar_pergunta.html')
     else:
-        return render(request, 'qa/postar_pergunta.html')
+        return HttpResponse("Voce precisa estar logado para fazer uma pergunta")
+    
 
 # renderiza html com confirmacao que a pergunta foi salva
 def confirmar_pergunta(request, pergunta_id):
@@ -160,9 +160,16 @@ def login_usuario(request):
 def meus_posts(request):
     if request.user.is_authenticated:
         usuario = request.user.get_username()
-        perguntas = get_list_or_404(Pergunta, usuario=usuario)
-        context = {'perguntas': perguntas}
-        return render(request, 'qa/lista_perguntas.html', context)
+        perguntas = None
+        respostas = None
+        if Pergunta.objects.filter(usuario=usuario).exists():
+            perguntas = Pergunta.objects.filter(usuario=usuario)
+
+        if Resposta.objects.filter(usuario=usuario).exists():
+            respostas = Resposta.objects.filter(usuario=usuario)
+
+        context = {'perguntas': perguntas, 'respostas': respostas}
+        return render(request, 'qa/meus_posts.html', context)
     else:
         return HttpResponse("voce precisa estar logado para ver seus posts")
     
