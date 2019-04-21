@@ -9,6 +9,7 @@ class Pergunta(models.Model):
 class Resposta(models.Model):
     pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
     usuario = models.CharField(max_length=100)
-    texto = models.CharField(max_length=1000)
+    texto = models.CharField(max_length=1001)
+
     def __str__(self):
         return self.texto
