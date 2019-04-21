@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
-from .models import Pergunta, Resposta
+from .models import Usuario, Pergunta, Resposta
 
 def index(request):
     return HttpResponse("Ola, voce esta no index do app Q&A")
@@ -99,3 +99,19 @@ def alterar_resposta(request, resposta_id):
     resposta.save()
     context = {'resposta': resposta}    
     return render(request, 'qa/confirmacao_resposta_alterada.html', context)
+
+# renderiza html com o formulario para cadastrar usuarios
+def cadastrar_usuario(request):
+    return render(request, 'qa/cadastrar_usuario.html')
+
+# responsavel por salvar usuario no BD
+def salvar_usuario(request):
+    try:
+        if Usuario.objects.filter(usuario=request.POST['usuario']):
+            return HttpResponse("Usuario ja existe")
+
+        usuario = Usuario(usuario=request.POST['usuario'], senha=request.POST['senha'])
+        usuario.save()
+    except (KeyError, usuario.pk == None):
+        return HttpResponse("Usuario nao foi salva")
+    return HttpResponse("Usuario foi cadastrado, olhar no admin")

@@ -18,4 +18,6 @@ urlpatterns = [
     path('selecionar_resposta/<int:resposta_id>', views.selecionar_resposta, name='selecionar_resposta'),
     path('alterar_resposta/<int:resposta_id>', views.alterar_resposta, name='alterar_resposta'),
     path('deletar_resposta/<int:resposta_id>', views.deletar_resposta, name='deletar_resposta'),
+    path('cadastrar_usuario', views.cadastrar_usuario, name='cadastrar_usuario'),
+    path('salvar_usuario', views.salvar_usuario, name='salvar_usuario'),
 ]
