@@ -1,17 +1,22 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .forms import UserForm,UserProfileInfoForm
+from .forms import UserForm, UserProfileInfoForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Usuario, Pergunta, Resposta
+from .models import Pergunta, Resposta
 
 # responsavel por salvar a pergunta no BD
 def postar_pergunta(request):
     if request.method == 'POST':
+        usuario = None
+        if request.user.is_authenticated:
+            usuario = request.user.get_username()
+        else:
+            return HttpResponse("Voce precisa estar logado para fazer uma pergunta")
         try:
-            pergunta = Pergunta(usuario=request.POST['usuario'], texto=request.POST['texto'])
+            pergunta = Pergunta(usuario=usuario, texto=request.POST['texto'])
             pergunta.save()
         except (KeyError, pergunta.pk == None):
             return HttpResponse("Pergunta nao foi salva")
@@ -27,7 +32,7 @@ def confirmar_pergunta(request, pergunta_id):
 
 # renderiza html com a lista de perguntas ja feitas
 def listar_perguntas(request):
-    perguntas = Pergunta.objects.all()
+    perguntas = get_list_or_404(Pergunta)
     context = {'perguntas': perguntas}
     return render(request, 'qa/lista_perguntas.html', context)
 
@@ -57,12 +62,18 @@ def alterar_pergunta(request, pergunta_id):
 
 # responsavel por salvar a resposta no BD
 def postar_resposta(request, pergunta_id):
-    pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
-    try:
-        resposta = pergunta.resposta_set.create(usuario=request.POST['usuario'], texto=request.POST['texto'])
-    except (KeyError):
-        return HttpResponse("Pergunta nao foi salva")
-    return HttpResponseRedirect('/resposta_postada/%s/%s' % (pergunta.id, resposta.id))
+    if request.method == 'POST':
+        usuario = None
+        if request.user.is_authenticated:
+            usuario = request.user.get_username()
+            pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+            try:
+                resposta = pergunta.resposta_set.create(usuario=usuario, texto=request.POST['texto'])
+            except (KeyError):
+                return HttpResponse("Pergunta nao foi salva")
+            return HttpResponseRedirect('/resposta_postada/%s/%s' % (pergunta.id, resposta.id))
+        else:
+            return HttpResponse("Voce precisa estar logado para postar uma resposta")
 
 # renderiza html com confirmacao que a pergunta foi salva
 def confirmar_resposta(request, pergunta_id, resposta_id):
@@ -95,56 +106,39 @@ def alterar_resposta(request, resposta_id):
     context = {'resposta': resposta}    
     return render(request, 'qa/confirmacao_resposta_alterada.html', context)
 
-# responsavel por salvar usuario no BD
-def salvar_usuario(request):
-    try:
-        if Usuario.objects.filter(usuario=request.POST['usuario']):
-            return HttpResponse("Usuario ja existe")
-
-        usuario = Usuario(usuario=request.POST['usuario'], senha=request.POST['senha'])
-        usuario.save()
-    except (KeyError, usuario.pk == None):
-        return HttpResponse("Usuario nao foi salva")
-    return HttpResponse("Usuario foi cadastrado, olhar no admin")
-
-
-
-@login_required
-def special(request):
-    try:
-        return HttpResponse("Voce esta logado")
-    except (KeyError):
+def logged(request):
+    if request.user.is_authenticated:
+        return HttpResponse("voce esta logado")
+    else:
         return HttpResponse("voce nao esta logado")
 
-@login_required
-def logout(request):
-    try:
+def logout_usuario(request):
+    if request.user.is_authenticated:
         logout(request)
         return HttpResponse("logout sucesso")
-    except (KeyError):
+    else:
         return HttpResponse("voce nao esta logado")
+        
 
 def registrar_usuario(request):
     registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileInfoForm(data=request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
             registered = True
+            return HttpResponse('Registrado com sucesso')
         else:
             print(user_form.errors,profile_form.errors)
+            return HttpResponse('Nao foi registrado')
     else:
         user_form = UserForm()
         profile_form = UserProfileInfoForm()
-    return render(request, 'qa/registrar_usuario.html')
+        return render(request, 'qa/registrar_usuario.html')
 
-def login(request):
+def login_usuario(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -161,3 +155,14 @@ def login(request):
             return HttpResponse("Senha ou usuario errado ou nao existe")
     else:
          return render(request, 'qa/login.html')
+
+# renderiza html com a lista de perguntas ja feitas
+def meus_posts(request):
+    if request.user.is_authenticated:
+        usuario = request.user.get_username()
+        perguntas = get_list_or_404(Pergunta, usuario=usuario)
+        context = {'perguntas': perguntas}
+        return render(request, 'qa/lista_perguntas.html', context)
+    else:
+        return HttpResponse("voce precisa estar logado para ver seus posts")
+    

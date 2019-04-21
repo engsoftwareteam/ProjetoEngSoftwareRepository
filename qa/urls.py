@@ -19,12 +19,12 @@ urlpatterns = [
     path('alterar_resposta/<int:resposta_id>', views.alterar_resposta, name='alterar_resposta'),
     path('deletar_resposta/<int:resposta_id>', views.deletar_resposta, name='deletar_resposta'),
     path('cadastrar_usuario', TemplateView.as_view(template_name='qa/cadastrar_usuario.html'), name='cadastrar_usuario'),
-    path('salvar_usuario', views.salvar_usuario, name='salvar_usuario'),
 
     path('home', TemplateView.as_view(template_name='qa/home.html'), name='home'),
 
     path('registrar_usuario', views.registrar_usuario, name='registrar_usuario'),
-    path('login', views.login, name='login'),
-    path('logout', views.logout, name='logout'),
-    path('special', views.special, name='special'),
+    path('login_usuario', views.login_usuario, name='login_usuario'),
+    path('logout_usuario', views.logout_usuario, name='logout_usuario'),
+    path('logged', views.logged, name='logged'),
+    path('meus_posts', views.meus_posts, name='meus_posts')
 ]

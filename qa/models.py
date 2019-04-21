@@ -7,12 +7,6 @@ class UserProfileInfo(models.Model):
     def __str__(self):
         return self.user.username
 
-class Usuario(models.Model):
-    usuario = models.CharField(max_length=100, unique=True)
-    senha = models.CharField(max_length=25)
-    def __str__(self):
-        return self.usuario
-
 class Pergunta(models.Model):
     usuario = models.CharField(max_length=100, default='usuario default')
     texto = models.CharField(max_length=1000, default='texto default')
