@@ -128,11 +128,9 @@ def registrar_usuario(request):
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            print('deu certo')
             return HttpResponse('Registrado com sucesso')
         else:
             print(user_form.errors)
-            print('nao deu certo')
             return HttpResponse('Nao foi registrado')
     else:
         user_form = UserForm()
