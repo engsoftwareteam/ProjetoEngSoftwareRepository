@@ -119,10 +119,10 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [STATIC_DIR,]
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 LOGIN_URL = '/qa/user_login/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [STATIC_DIR,]
 
 django_heroku.settings(locals())

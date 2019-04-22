@@ -172,5 +172,4 @@ def meus_posts(request):
         context = {'perguntas': perguntas, 'respostas': respostas}
         return render(request, 'qa/meus_posts.html', context)
     else:
-        return HttpResponse("voce precisa estar logado para ver seus posts")
-    
+        return HttpResponse("voce precisa estar logado para ver seus posts")    
