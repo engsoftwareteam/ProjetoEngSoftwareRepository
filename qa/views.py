@@ -121,22 +121,19 @@ def logout_usuario(request):
         
 
 def registrar_usuario(request):
-    registered = False
+    # Retirado o userInfo
     if request.method == 'POST':
-        profile_form = UserProfileInfoForm(data=request.POST)
         user_form = UserForm(data=request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            registered = True
             return HttpResponse('Registrado com sucesso')
         else:
-            print(user_form.errors,profile_form.errors)
+            print(user_form.errors)
             return HttpResponse('Nao foi registrado')
     else:
         user_form = UserForm()
-        profile_form = UserProfileInfoForm()
         return render(request, 'qa/registrar_usuario.html')
 
 def login_usuario(request):
