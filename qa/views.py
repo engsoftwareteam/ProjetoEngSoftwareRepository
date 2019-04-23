@@ -205,4 +205,3 @@ def remover_usuario(request):
             return HttpResponse("Usuario não existe")
     else:
         return render(request, 'qa/remover_usuario.html')
-    
