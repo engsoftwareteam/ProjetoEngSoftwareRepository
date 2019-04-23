@@ -185,7 +185,7 @@ def alterar_senha(request):
                     user.save()
                 else:
                     return HttpResponse("Confirm your password again.")
-                return render(request, 'qa/login.html')
+                return HttpResponseRedirect('/login_usuario')
             else:
                 return HttpResponse("Your account was inactive.")
         else:
@@ -200,7 +200,7 @@ def remover_usuario(request):
         user = authenticate(username=username, password=password)
         if user:
             user.delete()
-            return render(request, 'qa/menu.html')
+            return HttpResponseRedirect('/menu')
         else:
             return HttpResponse("Usuario não existe")
     else:
