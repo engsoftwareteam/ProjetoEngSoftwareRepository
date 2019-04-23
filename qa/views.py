@@ -123,6 +123,7 @@ def logout_usuario(request):
 def registrar_usuario(request):
     registered = False
     if request.method == 'POST':
+        profile_form = UserProfileInfoForm(data=request.POST)
         user_form = UserForm(data=request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
@@ -172,4 +173,39 @@ def meus_posts(request):
         return render(request, 'qa/meus_posts.html', context)
     else:
         return HttpResponse("voce precisa estar logado para ver seus posts")
+
+def alterar_senha(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        old_password = request.POST.get('old_password')
+        user = authenticate(username=username, password=old_password)
+        if user:
+            if user.is_active:
+                new_password = request.POST.get('new_password')
+                confirm_password = request.POST.get('confirm_password')
+                if new_password == confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                else:
+                    return HttpResponse("Confirm your password again.")
+                return render(request, 'qa/login.html')
+            else:
+                return HttpResponse("Your account was inactive.")
+        else:
+            return HttpResponse("Try again.")
+    else:
+        return render(request, 'qa/alterar_senha.html')
+
+def remover_usuario(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            user.delete()
+            return render(request, 'qa/menu.html')
+        else:
+            return HttpResponse("Usuario não existe")
+    else:
+        return render(request, 'qa/remover_usuario.html')
     
