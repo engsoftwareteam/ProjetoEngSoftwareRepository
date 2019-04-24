@@ -1,0 +1,25 @@
+{% extends 'qa/template.html' %}
+
+{% block content %}
+        <div class='container-fluid ml-3'>
+            <div class='row'>
+                <p style='font-weight:bold'>Sua resposta foi alterada</p>
+            </div>
+            <div class='row'>
+                Usuario: {{pergunta.usuario}}
+            </div>
+            <div class='row'>
+                Pergunta: {{pergunta.texto}}
+            </div>
+			<hr>
+            <div class='row'>
+                <a href='/postar_pergunta'>< Fazer outra pergunta</a>
+            </div>
+            <div class='row'>
+                <a href='/menu'>< Voltar para o menu</a>
+            </div>
+            <div class='row'>
+                <a href='/listar_perguntas'>< Mostrar perguntas feitas</a>
+            </div>
+        </div>
+{% endblock %}
