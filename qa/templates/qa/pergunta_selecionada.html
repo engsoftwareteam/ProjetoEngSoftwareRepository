@@ -42,21 +42,25 @@
         
         
         <hr/>
-        <div class='row'>
+        <div class='row border' style='width:60vw'>
             <p style='font-weight:bold'>Respostas</p>
         </div>
 
         {% if lista_respostas %}
             {% for resposta in lista_respostas %}
-                <div class='row'>
-                    <a href='/selecionar_resposta/{{resposta.id}}'>Resposta {{forloop.counter}}</a>     
-                </div>
-                <div class='row'>
-                    Usuario: {{resposta.usuario}}
-                </div>
-                <div class='row mb-2'>
-                    Resposta: {{resposta.texto}}
-                </div>
+			<div class='row border' style='width:60vw'>
+				<div class='col-4 col-sm-4 col-md-4 col-lg-4 ml-4'>
+					<div class='row'>
+						<a href='/selecionar_resposta/{{resposta.id}}'>Resposta {{forloop.counter}}</a>     
+					</div>
+					<div class='row ml-3'>
+						Usuario: {{resposta.usuario}}
+					</div>
+					<div class='row ml-3'>
+						Resposta: {{resposta.texto}}
+					</div>
+				</div>
+			</div>
             {% endfor %}
         {% endif %}
 
@@ -69,7 +73,7 @@
 				<div class='row'>
 					Usuario:
 				</div>
-				<div class='row'>
+				<div class='row mt-2'>
 					Texto:
 				</div>
 			</div>
@@ -99,10 +103,10 @@
             <p style='font-weight:bold'>Backlinks</p>
         </div>
         <div class='row'>
-            <a href='/listar_perguntas'>Mostrar perguntas feitas</a>
+            <a href='/listar_perguntas'>< Mostrar perguntas feitas</a>
         </div>
         <div class='row'>
-            <a href='/menu'>Voltar para o menu</a>
+            <a href='/menu'>< Voltar para o menu</a>
         </div>
     </div>
 {% endblock %}

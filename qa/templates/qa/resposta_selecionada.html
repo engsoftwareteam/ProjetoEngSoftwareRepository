@@ -15,25 +15,40 @@
         <div class='row'>
             <p style='font-weight:bold'>Informações da resposta</p>
         </div>
-        <div class='row'>
-            Usuario: {{resposta.usuario}}
-        </div>
-        <form action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
-            {% csrf_token %}
-            <div class='row'>
-                <label>
-                    Resposta:
-                    <input type='text' name='texto_alterado' value='{{resposta.texto}}'/>
-                    <input type='submit' value='Alterar resposta'/>
-                </label>
-            </div>
-        </form>
-        <form action='{% url "qa:deletar_resposta" resposta.id %}' method='post'>
-            {% csrf_token %}
-            <div>
-                <input type='submit' value='Deletar resposta'/>
-            </div>
-        </form>
+		<div class='row'>
+			<div class='col-2 col-sm2 col-md-2 col-lg-1'>
+				<div class='row'>
+					Usuario:
+				</div>
+				<div class='row'>
+					Resposta:
+				</div>
+			</div>
+			<div class='col-3 col-sm-3 col-md-3 col-lg-3'>
+				<div class='row'>
+					{{resposta.usuario}}
+				</div>
+				<form action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
+					{% csrf_token %}
+					<div class='row'>
+						<label>
+							<input type='text' name='texto_alterado' value='{{resposta.texto}}' style='width:50vw; height:10vh'/>
+						</label>
+					</div>
+					<div class='row'>
+						<input type='submit' value='Alterar resposta'/>
+					</div>
+				</form>
+				<form action='{% url "qa:deletar_resposta" resposta.id %}' method='post'>
+					{% csrf_token %}
+					<div class='row'>
+						<input type='submit' value='Deletar resposta'/>
+					</div>
+				</form>
+			</div>
+		</div>
+        
+        
         <hr/>
         
         <div class='row'>
