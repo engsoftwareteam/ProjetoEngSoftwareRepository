@@ -16,7 +16,7 @@
 
     <body>
         <div class='container-fluid ml-3'>
-			<form action='{% url "qa:autenticar_usuario" %}' method='post'>
+			<form action='{% url "qa:login_usuario" %}' method='post'>
                 {% csrf_token %}
                 <div class='row'>
                     <label>
@@ -35,7 +35,7 @@
                 </div>
             </form>
 		    <div class='row mt-2'>
-                <a href='/cadastrar_usuario'/> Criar novo usuario </a>
+                <a href='/registrar_usuario'> Criar novo usuario </a>
             </div>
         </div>
     </body>
