@@ -1,10 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class Usuario(models.Model):
-    usuario = models.CharField(max_length=100, unique=True)
-    senha = models.CharField(max_length=25)
+class UserProfileInfo(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     def __str__(self):
-        return self.usuario
+        return self.user.username
 
 class Pergunta(models.Model):
     usuario = models.CharField(max_length=100, default='usuario default')

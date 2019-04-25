@@ -1,28 +1,28 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
 
-from .models import Usuario, Pergunta, Resposta
+from .forms import UserForm, UserProfileInfoForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
-def index(request):
-    return HttpResponse("Ola, voce esta no index do app Q&A")
-
-# renderiza html com menu contendo as funcionalidades existentes
-def menu(request):
-    return render(request, 'qa/menu.html')
-
-# renderiza html com o formulario para fazer novas perguntas
-def postar_pergunta(request):
-    return render(request, 'qa/postar_pergunta.html')
+from .models import Pergunta, Resposta
 
 # responsavel por salvar a pergunta no BD
-def salvar_pergunta(request):
-    try:
-        pergunta = Pergunta(usuario=request.POST['usuario'], texto=request.POST['texto'])
-        pergunta.save()
-    except (KeyError, pergunta.pk == None):
-        return HttpResponse("Pergunta nao foi salva")
-    return HttpResponseRedirect('/pergunta_postada/%s' %pergunta.id)
+def postar_pergunta(request):
+    if request.user.is_authenticated:
+        usuario = request.user.get_username()
+        if request.method == 'POST':
+            try:
+                pergunta = Pergunta(usuario=usuario, texto=request.POST['texto'])
+                pergunta.save()
+            except (KeyError, pergunta.pk == None):
+                return HttpResponse("Pergunta nao foi salva")
+            return HttpResponseRedirect('/pergunta_postada/%s' %pergunta.pk)
+        else:
+            return render(request, 'qa/postar_pergunta.html')
+    else:
+        return HttpResponse("Voce precisa estar logado para fazer uma pergunta")
+    
 
 # renderiza html com confirmacao que a pergunta foi salva
 def confirmar_pergunta(request, pergunta_id):
@@ -32,7 +32,7 @@ def confirmar_pergunta(request, pergunta_id):
 
 # renderiza html com a lista de perguntas ja feitas
 def listar_perguntas(request):
-    perguntas = Pergunta.objects.all()
+    perguntas = get_list_or_404(Pergunta)
     context = {'perguntas': perguntas}
     return render(request, 'qa/lista_perguntas.html', context)
 
@@ -61,13 +61,19 @@ def alterar_pergunta(request, pergunta_id):
     return render(request, 'qa/confirmacao_pergunta_alterada.html', context)
 
 # responsavel por salvar a resposta no BD
-def salvar_resposta(request, pergunta_id):
-    pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
-    try:
-        resposta = pergunta.resposta_set.create(usuario=request.POST['usuario'], texto=request.POST['texto'])
-    except (KeyError):
-        return HttpResponse("Pergunta nao foi salva")
-    return HttpResponseRedirect('/resposta_postada/%s/%s' % (pergunta.id, resposta.id))
+def postar_resposta(request, pergunta_id):
+    if request.method == 'POST':
+        usuario = None
+        if request.user.is_authenticated:
+            usuario = request.user.get_username()
+            pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+            try:
+                resposta = pergunta.resposta_set.create(usuario=usuario, texto=request.POST['texto'])
+            except (KeyError):
+                return HttpResponse("Pergunta nao foi salva")
+            return HttpResponseRedirect('/resposta_postada/%s/%s' % (pergunta.id, resposta.id))
+        else:
+            return HttpResponse("Voce precisa estar logado para postar uma resposta")
 
 # renderiza html com confirmacao que a pergunta foi salva
 def confirmar_resposta(request, pergunta_id, resposta_id):
@@ -100,18 +106,102 @@ def alterar_resposta(request, resposta_id):
     context = {'resposta': resposta}    
     return render(request, 'qa/confirmacao_resposta_alterada.html', context)
 
-# renderiza html com o formulario para cadastrar usuarios
-def cadastrar_usuario(request):
-    return render(request, 'qa/cadastrar_usuario.html')
+def logged(request):
+    if request.user.is_authenticated:
+        return HttpResponse("voce esta logado")
+    else:
+        return HttpResponse("voce nao esta logado")
 
-# responsavel por salvar usuario no BD
-def salvar_usuario(request):
-    try:
-        if Usuario.objects.filter(usuario=request.POST['usuario']):
-            return HttpResponse("Usuario ja existe")
+def logout_usuario(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return HttpResponse("logout sucesso")
+    else:
+        return HttpResponse("voce nao esta logado")
+        
 
-        usuario = Usuario(usuario=request.POST['usuario'], senha=request.POST['senha'])
-        usuario.save()
-    except (KeyError, usuario.pk == None):
-        return HttpResponse("Usuario nao foi salva")
-    return HttpResponse("Usuario foi cadastrado, olhar no admin")
+def registrar_usuario(request):
+    # Retirado o userInfo
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            return HttpResponse('Registrado com sucesso')
+        else:
+            print(user_form.errors)
+            return HttpResponse('Nao foi registrado')
+    else:
+        user_form = UserForm()
+        return render(request, 'qa/registrar_usuario.html')
+
+def login_usuario(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect('/menu')
+            else:
+                return HttpResponse("Your account was inactive.")
+        else:
+            print("Someone tried to login and failed.")
+            print("They used username: {} and password: {}".format(username,password))
+            return HttpResponse("Senha ou usuario errado ou nao existe")
+    else:
+         return render(request, 'qa/login.html')
+
+# renderiza html com a lista de perguntas ja feitas
+def meus_posts(request):
+    if request.user.is_authenticated:
+        usuario = request.user.get_username()
+        perguntas = None
+        respostas = None
+        if Pergunta.objects.filter(usuario=usuario).exists():
+            perguntas = Pergunta.objects.filter(usuario=usuario)
+
+        if Resposta.objects.filter(usuario=usuario).exists():
+            respostas = Resposta.objects.filter(usuario=usuario)
+
+        context = {'perguntas': perguntas, 'respostas': respostas}
+        return render(request, 'qa/meus_posts.html', context)
+    else:
+        return HttpResponse("voce precisa estar logado para ver seus posts")
+
+def alterar_senha(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        old_password = request.POST.get('old_password')
+        user = authenticate(username=username, password=old_password)
+        if user:
+            if user.is_active:
+                new_password = request.POST.get('new_password')
+                confirm_password = request.POST.get('confirm_password')
+                if new_password == confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                else:
+                    return HttpResponse("Confirm your password again.")
+                return HttpResponseRedirect('/login_usuario')
+            else:
+                return HttpResponse("Your account was inactive.")
+        else:
+            return HttpResponse("Try again.")
+    else:
+        return render(request, 'qa/alterar_senha.html')
+
+def remover_usuario(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            user.delete()
+            return HttpResponseRedirect('/menu')
+        else:
+            return HttpResponse("Usuario não existe")
+    else:
+        return render(request, 'qa/remover_usuario.html')
