@@ -1,47 +1,40 @@
-<!DOCTYPE html>
-<html>
+{% extends 'qa/template.html' %}
+{% load static %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Base</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" >
-            $( document ).ready(function() {
-                $("#deletar").click(function(){
-                 $("#modal").show();
-                }); 
-            });
-    </script>
-</head>
+{% block header %}
+	<!-- Folha de estilos para a página de login -->
+	<link href="{% static 'css/login.css' %}" rel="stylesheet">
+    
+{% endblock %}
 
-<body>
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Delete your account here :</h1>
-            <form method="post" action="{% url 'qa:remover_usuario' %}">
-                {% csrf_token %}
-                <div class="row">
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" placeholder="Username">
-
-                </div>
-                <div class="row">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" placeholder="Password">
-                </div>
-                <div>
-                     <button id="deletar" class="btn btn-default" type="button">Delete</button>
-                </div> 
-                <div id="modal" hidden="hidden">
-                    <p>Are you sure you want to delete the item?</p>
-                    <input class="btn btn-primary" type="submit" value="Confirm"/>
-                    <button onclick="window.history.back();" class="btn btn-default" type="button">Cancel</button>
-                </div>            
-            </form>
-        </div>
-    </div>
-</body>
-
-</html>
+{% block content %}
+<div class="simple-login-container">
+	<h2>Prencha abaixo para apagar a sua conta</h2>
+	<form method="post" action="{% url 'qa:remover_usuario' %}">
+		{% csrf_token %}
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type="text" class="form-control" name="username" placeholder="Username">
+			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type="password" class="form-control" name="password" placeholder="Password">
+			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<button onclick='document.getElementById("modal").style.display = "block";' id="deletar" class="btn btn-block btn-login" type="button">Delete</button>
+			</div>
+		</div>
+		
+		<div id="modal" style="display:none">
+			<p>Tem certeza que você quer apagar a conta?</p>
+			<input class="btn btn-primary" type="submit" value="Confirmar"/>
+			<button onclick="window.history.back();" class="btn btn-default" type="button">Cancelar</button>
+		</div>
+	</form>
+</div>
+{% endblock %}

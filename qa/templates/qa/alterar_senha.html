@@ -3,41 +3,48 @@
 
 
 {% block header %}
-	<!-- Folha de estilos para a página de alterar senha -->
-	
+	<!-- Folha de estilos para a página de login -->
+	<link href="{% static 'css/login.css' %}" rel="stylesheet">
 
 {% endblock %}
 
 
-{% block content %}
-
-    <div class="container">
-        <div class="jumbotron">
-            <h1>Change your password here :</h1>
-            <form method="post" action="{% url 'qa:alterar_senha' %}">
-                {% csrf_token %}
-                <div class="row">
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" placeholder="Username">
-
-                </div>
-                <div class="row">
-                    <label for="old_password">Old Password:</label>
-                    <input type="password" name="old_password" placeholder="Old Password">
-                </div>
-                <div class="row">
-                    <label for="new_password">New Password:</label>
-                    <input type="password" name="new_password" placeholder="New Password">
-                </div>
-                <div class="row">
-                    <label for="confirm_password">Confirm new password:</label>
-                    <input type="password" name="confirm_password" placeholder="Confirm new password">
-                </div>
-                <div>
-                     <input type="submit" name="" value="Save changes">
-                </div>              
-            </form>
-        </div>
-    </div>
+{% block content %}    
+    
+    <div class="simple-login-container">
+	<h2>Alterar a senha</h2>
+	<form method="post" action="{% url 'qa:alterar_senha' %}">
+		{% csrf_token %}
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type="text" class="form-control" name="username" placeholder="Nome de usuário">
+			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type="password" class="form-control" name="old_password" placeholder="Digite sua senha antiga">
+			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type="password" class="form-control" name="new_password" placeholder="Digite sua senha nova">
+			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type="password" class="form-control" name="confirm_password" placeholder="Repita sua senha nova">
+			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type="submit" name="" class="btn btn-block btn-login" value="Salvar alterações">
+			</div>
+		</div>
+	</form>
 
 {% endblock %}
