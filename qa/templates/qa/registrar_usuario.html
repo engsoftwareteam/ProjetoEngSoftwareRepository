@@ -1,36 +1,42 @@
 {% extends 'qa/template.html' %}
+{% load static %}
+
+{% block header %}
+	<!-- Folha de estilos para a página de login -->
+	<link href="{% static 'css/login.css' %}" rel="stylesheet">
+
+{% endblock %}
 
 {% block content %}
-		<div class='container-fluid ml-3 mt-2'>
-            <div class='row'>
-            </div>
-			<div class='row'>
-				<div class='col-2 col-sm-2 col-md-2 col-lg-1'>
-					<div class='row'>Usuario:</div>
-					<div class='row mt-2'>Senha:</div>
-				</div>
-				<div class='col-3 col-sm-3 col-md-3 col-lg-3'>
-					<form action='{% url "qa:registrar_usuario" %}' method='post'>
-						{% csrf_token %}
-						<div class='row'>
-							<label>
-								<input type='text' name='username' value='{{username}}'/>
-							</label>
-						</div>
-						<div class='row'>
-								<label> 
-									<input type='text' name='password' value='{{password}}'/>
-								</label>
-							</div>
-						<div class='row mt-2'>
-							<input type='submit' value='Cadastrar'/>
-						</div>
-					</form>
-					<hr style='width=80vw'>
-					<div class='row'>
-						<a href='/menu'>< Voltar ao menu</a>
-					</div>
-				</div>
+        
+<div class="simple-login-container">
+	<h2>Faça o seu cadastro no site</h2>
+	<form action='{% url "qa:registrar_usuario" %}' method='post'>
+		{% csrf_token %}
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type='text' name='username' class="form-control" placeholder="Escolha um nome de usuário" value='{{username}}'/>
 			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type='password' name='password' class="form-control" placeholder="Escolha uma senha" value='{{password}}'/>
+			</div>
+		</div>
+		
+		<div class='row'>
+			<div class="col-md-12 form-group">
+				<input type='submit' class="btn btn-block btn-login" value='Cadastrar'/>
+			</div>
+		</div>
+	</form>
+	
+	<div class="row">
+        <div class="col-md-12">
+            <a href='/menu'> Voltar ao menu </a>
         </div>
+    </div>
+</div>
+        
 {% endblock %}
