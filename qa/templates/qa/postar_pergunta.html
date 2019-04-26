@@ -7,18 +7,12 @@
             </div>
 			<div class='row'>
 			<div class='col-2 col-sm-2 col-md-2 col-lg-1'>
-				<div class='row'>Usuario:</div>
 				<div class='row mt-2'>Pergunta:</div>
 			</div>
 			<div class='col-3 col-sm-3 col-md-3 col-lg-3'>
 			<div class='row'>
-            <form action='{% url "qa:salvar_pergunta" %}' method='post'>
+            <form action='{% url "qa:postar_pergunta" %}' method='post'>
                 {% csrf_token %}
-                <div class='row'>
-                    <label>
-                        <input type='text' name='usuario' value='{{usuario}}'/>
-                    </label>
-                </div>
                 <div class='row'>
                         <label>
                             <input type='text' name='texto' value='{{texto}}' style='width:50vw; height:10vh'/>
