@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .forms import UserForm, UserProfileInfoForm
+from .forms import UserForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Pergunta, Resposta
+from .models import Pergunta, Resposta, Profile
 
 def home(request):
     if request.user.is_authenticated:
@@ -145,18 +145,21 @@ def registrar_usuario(request):
     # Retirado o userInfo
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
-        if user_form.is_valid():
+        user_profile = ProfileForm(data=request.POST)
+        if user_form.is_valid() and user_profile.is_valid():
             user = user_form.save()
             user.set_password(user.password)
             user.save()
+            profile = user_profile.save(commit=False)
+            profile.user = user
+            profile.save()
             return HttpResponse('Registrado com sucesso')
         else:
             print(user_form.errors)
             return HttpResponse('Nao foi registrado')
     else:
         user_form = UserForm()
-        return render(request, 'qa/registrar_usuario.html')
-
+        return render(request, 'qa/cadastro.html')
 
 
 # renderiza html com a lista de perguntas ja feitas
