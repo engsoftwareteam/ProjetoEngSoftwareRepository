@@ -53,15 +53,15 @@ def deletar_pergunta(request, pergunta_id):
         pergunta.delete()
     except (KeyError, pergunta.pk != None):
         return HttpResponse("Pergunta nao foi deletada")
-    return render(request, 'qa/confirmacao_pergunta_deletada.html')
+    return HttpResponseRedirect('/home')
 
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     pergunta.texto = request.POST['texto_alterado']
     pergunta.save()
-    context = {'pergunta': pergunta}    
-    return render(request, 'qa/confirmacao_pergunta_alterada.html', context)
+    context = {'pergunta': pergunta}
+    return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id))   
 
 # responsavel por salvar a resposta no BD
 def postar_resposta(request, pergunta_id):
@@ -78,19 +78,19 @@ def postar_resposta(request, pergunta_id):
         else:
             return HttpResponse("Voce precisa estar logado para postar uma resposta")
 
-# renderiza html com confirmacao que a pergunta foi salva
-def confirmar_resposta(request, pergunta_id, resposta_id):
-    pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
-    resposta = pergunta.resposta_set.get(pk=resposta_id)
-    context = {'pergunta': pergunta, 'resposta': resposta}    
-    return render(request, 'qa/confirmacao_resposta_postada.html', context)
-
 # busca pergunta selecionada no BD e renderiza o html com informacoes dela
 def selecionar_resposta(request, resposta_id):
-    resposta = get_object_or_404(Resposta, pk=resposta_id)
-    pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
-    context = {'pergunta': pergunta, 'resposta': resposta}    
-    return render(request, 'qa/resposta_selecionada.html', context)
+    if request.method  == 'POST':
+        resposta = get_object_or_404(Resposta, pk=resposta_id)
+        resposta.texto = request.POST['texto_alterado']
+        resposta.save()
+        context = {'resposta': resposta}    
+        return HttpResponseRedirect('/selecionar_resposta/%s' % (resposta_id))
+    else:
+        resposta = get_object_or_404(Resposta, pk=resposta_id)
+        pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
+        context = {'pergunta': pergunta, 'resposta': resposta}    
+        return render(request, 'qa/resposta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
 def deletar_resposta(request, resposta_id):
@@ -98,8 +98,8 @@ def deletar_resposta(request, resposta_id):
     try:
         resposta.delete()
     except (KeyError, resposta.pk != None):
-        return HttpResponse("Pergunta nao foi deletada")
-    return render(request, 'qa/confirmacao_resposta_deletada.html')
+        return HttpResponse("Resposta nao foi deletada")
+    return HttpResponseRedirect('/home')
 
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_resposta(request, resposta_id):
@@ -165,10 +165,10 @@ def meu_perfil(request):
     if request.method == 'POST':
         new_password = request.POST['new_password']
         username = request.user.get_username()
-        user = authenticate(username=username, password=new_password)
+        user = request.user
         if new_password != '':
-            request.user.set_password(request.POST['new_password'])
-            request.user.save()
+            user.set_password(request.POST['new_password'])
+            user.save()
             login(request,user)
         profile = Profile.objects.get(user=request.user)
         profile.instituicao = request.POST['instituicao']
@@ -199,59 +199,16 @@ def meus_posts(request):
     context = {'perguntas': perguntas, 'respostas': respostas, 'usuario':usuario}
     return render(request, 'qa/meus_posts.html', context)
 
-def alterar_senha(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        old_password = request.POST.get('old_password')
-        user = authenticate(username=username, password=old_password)
-        if user:
-            if user.is_active:
-                new_password = request.POST.get('new_password')
-                confirm_password = request.POST.get('confirm_password')
-                if new_password == confirm_password:
-                    user.set_password(new_password)
-                    user.save()
-                else:
-                    return HttpResponse("Confirm your password again.")
-                return HttpResponseRedirect('/login_usuario')
-            else:
-                return HttpResponse("Your account was inactive.")
-        else:
-            return HttpResponse("Try again.")
-    else:
-        return render(request, 'qa/alterar_senha.html')
-
-def alterar_perfil(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        old_password = request.POST.get('old_password')
-        user = authenticate(username=username, password=old_password)
-        if user:
-            if user.is_active:
-                new_password = request.POST.get('new_password')
-                confirm_password = request.POST.get('confirm_password')
-                if new_password == confirm_password:
-                    user.set_password(new_password)
-                    user.save()
-                else:
-                    return HttpResponse("Confirm your password again.")
-                return HttpResponseRedirect('/login_usuario')
-            else:
-                return HttpResponse("Your account was inactive.")
-        else:
-            return HttpResponse("Try again.")
-    else:
-        return render(request, 'qa/alterar_senha.html')
 
 def remover_usuario(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.user.get_username()
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user:
             user.delete()
-            return HttpResponseRedirect('/menu')
+            return HttpResponseRedirect('/login_usuario')
         else:
             return HttpResponse("Usuario não existe")
     else:
-        return render(request, 'qa/remover_usuario.html')
+        return HttpResponse("veio de um metodo get")

@@ -16,10 +16,15 @@
             </div>
 
             <div class='row'>
-                    <div class="col-md-12 form-group">
-                        <input type='text' name='new_password' class="form-control" placeholder="new_password" value='{{new_password}}'/>
-                    </div>
+                <div class="col-md-12 form-group">
+                    <input type='text' name='new_password' id='new_password' class="form-control" placeholder="Nova senha" value='{{new_password}}'/>
                 </div>
+            </div>
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='text' id='new_password2'  class="form-control" placeholder="Confirme a nova senha"/>
+                </div>
+            </div>
 
             <div class='row'>
                 <div class="col-md-12 form-group">
@@ -40,9 +45,30 @@
             </div>
             
             <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='submit' class="btn btn-block btn-login" value='Salvar alteracoes'/>
+                <div class="col-md-6 form-group">
+                    <input type='submit' class="btn btn-block btn-login" value='Salvar alteracoes' id='alteracoesSubmit'/>
                 </div>
+            </div>
+            <script>
+                $('#alteracoesSubmit').click(function(e){
+                    if($('#new_password').val() === $('#new_password2').val()) {
+                        
+                    } else {
+                        e.preventDefault();
+                        alert('Senhas nao coincidem');
+                    }
+                });
+            </script>
+        </form>
+        <form action='{% url "qa:remover_usuario" %}' method='post'>
+            {% csrf_token %}
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='text' name='password' class="form-control" placeholder="password" value='{{password}}'/>
+                </div>
+                </div>
+            <div class="col-md-6 form-group">
+                <input type='submit' class="btn btn-block btn-login" value='Deletar conta' id='deletarSubmit'/>
             </div>
         </form>
     {% else %}
