@@ -7,6 +7,7 @@ app_name = 'qa'
 urlpatterns = [
     path('', views.home, name='home'),
     path('home', views.home, name='home'),
+    path('meu_perfil', views.meu_perfil, name='meu_perfil'),
     path('postar_pergunta', views.postar_pergunta, name='postar_pergunta'),
     path('listar_perguntas', views.listar_perguntas, name='listar_perguntas'),
     path('selecionar_pergunta/<int:pergunta_id>', views.selecionar_pergunta, name='selecionar_pergunta'),
@@ -18,8 +19,6 @@ urlpatterns = [
     path('alterar_resposta/<int:resposta_id>', views.alterar_resposta, name='alterar_resposta'),
     path('deletar_resposta/<int:resposta_id>', views.deletar_resposta, name='deletar_resposta'),
     path('cadastrar_usuario', TemplateView.as_view(template_name='qa/cadastrar_usuario.html'), name='cadastrar_usuario'),
-
-    path('home', TemplateView.as_view(template_name='qa/home.html'), name='home'),
 
     path('registrar_usuario', views.registrar_usuario, name='registrar_usuario'),
     path('login_usuario', views.login_usuario, name='login_usuario'),

@@ -1,0 +1,52 @@
+{% extends 'qa/template.html' %}
+{% block content %}
+    {% if usuario %}
+        <form action='{% url "qa:meu_perfil" %}' method='post'>
+            {% csrf_token %}
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='text' name='username' class="form-control" placeholder="Escolha um nome de usuário" value='{{usuario}}'/>
+                </div>
+            </div>
+                    
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='text' name='email' class="form-control" placeholder="email" value='{{email}}'/>
+                </div>
+            </div>
+
+            <div class='row'>
+                    <div class="col-md-12 form-group">
+                        <input type='text' name='new_password' class="form-control" placeholder="new_password" value='{{new_password}}'/>
+                    </div>
+                </div>
+
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='text' name='instituicao' class="form-control" placeholder="instituicao" value='{{instituicao}}'/>
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='text' name='profissao' class="form-control" placeholder="profissao" value='{{profissao}}'/>
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='text' name='descricao' class="form-control" placeholder="descricao" value='{{descricao}}' style='height: 100px'/>
+                </div>
+            </div>
+            
+            <div class='row'>
+                <div class="col-md-12 form-group">
+                    <input type='submit' class="btn btn-block btn-login" value='Salvar alteracoes'/>
+                </div>
+            </div>
+        </form>
+    {% else %}
+        Faca o <a href='/login_usuario'>Login</a> para acessar essa pagina
+    {% endif %}
+        
+{% endblock %}

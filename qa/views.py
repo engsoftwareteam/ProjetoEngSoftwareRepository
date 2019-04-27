@@ -153,7 +153,7 @@ def registrar_usuario(request):
             profile = user_profile.save(commit=False)
             profile.user = user
             profile.save()
-            return HttpResponse('Registrado com sucesso')
+            return HttpResponseRedirect('/home')
         else:
             print(user_form.errors)
             return HttpResponse('Nao foi registrado')
@@ -161,6 +161,29 @@ def registrar_usuario(request):
         user_form = UserForm()
         return render(request, 'qa/cadastro.html')
 
+def meu_perfil(request):
+    if request.method == 'POST':
+        new_password = request.POST['new_password']
+        username = request.user.get_username()
+        user = authenticate(username=username, password=new_password)
+        if new_password != '':
+            request.user.set_password(request.POST['new_password'])
+            request.user.save()
+            login(request,user)
+        profile = Profile.objects.get(user=request.user)
+        profile.instituicao = request.POST['instituicao']
+        profile.profissao = request.POST['profissao']
+        profile.descricao = request.POST['descricao']
+        profile.save()
+        return HttpResponseRedirect('/meu_perfil')
+    else:
+        usuario = request.user.get_username()
+        if usuario:
+            email = request.user.email
+            profile = Profile.objects.get(user=request.user)
+            context = {'usuario':usuario, 'email':email, 'profissao':profile.profissao, 'instituicao':profile.instituicao, 'descricao':profile.descricao}
+            return render(request, 'qa/meu_perfil.html', context)
+        return render(request, 'qa/meu_perfil.html')
 
 # renderiza html com a lista de perguntas ja feitas
 def meus_posts(request):
@@ -177,6 +200,28 @@ def meus_posts(request):
     return render(request, 'qa/meus_posts.html', context)
 
 def alterar_senha(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        old_password = request.POST.get('old_password')
+        user = authenticate(username=username, password=old_password)
+        if user:
+            if user.is_active:
+                new_password = request.POST.get('new_password')
+                confirm_password = request.POST.get('confirm_password')
+                if new_password == confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                else:
+                    return HttpResponse("Confirm your password again.")
+                return HttpResponseRedirect('/login_usuario')
+            else:
+                return HttpResponse("Your account was inactive.")
+        else:
+            return HttpResponse("Try again.")
+    else:
+        return render(request, 'qa/alterar_senha.html')
+
+def alterar_perfil(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         old_password = request.POST.get('old_password')
