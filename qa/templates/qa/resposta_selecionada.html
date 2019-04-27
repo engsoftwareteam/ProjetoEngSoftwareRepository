@@ -28,7 +28,7 @@
 				<div class='row'>
 					{{resposta.usuario}}
 				</div>
-				<form action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
+				<form action='{% url "qa:selecionar_resposta" resposta.id %}' method='post'>
 					{% csrf_token %}
 					<div class='row'>
 						<label>

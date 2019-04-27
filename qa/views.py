@@ -80,10 +80,17 @@ def postar_resposta(request, pergunta_id):
 
 # busca pergunta selecionada no BD e renderiza o html com informacoes dela
 def selecionar_resposta(request, resposta_id):
-    resposta = get_object_or_404(Resposta, pk=resposta_id)
-    pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
-    context = {'pergunta': pergunta, 'resposta': resposta}    
-    return render(request, 'qa/resposta_selecionada.html', context)
+    if request.method  == 'POST':
+        resposta = get_object_or_404(Resposta, pk=resposta_id)
+        resposta.texto = request.POST['texto_alterado']
+        resposta.save()
+        context = {'resposta': resposta}    
+        return HttpResponseRedirect('/selecionar_resposta/%s' % (resposta_id))
+    else:
+        resposta = get_object_or_404(Resposta, pk=resposta_id)
+        pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
+        context = {'pergunta': pergunta, 'resposta': resposta}    
+        return render(request, 'qa/resposta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
 def deletar_resposta(request, resposta_id):
@@ -91,8 +98,8 @@ def deletar_resposta(request, resposta_id):
     try:
         resposta.delete()
     except (KeyError, resposta.pk != None):
-        return HttpResponse("Pergunta nao foi deletada")
-    return render(request, 'qa/confirmacao_resposta_deletada.html')
+        return HttpResponse("Resposta nao foi deletada")
+    return HttpResponseRedirect('/home')
 
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_resposta(request, resposta_id):
