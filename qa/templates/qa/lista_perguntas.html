@@ -3,22 +3,19 @@
 {% extends 'qa/template.html' %}
 
 {% block content %}
-		<div class='border' style='width:100vw'>
-			<h2>Perguntas Feitas</h2>
+	<div class='border' style='width:100vw'>
+		<h2>Perguntas Feitas</h2>
+	</div>
+	<div class='container-fluid ml-3 mt-2'>
+		{% for pergunta in perguntas %}
+		<div class='row'>
+			<div class='col-2 col-sm-3 col-md-4 col-lg-5 alert alert-dark' role='alert'>
+				<a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
+			</div>
+			<div class='col-2 col-sm-2 col-md-2 col-lg-2 alert alert-dark' role='alert'>
+				Autor: {{pergunta.usuario}}
+			</div>
 		</div>
-		<div class='container-fluid ml-3 mt-2'>
-                {% for pergunta in perguntas %}
-				<div class='row'>
-					<div class='col-2 col-sm-3 col-md-4 col-lg-5 alert alert-dark' role='alert'>
-						<a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
-					</div>
-					<div class='col-2 col-sm-2 col-md-2 col-lg-2 alert alert-dark' role='alert'>
-						Autor: {{pergunta.usuario}}
-					</div>
-				</div>
-                {% endfor %}
-            <div class='row'>
-                <a href='/menu'>< Voltar ao menu</a>
-            </div>
-        </div>
+		{% endfor %}
+	</div>
 {% endblock %}

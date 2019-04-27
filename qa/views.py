@@ -7,40 +7,43 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Pergunta, Resposta
 
-# responsavel por salvar a pergunta no BD
-def postar_pergunta(request):
+def home(request):
     if request.user.is_authenticated:
         usuario = request.user.get_username()
-        if request.method == 'POST':
-            try:
-                pergunta = Pergunta(usuario=usuario, texto=request.POST['texto'])
-                pergunta.save()
-            except (KeyError, pergunta.pk == None):
-                return HttpResponse("Pergunta nao foi salva")
-            return HttpResponseRedirect('/pergunta_postada/%s' %pergunta.pk)
-        else:
-            return render(request, 'qa/postar_pergunta.html')
     else:
-        return HttpResponse("Voce precisa estar logado para fazer uma pergunta")
+        usuario = None
+    context = {'usuario': usuario}
+    return render(request, 'qa/home.html', context)
+
+# responsavel por salvar a pergunta no BD
+def postar_pergunta(request):
+    usuario = request.user.get_username()
+    if request.method == 'POST':
+        try:
+            pergunta = Pergunta(usuario=usuario, texto=request.POST['texto'])
+            pergunta.save()
+        except (KeyError, pergunta.pk == None):
+            return HttpResponse("Pergunta nao foi salva")
+        msg = 'sua pergunta foi postada'
+        context = {'usuario':usuario, 'msg': msg}
+        return render(request, 'qa/postar_pergunta.html', context)
+    else:
+        context = {"usuario": usuario}
+        return render(request, 'qa/postar_pergunta.html', context)
     
-
-# renderiza html com confirmacao que a pergunta foi salva
-def confirmar_pergunta(request, pergunta_id):
-    pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
-    context = {'pergunta': pergunta}    
-    return render(request, 'qa/confirmacao_pergunta_postada.html', context)
-
 # renderiza html com a lista de perguntas ja feitas
 def listar_perguntas(request):
+    usuario = request.user.get_username()
     perguntas = get_list_or_404(Pergunta)
-    context = {'perguntas': perguntas}
+    context = {'perguntas': perguntas, 'usuario':usuario}
     return render(request, 'qa/lista_perguntas.html', context)
 
 # busca pergunta selecionada no BD e renderiza o html com informacoes dela
 def selecionar_pergunta(request, pergunta_id):
+    usuario = request.user.get_username()
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     lista_respostas = pergunta.resposta_set.all()
-    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas}    
+    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -71,7 +74,7 @@ def postar_resposta(request, pergunta_id):
                 resposta = pergunta.resposta_set.create(usuario=usuario, texto=request.POST['texto'])
             except (KeyError):
                 return HttpResponse("Pergunta nao foi salva")
-            return HttpResponseRedirect('/resposta_postada/%s/%s' % (pergunta.id, resposta.id))
+            return HttpResponseRedirect('/selecionar_pergunta/%s' % (pergunta.id))
         else:
             return HttpResponse("Voce precisa estar logado para postar uma resposta")
 
@@ -112,10 +115,28 @@ def logged(request):
     else:
         return HttpResponse("voce nao esta logado")
 
+def login_usuario(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect('/home')
+            else:
+                return HttpResponse("Your account was inactive.")
+        else:
+            msg = 'Usuário ou senha incorretos'
+            context = {'msg':msg}
+            return render(request, 'qa/login.html', context)
+    else:
+         return render(request, 'qa/login.html')
+
 def logout_usuario(request):
     if request.user.is_authenticated:
         logout(request)
-        return HttpResponse("logout sucesso")
+        return HttpResponseRedirect('/home')
     else:
         return HttpResponse("voce nao esta logado")
         
@@ -136,40 +157,21 @@ def registrar_usuario(request):
         user_form = UserForm()
         return render(request, 'qa/registrar_usuario.html')
 
-def login_usuario(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request,user)
-                return HttpResponseRedirect('/menu')
-            else:
-                return HttpResponse("Your account was inactive.")
-        else:
-            print("Someone tried to login and failed.")
-            print("They used username: {} and password: {}".format(username,password))
-            return HttpResponse("Senha ou usuario errado ou nao existe")
-    else:
-         return render(request, 'qa/login.html')
+
 
 # renderiza html com a lista de perguntas ja feitas
 def meus_posts(request):
-    if request.user.is_authenticated:
-        usuario = request.user.get_username()
-        perguntas = None
-        respostas = None
-        if Pergunta.objects.filter(usuario=usuario).exists():
-            perguntas = Pergunta.objects.filter(usuario=usuario)
+    usuario = request.user.get_username()
+    perguntas = None
+    respostas = None
+    if Pergunta.objects.filter(usuario=usuario).exists():
+        perguntas = Pergunta.objects.filter(usuario=usuario)
 
-        if Resposta.objects.filter(usuario=usuario).exists():
-            respostas = Resposta.objects.filter(usuario=usuario)
+    if Resposta.objects.filter(usuario=usuario).exists():
+        respostas = Resposta.objects.filter(usuario=usuario)
 
-        context = {'perguntas': perguntas, 'respostas': respostas}
-        return render(request, 'qa/meus_posts.html', context)
-    else:
-        return HttpResponse("voce precisa estar logado para ver seus posts")
+    context = {'perguntas': perguntas, 'respostas': respostas, 'usuario':usuario}
+    return render(request, 'qa/meus_posts.html', context)
 
 def alterar_senha(request):
     if request.method == 'POST':

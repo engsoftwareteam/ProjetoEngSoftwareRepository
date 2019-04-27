@@ -11,9 +11,6 @@
 
   <title>Menu</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
   <!-- Custom styles for this template -->
   <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -34,16 +31,13 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading text-center" style="min-height:62px"><a href='/menu'>Q&A</a> </div>
+      <div class="sidebar-heading text-center" style="min-height:62px"><a href='/home'>Q&A</a> </div>
       <div class="list-group list-group-flush">
         <a href="/postar_pergunta" class="list-group-item list-group-item-action bg-light">Postar Pergunta</a>
         <a href="/listar_perguntas" class="list-group-item list-group-item-action bg-light">Listar Perguntas</a>
-		<a href='/registrar_usuario' class="list-group-item list-group-item-action bg-light">Cadastrar usuario</a>
-		<a href='/login_usuario' class="list-group-item list-group-item-action bg-light">Login</a>
-		<a href='/logout_usuario' class="list-group-item list-group-item-action bg-light">Logout</a>
-		<a href='/meus_posts' class='list-group-item list-group-item-action bg-light'>Meus posts</a>
-		<a href='/alterar_senha' class='list-group-item list-group-item-action bg-light'>Alterar senha</a>
-		<a href='/remover_usuario' class='list-group-item list-group-item-action bg-light'>Remover usuario</a>
+        <a href='/meus_posts' class='list-group-item list-group-item-action bg-light'>Meus posts</a>
+        <a href='/alterar_senha' class='list-group-item list-group-item-action bg-light'>Alterar senha</a>
+        <a href='/remover_usuario' class='list-group-item list-group-item-action bg-light'>Remover usuario</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -58,19 +52,30 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Nome usuario
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Logout</a>
-              </div>
-            </li>
-          </ul>
-        </div>
+        {% if usuario %}
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{usuario}}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/logout_usuario">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        {% else %}
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="/login_usuario" aria-haspopup="true" aria-expanded="false">
+                    login
+                </a>
+              </li>
+            </ul>
+          </div>
+        {% endif %}
       </nav>
         {% block content %}
 		{% endblock %}
@@ -79,10 +84,6 @@
 
   </div>
   <!-- /#wrapper -->
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Menu Toggle Script -->
   <script>

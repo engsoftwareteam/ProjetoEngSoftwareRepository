@@ -5,10 +5,9 @@ from . import views
 
 app_name = 'qa'
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='qa/menu.html'), name='menu'),
-    path('menu', TemplateView.as_view(template_name='qa/menu.html'), name='menu'),
+    path('', views.home, name='home'),
+    path('home', views.home, name='home'),
     path('postar_pergunta', views.postar_pergunta, name='postar_pergunta'),
-    path('pergunta_postada/<int:pergunta_id>', views.confirmar_pergunta, name='confirmar_pergunta'),
     path('listar_perguntas', views.listar_perguntas, name='listar_perguntas'),
     path('selecionar_pergunta/<int:pergunta_id>', views.selecionar_pergunta, name='selecionar_pergunta'),
     path('deletar_pergunta/<int:pergunta_id>', views.deletar_pergunta, name='deletar_pergunta'),

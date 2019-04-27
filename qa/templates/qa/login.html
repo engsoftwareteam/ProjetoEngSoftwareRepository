@@ -4,40 +4,43 @@
 {% block header %}
 	<!-- Folha de estilos para a página de login -->
 	<link href="{% static 'css/login.css' %}" rel="stylesheet">
-
 {% endblock %}
 
 {% block content %}
 
-<div class="simple-login-container">
-	<h2>Faça o seu login</h2>
-	<form action='{% url "qa:login_usuario" %}' method='post'>
-		{% csrf_token %}
-		<div class='row'>
-			<div class="col-md-12 form-group">
-				<input type='text' class="form-control" name='username' placeholder="Usuário" value='{{username}}'/>
+	<div class="simple-login-container">
+		<h2>Faça o seu login</h2>
+		<form action='{% url "qa:login_usuario" %}' method='post'>
+			{% csrf_token %}
+			<div class='row'>
+				<div class="col-md-12 form-group">
+					<input type='text' class="form-control" name='username' placeholder="Usuário" value='{{username}}'/>
+				</div>
 			</div>
-		</div>
+			
+			<div class='row'>
+				<div class="col-md-12 form-group">
+					<input type="password" class="form-control" name='password' placeholder="Digite a sua senha" id='password' value='{{password}}'/>
+				</div>
+			</div>
+			
+			<div class='row'>
+				<div class="col-md-12 form-group">
+					<input type='submit' class="btn btn-block btn-login" value='Entrar'/>
+				</div>
+			</div>
+		</form>
 		
-		<div class='row'>
-			<div class="col-md-12 form-group">
-				<input type="password" class="form-control" name='password' placeholder="Digite a sua senha" id='password' value='{{password}}'/>
+		<div class="row">
+			<div class="col-md-12">
+				<a href='/registrar_usuario'> Criar um novo usuario </a>
 			</div>
 		</div>
-		
-		<div class='row'>
-			<div class="col-md-12 form-group">
-				<input type='submit' class="btn btn-block btn-login" value='Entrar'/>
-			</div>
-		</div>
-	</form>
-	
-	<div class="row">
-        <div class="col-md-12">
-            <a href='/registrar_usuario'> Criar um novo usuario </a>
-        </div>
-    </div>
-</div>
-
+	</div>
+	{% if msg %}
+		<script>
+			alert('{{msg}}');
+		</script>
+	{% endif %}
 
 {% endblock %}
