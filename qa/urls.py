@@ -14,7 +14,6 @@ urlpatterns = [
     path('deletar_pergunta/<int:pergunta_id>', views.deletar_pergunta, name='deletar_pergunta'),
     path('alterar_pergunta/<int:pergunta_id>', views.alterar_pergunta, name='alterar_pergunta'),
     path('postar_resposta/<int:pergunta_id>', views.postar_resposta, name='postar_resposta'),
-    path('resposta_postada/<int:pergunta_id>/<int:resposta_id>', views.confirmar_resposta, name='confirmar_resposta'),
     path('selecionar_resposta/<int:resposta_id>', views.selecionar_resposta, name='selecionar_resposta'),
     path('alterar_resposta/<int:resposta_id>', views.alterar_resposta, name='alterar_resposta'),
     path('deletar_resposta/<int:resposta_id>', views.deletar_resposta, name='deletar_resposta'),
@@ -25,6 +24,5 @@ urlpatterns = [
     path('logout_usuario', views.logout_usuario, name='logout_usuario'),
     path('logged', views.logged, name='logged'),
     path('meus_posts', views.meus_posts, name='meus_posts'),
-    path('alterar_senha', views.alterar_senha, name='alterar_senha'),
     path('remover_usuario', views.remover_usuario, name='remover_usuario')
 ]
