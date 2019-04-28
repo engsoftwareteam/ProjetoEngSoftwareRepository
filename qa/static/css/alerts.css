@@ -1,7 +1,7 @@
 #alertBox{
     position:absolute;
-    top:1px;
-    left:1120px;
+    top:10vh;
+    left:40vw;
     border:none;
     background-color: #4CAF50;
     padding: 25px;
