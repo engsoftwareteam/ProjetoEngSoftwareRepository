@@ -115,6 +115,31 @@
 						<input id='respostaSubmit' type='submit' value='Postar Resposta' class='btn bg-success px-5 text-light'/>
 					</div>
 					<script>
+						function closeAlertBox(){
+							alertBox = document.getElementById("alertBox");
+							alertClose = document.getElementById("alertClose");
+							alertBox.style.visibility = "hidden";
+							alertClose.style.visibility = "hidden";
+						}
+						window.alert = function(msg){
+							var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+							alertBox = document.createElement("div");
+							document.body.appendChild(alertBox);
+							alertBox.id = id;
+							alertBox.innerHTML = msg;
+							alertClose = document.createElement("div");
+							alertClose.id = closeId;
+							alertClose.innerHTML = "x";
+							alertBox.appendChild(alertClose);
+							alertBox.style.visibility = "visible";
+							alertClose.style.visibility = "visible";
+							alertClose.onclick = closeAlertBox;
+							alertBox.style.left = "1140px";
+							if(sucesso == false)
+							{
+								document.getElementById('alertBox').style.backgroundColor = 'red'
+							}
+						};
 						if ('{{usuario}}' === ''){
 							flagUser = false
 						}
@@ -122,6 +147,7 @@
 						$('#respostaTexto').click(function(e){
 							if(flagUser === false){
 								$('#respostaTexto').attr('disabled', true)
+								sucesso = false
 								alert('Precisa Estar logado');
 							}
 						});
@@ -129,6 +155,7 @@
 						$('#respostaSubmit').click(function(e){
 							if(flagUser === false){
 								e.preventDefault();
+								sucesso=false;
 								alert('Precisa Estar logado');
 							}
 						});

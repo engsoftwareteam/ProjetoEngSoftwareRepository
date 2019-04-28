@@ -76,6 +76,10 @@
             alertBox.style.visibility = "visible";
             alertClose.style.visibility = "visible";
             alertClose.onclick = closeAlertBox;
+            if(sucesso == false)
+            {
+                document.getElementById('alertBox').style.backgroundColor = 'red'
+            }
         };
         alert('{{msg}}')
         </script>

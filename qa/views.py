@@ -23,9 +23,11 @@ def postar_pergunta(request):
             pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'])
             pergunta.save()
         except (KeyError, pergunta.pk == None):
-            return HttpResponse("Pergunta nao foi salva")
+            msg = 'Sua pergunta não foi postada'
+            context = {'usuario':usuario, 'msg': msg, 'sucesso':False}
+            return render(request, 'qa/postar_pergunta.html', context)
         msg = 'Sua pergunta foi postada'
-        context = {'usuario':usuario, 'msg': msg}
+        context = {'usuario':usuario, 'msg': msg, 'sucesso':True}
         return render(request, 'qa/postar_pergunta.html', context)
     else:
         context = {"usuario": usuario}
@@ -51,9 +53,13 @@ def deletar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     try:
         pergunta.delete()
+        msg = "Pergunta deletada com sucesso!"
+        sucesso = True
     except (KeyError, pergunta.pk != None):
-        return HttpResponse("Pergunta nao foi deletada")
-    return HttpResponseRedirect('/home')
+        msg = "Erro ao deletar pergunta!"
+        sucesso = False
+    context = {'msg': msg, 'sucesso':sucesso}
+    return render(request,'qa/home.html', context)
 
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_pergunta(request, pergunta_id):
@@ -73,7 +79,8 @@ def postar_resposta(request, pergunta_id):
             try:
                 resposta = pergunta.resposta_set.create(usuario=usuario, texto=request.POST['texto'])
             except (KeyError):
-                return HttpResponse("Pergunta nao foi salva")
+                context = {'msg': "Resposta não foi salva", 'sucesso':False}
+                return render(request,'qa/home.html', context)
             return HttpResponseRedirect('/selecionar_pergunta/%s' % (pergunta.id))
         else:
             return HttpResponse("Voce precisa estar logado para postar uma resposta")
@@ -98,9 +105,13 @@ def deletar_resposta(request, resposta_id):
     resposta = get_object_or_404(Resposta, pk=resposta_id)
     try:
         resposta.delete()
+        msg = "Resposta deletada com sucesso!"
+        sucesso = True
     except (KeyError, resposta.pk != None):
-        return HttpResponse("Resposta nao foi deletada")
-    return HttpResponseRedirect('/home')
+        msg = "Resposta nao foi deletada"
+        sucesso = False
+    context = {'msg': msg, 'sucesso':sucesso}
+    return render(request,'qa/home.html', context)
 
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_resposta(request, resposta_id):
@@ -111,9 +122,11 @@ def alterar_resposta(request, resposta_id):
 
 def logged(request):
     if request.user.is_authenticated:
-        return HttpResponse("voce esta logado")
+        context = {'msg': "Você está logado", 'sucesso':True}
+        return render(request,'qa/home.html', context)
     else:
-        return HttpResponse("voce nao esta logado")
+        context = {'msg': "Você não está logado", 'sucesso':True}
+        return render(request,'qa/home.html', context)
 
 def login_usuario(request):
     if request.method == 'POST':
@@ -125,10 +138,12 @@ def login_usuario(request):
                 login(request,user)
                 return HttpResponseRedirect('/home')
             else:
-                return HttpResponse("Your account was inactive.")
+                msg = 'Usuário inativo'
+                context = {'msg':msg, 'sucesso': False}
+                return render(request, 'qa/login.html', context)
         else:
             msg = 'Usuário ou senha incorretos'
-            context = {'msg':msg}
+            context = {'msg':msg, 'sucesso': False}
             return render(request, 'qa/login.html', context)
     else:
          return render(request, 'qa/login.html')
@@ -138,7 +153,8 @@ def logout_usuario(request):
         logout(request)
         return HttpResponseRedirect('/home')
     else:
-        return HttpResponse("voce nao esta logado")
+        context = {'msg': "Você não está logado", 'sucesso':False}
+        return render(request,'qa/home.html', context)
         
 
 def registrar_usuario(request):

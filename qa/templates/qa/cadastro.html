@@ -81,11 +81,37 @@
                         <input id='registrarSubmit' type='submit' class="btn text-light bg-success mx-auto" value='Registrar' style='width: 50%'/>
                     </div>
                     <script>
+                        function closeAlertBox(){
+							alertBox = document.getElementById("alertBox");
+							alertClose = document.getElementById("alertClose");
+							alertBox.style.visibility = "hidden";
+							alertClose.style.visibility = "hidden";
+						}
+						window.alert = function(msg){
+							var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+							alertBox = document.createElement("div");
+							document.body.appendChild(alertBox);
+							alertBox.id = id;
+							alertBox.innerHTML = msg;
+							alertClose = document.createElement("div");
+							alertClose.id = closeId;
+							alertClose.innerHTML = "x";
+							alertBox.appendChild(alertClose);
+							alertBox.style.visibility = "visible";
+							alertClose.style.visibility = "visible";
+							alertClose.onclick = closeAlertBox;
+							alertBox.style.left = "1120px";
+							if(sucesso == false)
+							{
+								document.getElementById('alertBox').style.backgroundColor = 'red'
+							}
+						};
                         $('#registrarSubmit').click(function(e){
                             if($('#password').val() === $('#password_confirm').val()) {
                                 
                             } else {
                                 e.preventDefault();
+                                sucesso = false;
                                 alert('Senhas nao coincidem');
                             }
                         });

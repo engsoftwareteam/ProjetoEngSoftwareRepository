@@ -72,10 +72,36 @@
 						{% csrf_token %}
 						<input type='button' id='alterarRespostaBtn' class='btn btn-success py-1 mr-1' value='Alterar Resposta'/>
 						<script>
+							function closeAlertBox(){
+								alertBox = document.getElementById("alertBox");
+								alertClose = document.getElementById("alertClose");
+								alertBox.style.visibility = "hidden";
+								alertClose.style.visibility = "hidden";
+							}
+							window.alert = function(msg){
+								var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+								alertBox = document.createElement("div");
+								document.body.appendChild(alertBox);
+								alertBox.id = id;
+								alertBox.innerHTML = msg;
+								alertClose = document.createElement("div");
+								alertClose.id = closeId;
+								alertClose.innerHTML = "x";
+								alertBox.appendChild(alertClose);
+								alertBox.style.visibility = "visible";
+								alertClose.style.visibility = "visible";
+								alertClose.onclick = closeAlertBox;
+								alertBox.style.left = "1140px";
+								if(sucesso == false)
+								{
+									document.getElementById('alertBox').style.backgroundColor = 'red'
+								}
+							};
 							$("#alterarRespostaBtn").click(function(){
 								texto_alterado = $('#respostaTexto').val()
 								if(texto_alterado === ''){
-									window.alert('a resposta nao pode ser vazia')
+									sucesso = false;
+									alert('a resposta nao pode ser vazia')
 								} else{
 									$('#texto_alterado').val(texto_alterado)
 									$("#formAlterarResposta").submit();
