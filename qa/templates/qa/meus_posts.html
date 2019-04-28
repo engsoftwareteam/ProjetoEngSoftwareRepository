@@ -1,36 +1,37 @@
 {% extends 'qa/template.html' %}
 
 {% block content %}
+    <div class='container-fluid ml-4 mt-2'>
+        <h4>Meus Posts</h4>
+        {% if usuario %}
+            <h3>Perguntas</h3>
+            {% if perguntas %}
+            <ul>
+                {% for pergunta in perguntas %}
+                <li>
+                    <a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Nao ha perguntas</p>
+            {% endif %}
+            <hr/>
+            <h3>Respostas</h3>
 
-    {% if usuario %}
-        <h3>Perguntas</h3>
-        {% if perguntas %}
-        <ul>
-            {% for pergunta in perguntas %}
-            <li>
-                <a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
-            </li>
-            {% endfor %}
-        </ul>
+            {% if respostas %}
+            <ul>
+                {% for resposta in respostas %}
+                <li>
+                    <a href='/selecionar_pergunta/{{resposta.pergunta.id}}'>{{resposta.texto}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Nao ha respostas</p>
+            {% endif %}
         {% else %}
-        <p>Nao ha perguntas</p>
+            Faca o <a href='/login_usuario'>Login</a> para acessar essa pagina
         {% endif %}
-        <hr/>
-        <h3>Respostas</h3>
-
-        {% if respostas %}
-        <ul>
-            {% for resposta in respostas %}
-            <li>
-                <a href='/selecionar_pergunta/{{resposta.pergunta.id}}'>{{resposta.texto}}</a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>Nao ha respostas</p>
-        {% endif %}
-    {% else %}
-        Faca o <a href='/login_usuario'>Login</a> para acessar essa pagina
-    {% endif %}
-
+    </div>
 {% endblock %}

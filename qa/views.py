@@ -165,15 +165,26 @@ def meu_perfil(request):
     if request.method == 'POST':
         new_password = request.POST['new_password']
         username = request.user.get_username()
+        email = request.POST['email']
+        instituicao = request.POST['instituicao']
+        profissao = request.POST['profissao']
+        descricao = request.POST['descricao']
         user = request.user
         if new_password != '':
-            user.set_password(request.POST['new_password'])
+            user.set_password(new_password)
             user.save()
             login(request,user)
+
         profile = Profile.objects.get(user=request.user)
-        profile.instituicao = request.POST['instituicao']
-        profile.profissao = request.POST['profissao']
-        profile.descricao = request.POST['descricao']
+        if email != '':
+            user.email=email
+            user.save()
+        if instituicao != '':
+            profile.instituicao = instituicao
+        if profissao != '':
+            profile.profissao = profissao
+        if descricao != '':
+            profile.descricao = descricao
         profile.save()
         return HttpResponseRedirect('/meu_perfil')
     else:
@@ -209,6 +220,6 @@ def remover_usuario(request):
             user.delete()
             return HttpResponseRedirect('/login_usuario')
         else:
-            return HttpResponse("Usuario não existe")
+            return HttpResponseRedirect('/meu_perfil')
     else:
         return HttpResponse("veio de um metodo get")

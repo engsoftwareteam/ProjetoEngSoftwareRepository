@@ -1,54 +1,111 @@
 {% extends 'qa/template.html' %}
 {% block content %}
-    {% if usuario %}
-        <form action='{% url "qa:meu_perfil" %}' method='post'>
-            {% csrf_token %}
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' name='username' class="form-control" placeholder="Escolha um nome de usuário" value='{{usuario}}'/>
+    <div class='container-fluid ml-4 mt-2'>
+        <h4>Perfil do Usuário</h4>
+        {% if usuario %}
+        
+            <form action='{% url "qa:meu_perfil" %}' method='post'>
+                {% csrf_token %}
+                <div class='col-4 mt-3 ml-3 pl-0'>
+                    <div class='row'>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Usuário
+                                </div>
+                            </div>
+                            <input type='text' name='username' class="form-control bg-light" value='{{usuario}}' disabled/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Email
+                                </div>
+                            </div>
+                            <input type='text' name='email' class="form-control" placeholder='{{email}}'/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Nova Senha
+                                </div>
+                            </div>
+                            <input type='password' name='new_password' id='new_password' class="form-control" autocomplete="new-password"/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Confirme a senha
+                                </div>
+                            </div>
+                            <input type='password' id='new_password2'  class="form-control"/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Instituição
+                                </div>
+                            </div>
+                            <input type='text' name='instituicao' class="form-control" placeholder='{{instituicao}}'/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Profissão
+                                </div>
+                            </div>
+                            <input type='text' name='profissao' class="form-control"  placeholder='{{profissao}}'/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    Descrição
+                                </div>
+                            </div>
+                            <textarea class="form-control col-12" rows="5" name='descricao' placeholder="{{descricao}}"></textarea>
+                        </div>
+
+                        <div class="input-group mb-2 justify-content-center">
+                            <input type='submit' class="btn bg-success col-5 mr-1 text-light" value='Salvar alteracoes' id='alteracoesSubmit'/>
+                            <input type='button' class="btn bg-danger col-5 ml-1 text-light" value='Excluir conta' data-toggle='modal' data-target='#confirmDeletar'/>
+                        </div>
+                    </div>
                 </div>
-            </div>
-                    
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' name='email' class="form-control" placeholder="email" value='{{email}}'/>
+            </form>
+                
+            <!-- The Modal -->
+            <div class="modal" id="confirmDeletar">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header py-3">
+                            <h4 class="modal-title">Excluir conta.</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        
+                        <!-- Modal body -->
+                        <div class="modal-body p-0">
+                            <form action='{% url "qa:remover_usuario" %}' method='post'>
+                                {% csrf_token %}
+                                <div class="input-group mb-3 mx-auto col-9">
+                                    <input type='password' name='password' class="form-control" placeholder="Confirme sua senha"/>
+                                    <div class="input-group-append">
+                                        <input type='submit' class="btn bg-danger text-light" value='Deletar conta' id='deletarSubmit'/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' name='new_password' id='new_password' class="form-control" placeholder="Nova senha" value='{{new_password}}'/>
-                </div>
-            </div>
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' id='new_password2'  class="form-control" placeholder="Confirme a nova senha"/>
-                </div>
-            </div>
-
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' name='instituicao' class="form-control" placeholder="instituicao" value='{{instituicao}}'/>
-                </div>
-            </div>
-
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' name='profissao' class="form-control" placeholder="profissao" value='{{profissao}}'/>
-                </div>
-            </div>
-
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' name='descricao' class="form-control" placeholder="descricao" value='{{descricao}}' style='height: 100px'/>
-                </div>
-            </div>
-            
-            <div class='row'>
-                <div class="col-md-6 form-group">
-                    <input type='submit' class="btn btn-block btn-login" value='Salvar alteracoes' id='alteracoesSubmit'/>
-                </div>
-            </div>
             <script>
                 $('#alteracoesSubmit').click(function(e){
                     if($('#new_password').val() === $('#new_password2').val()) {
@@ -59,20 +116,9 @@
                     }
                 });
             </script>
-        </form>
-        <form action='{% url "qa:remover_usuario" %}' method='post'>
-            {% csrf_token %}
-            <div class='row'>
-                <div class="col-md-12 form-group">
-                    <input type='text' name='password' class="form-control" placeholder="password" value='{{password}}'/>
-                </div>
-                </div>
-            <div class="col-md-6 form-group">
-                <input type='submit' class="btn btn-block btn-login" value='Deletar conta' id='deletarSubmit'/>
-            </div>
-        </form>
-    {% else %}
-        Faca o <a href='/login_usuario'>Login</a> para acessar essa pagina
-    {% endif %}
         
+        {% else %}
+            Faca o <a href='/login_usuario'>Login</a> para acessar essa pagina
+        {% endif %}
+    </div>
 {% endblock %}

@@ -31,8 +31,13 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading text-center" style="min-height:62px"><a href='/home'>Q&A</a> </div>
+      <div class="sidebar-heading text-center py-0" style="color:black; height:56px; font-weight:bold; font-size: 24px">
+        <span class='' style='position:relative; top:16%;'>
+            Menu
+        </span>
+      </div>
       <div class="list-group list-group-flush">
+        <a href="/home" class="list-group-item list-group-item-action bg-light">Home Page</a>
         <a href="/postar_pergunta" class="list-group-item list-group-item-action bg-light">Postar Pergunta</a>
         <a href="/listar_perguntas" class="list-group-item list-group-item-action bg-light">Listar Perguntas</a>
         <a href='/meus_posts' class='list-group-item list-group-item-action bg-light'>Meus posts</a>
@@ -44,9 +49,8 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAACTwAAAk8B95E4kAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAySURBVFiF7dQhEgAgDAOwjf//uSjuUMgZEtWqulbxuz4hSUYGu/vua2IU4MUTAnhCYAO6MAwKWFQBzAAAAABJRU5ErkJggg=="></button>
-
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" style="height: 57px">
+        <a href='/home' style="color:blue; font-size:30px; font-weight:bold">Simulador Q&A</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -67,9 +71,18 @@
         {% else %}
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-              <li class="nav-item">
-                <a class="nav-link btn bg-success text-light" href="/login_usuario" aria-haspopup="true" aria-expanded="false">
-                    login
+              <li class="nav-item mr-1">
+                <a class="nav-link btn bg-success text-light px-3 py-1" href="/login_usuario" aria-haspopup="true" aria-expanded="false">
+                    <span style='font-size:18px'>
+                        login
+                    </span>
+                </a>
+              </li>
+              <li class='nav-item ml-1'>
+                <a class="nav-link btn bg-danger text-light px-3 py-1" href="/registrar_usuario" aria-haspopup="true" aria-expanded="false">
+                  <span style='font-size:18px'>
+                    Registre-se
+                  </span>
                 </a>
               </li>
             </ul>
@@ -83,15 +96,6 @@
 
   </div>
   <!-- /#wrapper -->
-
-  <!-- Menu Toggle Script -->
-  <script>
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-  </script>
-
 </body>
 
 </html>

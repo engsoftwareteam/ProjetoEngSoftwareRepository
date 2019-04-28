@@ -3,12 +3,23 @@
 {% extends 'qa/template.html' %}
 
 {% block content %}
-	<div class='border' style='width:100vw'>
-		<h2>Perguntas Feitas</h2>
+
+	<div class='container-fluid ml-4 mt-2'>
+		<h4>Perguntas Feitas</h4>
+		<div class='container border ml-0 py-2' style="width: 30vw; height: 80vh; overflow-y: scroll;">
+			{% for pergunta in perguntas %}
+			<div class="card mb-2">
+				<div class="card-body py-1"><a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a></div> 
+				<div class="card-footer py-1">Autor: {{pergunta.usuario}}</div>
+			</div>
+			{% endfor %}
+		</div>
 	</div>
-	<div class='container-fluid ml-3 mt-2'>
+
+	<!--<div class='container-fluid ml-4 mt-2'>
+		<h4>Perguntas Feitas</h4>
 		{% for pergunta in perguntas %}
-		<div class='row'>
+		<div class='row ml-0'>
 			<div class='col-2 col-sm-3 col-md-4 col-lg-5 alert alert-dark' role='alert'>
 				<a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
 			</div>
@@ -17,5 +28,5 @@
 			</div>
 		</div>
 		{% endfor %}
-	</div>
+	</div>-->
 {% endblock %}

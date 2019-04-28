@@ -1,43 +1,32 @@
 {% extends 'qa/template.html' %}
 
 {% block content %}
-    <div class='container-fluid ml-3'>
-        
-        <div class='row'>
-            <p style='font-weight:bold'>Poste sua pergunta:</p>
+    <div class='container-fluid ml-4 mt-2'>
+        <div class='row ml-0'>
+            <h4>Poste sua pergunta</h4>
         </div>
-        <div class='row'>
-            <div class='col-2 col-sm-2 col-md-2 col-lg-1'>
-                <div class='row mt-2'>Pergunta:</div>
-            </div>
-
-            <div class='col-3 col-sm-3 col-md-3 col-lg-3'>
-                <div class='row'>
-
-                    <form action='{% url "qa:postar_pergunta" %}' method='post'>
-                        {% csrf_token %}
-                        <div class='row'>
-                                <label>
-                                    <input type='text' name='texto' value='{{texto}}' required style='width:50vw; height:10vh'/>
-                                </label>
-                            </div>
-                        <div class='row mt-2'>
-                            <input id='perguntaSubmit' type='submit' value='Postar Pergunta'/>
-                        </div>
-                        <script>
-                            if('{{usuario}}' === ''){
-                                $('#perguntaSubmit').addClass('disabled');
+        <div class='row ml-0'>
+            <div class='col-4 px-0'>
+                <form action='{% url "qa:postar_pergunta" %}' method='post'>
+                    {% csrf_token %}
+                    <div class="form-group mb-0">
+                        <textarea class="form-control col-12" rows="10" name='texto' required></textarea>
+                    </div>
+                    <div class='row mt-2 mx-auto justify-content-end'>
+                        <input id='perguntaSubmit' type='submit' value='Postar Pergunta' class='btn bg-success px-5 text-light'/>
+                    </div>
+                    <script>
+                        if('{{usuario}}' === ''){
+                            $('#perguntaSubmit').addClass('disabled');
+                        }
+                        $('#perguntaSubmit').click(function(e){
+                            if( $(this).hasClass('disabled') ){
+                                e.preventDefault();
+                                alert('Precisa Estar logado');
                             }
-                            $('#perguntaSubmit').click(function(e){
-                                if( $(this).hasClass('disabled') ){
-                                    e.preventDefault();
-                                    alert('Precisa Estar logado');
-                                }
-                            });
-                        </script>
-                    </form>
-
-                </div>
+                        });
+                    </script>
+                </form>
             </div>
         </div>
     </div>

@@ -1,49 +1,81 @@
 {% extends 'qa/template.html' %}
 {% block content %}
         
-	<form action='{% url "qa:registrar_usuario" %}' method='post'>
-		{% csrf_token %}
-		<div class='row'>
-			<div class="col-md-12 form-group">
-				<input type='text' name='username' class="form-control" placeholder="Escolha um nome de usuário" value='{{username}}'/>
-			</div>
-		</div>
-		
-		<div class='row'>
-			<div class="col-md-12 form-group">
-				<input type='password' name='password' class="form-control" placeholder="Escolha uma senha" value='{{password}}'/>
-			</div>
-        </div>
-        
-        <div class='row'>
-            <div class="col-md-12 form-group">
-                <input type='text' name='email' class="form-control" placeholder="email" value='{{email}}'/>
-            </div>
-        </div>
+    <div class='container-fluid ml-4 mt-2'>
+        <h4>Registre-se</h4>        
+        <form action='{% url "qa:registrar_usuario" %}' method='post'>
+            {% csrf_token %}
+            <div class='col-4 mt-3 ml-3 pl-0'>
+                <div class='row'>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Usuário
+                            </div>
+                        </div>
+                        <input type='text' name='username' class="form-control bg-light" required/>
+                    </div>
 
-        <div class='row'>
-            <div class="col-md-12 form-group">
-                <input type='text' name='instituicao' class="form-control" placeholder="instituicao" value='{{instituicao}}'/>
-            </div>
-        </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Email
+                            </div>
+                        </div>
+                        <input type='text' name='email' class="form-control"/>
+                    </div>
 
-        <div class='row'>
-            <div class="col-md-12 form-group">
-                <input type='text' name='profissao' class="form-control" placeholder="profissao" value='{{profissao}}'/>
-            </div>
-        </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Nova Senha
+                            </div>
+                        </div>
+                        <input type='password' name='password' class="form-control" required/>
+                    </div>
 
-        <div class='row'>
-            <div class="col-md-12 form-group">
-                <input type='text' name='descricao' class="form-control" placeholder="descricao" value='{{descricao}}' style='height: 100px'/>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Confirme a senha
+                            </div>
+                        </div>
+                        <input type='password' id='new_password2'  class="form-control"/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Instituição
+                            </div>
+                        </div>
+                        <input type='text' name='instituicao' class="form-control"/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Profissão
+                            </div>
+                        </div>
+                        <input type='text' name='profissao' class="form-control"/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                Descrição
+                            </div>
+                        </div>
+                        <textarea class="form-control col-12" rows="5" name='descricao' value='{{descricao}}'></textarea>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <input type='submit' class="btn btn-block bg-success mx-auto" value='Registrar' style='width: 60%'/>
+                    </div>
+
+                </div>
             </div>
-        </div>
-		
-		<div class='row'>
-			<div class="col-md-12 form-group">
-				<input type='submit' class="btn btn-block btn-login" value='Cadastrar'/>
-			</div>
-		</div>
-	</form>
-        
+        </form>
+    </div>
 {% endblock %}
