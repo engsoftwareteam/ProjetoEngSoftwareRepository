@@ -24,7 +24,7 @@ def postar_pergunta(request):
             pergunta.save()
         except (KeyError, pergunta.pk == None):
             return HttpResponse("Pergunta nao foi salva")
-        msg = 'sua pergunta foi postada'
+        msg = 'Sua pergunta foi postada'/!
         context = {'usuario':usuario, 'msg': msg}
         return render(request, 'qa/postar_pergunta.html', context)
     else:
