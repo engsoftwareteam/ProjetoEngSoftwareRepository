@@ -2,33 +2,58 @@
 
 {% block content %}
     <div class='container-fluid ml-4 mt-2'>
-        <h4>Meus Posts</h4>
+        <h4 class='mb-3'>Meus Posts</h4>
         {% if usuario %}
-            <h3>Perguntas</h3>
+            <h5>Perguntas</h5>
             {% if perguntas %}
-            <ul>
-                {% for pergunta in perguntas %}
-                <li>
-                    <a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.titulo}}</a>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>Nao ha perguntas</p>
+
+                <div class='row ml-0'>
+                    <div class='col-4 pl-0 mb-1 pt-1' style='height:auto; max-height: 35vh; overflow:auto'>
+                        {% for pergunta in perguntas %}
+                        <a class='nolink' href='/selecionar_pergunta/{{pergunta.id}}'>
+                            <div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        {{pergunta.titulo}}
+                                    </div>
+                                </div>
+                                <div class='row border-top'>
+                                    <div class='col-12'>
+                                        {{pergunta.texto}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
             {% endif %}
+
             <hr/>
-            <h3>Respostas</h3>
+            <h5>Respostas</h5>
 
             {% if respostas %}
-            <ul>
-                {% for resposta in respostas %}
-                <li>
-                    <a href='/selecionar_resposta/{{resposta.id}}'>{{resposta.texto}}</a>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>Nao ha respostas</p>
+                <div class='row ml-0'>
+                    <div class='col-4 pl-0 mb-1 pt-1' style='height:auto; max-height: 35vh; overflow:auto'>
+                        {% for resposta in respostas %}
+                            <div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        <a href='/selecionar_pergunta/{{resposta.pergunta.id}}'>Pergunta: {{resposta.pergunta.titulo}}</a>
+                                    </div>
+                                </div>
+                                <a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>
+                                    <div class='row border-top'>
+                                        <div class='col-12'>
+                                            {{resposta.texto}}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
             {% endif %}
         {% else %}
             Faca o <a href='/login_usuario'>Login</a> para acessar essa pagina
