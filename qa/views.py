@@ -172,7 +172,8 @@ def registrar_usuario(request):
             return HttpResponseRedirect('/home')
         else:
             print(user_form.errors)
-            return HttpResponse('Nao foi registrado')
+            context = {'msg': "Não registrado"}
+            return render(request,'qa/cadastro.html', context)
     else:
         user_form = UserForm()
         return render(request, 'qa/cadastro.html')

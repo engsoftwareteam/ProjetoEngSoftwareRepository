@@ -116,7 +116,12 @@
                             }
                         });
                     </script>
-                    
+                    {% if msg %}
+                        <script>
+                            sucesso = false;
+                            alert('{{msg}}');
+                        </script>
+                    {% endif %}
                 </div>
             </div>
         </form>
