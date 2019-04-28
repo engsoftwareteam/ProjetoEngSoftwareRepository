@@ -14,7 +14,9 @@
   <!-- Custom styles for this template -->
   <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
   <link href="{% static 'css/alerts.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/css_geral.css' %}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -37,32 +39,31 @@
   
 </head>
 
-<body>
+<body class='bg-page body-style'>
 
   <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading text-center py-0" style="color:black; height:56px; font-weight:bold; font-size: 24px">
+    <div class="bg-page border-right" id="sidebar-wrapper" style="border-color:#ccc !important;">
+      <div class="sidebar-heading text-center py-0 text-light" style="height:56px; font-weight:bold; font-size: 24px">
         <span class='' style='position:relative; top:16%;'>
-            Menu
         </span>
       </div>
-      <div class="list-group list-group-flush">
-        <a href="/home" class="list-group-item list-group-item-action bg-light">Home Page</a>
-        <a href="/postar_pergunta" class="list-group-item list-group-item-action bg-light">Postar Pergunta</a>
-        <a href="/listar_perguntas" class="list-group-item list-group-item-action bg-light">Listar Perguntas</a>
-        <a href='/meus_posts' class='list-group-item list-group-item-action bg-light'>Meus posts</a>
-        <a href='/meu_perfil' class='list-group-item list-group-item-action bg-light'>Meu perfil</a>
+      <div class="list-group list-group-flush mt-3">
+        <a href="/home" class="list-group-item list-group-item-action bg-page font-menu border-0 py-1 pr-3">Home Page</a>
+        <a href="/postar_pergunta" class="list-group-item list-group-item-action bg-page font-menu border-0 py-1 pr-3">Postar Pergunta</a>
+        <a href="/listar_perguntas" class="list-group-item list-group-item-action bg-page font-menu border-0 py-1 pr-3">Listar Perguntas</a>
+        <a href='/meus_posts' class='list-group-item list-group-item-action bg-page font-menu border-0 py-1 pr-3'>Meus posts</a>
+        <a href='/meu_perfil' class='list-group-item list-group-item-action bg-page font-menu border-0 py-1 pr-3'>Meu perfil</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
-    <div id="page-content-wrapper">
+    <div id="page-content-wrapper" class='border-right' style='border-color: #ccc !important'>
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" style="height: 57px">
-        <a href='/home' style="color:blue; font-size:30px; font-weight:bold" class='nolink'>Simulador Q&A</a>
+      <nav class="navbar navbar-expand-lg navbar-light bg-page border-bottom" style="height: 57px; border-color:#ccc !important;">
+        <a href='/home' style="font-size:30px; font-weight:bold" class='nolink'>Simulador Q&A</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -102,7 +103,7 @@
         {% endif %}
       </nav>
         {% block content %}
-		{% endblock %}
+		    {% endblock %}
     </div>
     <!-- /#page-content-wrapper -->
 
