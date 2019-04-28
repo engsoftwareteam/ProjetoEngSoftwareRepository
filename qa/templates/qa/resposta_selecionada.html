@@ -14,8 +14,8 @@
             <h5>Pergunta</h5>
 		</div>
 		<div class='row'>
-			<div class='col-4'>
-				<div class="input-group mb-2">
+			<div class='col-11'>
+				<div class="input-group mb-2 col-4 pl-0">
 					<div class="input-group-prepend prepend-width">
 						<div class="input-group-text full-width justify-content-center">
 							Usuário
@@ -48,8 +48,8 @@
 		</div>
 
 		<div class='row'>
-			<div class='col-4'>
-				<div class="input-group mb-2">
+			<div class='col-11'>
+				<div class="input-group mb-2 col-4 pl-0">
 					<div class="input-group-prepend prepend-width">
 						<div class="input-group-text full-width justify-content-center">
 							Usuário
@@ -66,7 +66,7 @@
 					<textarea id="respostaTexto" class="form-control col-12 bg-light" name='texto' rows='4' disabled>{{resposta.texto}}</textarea>
 				</div>
 				{% if usuario == resposta.usuario %}
-				<div class='row ml-0 mt-2 justify-content-center'>
+				<div class='row ml-0 mt-2 justify-content-end pr-3'>
 					<form id='formAlterarResposta' action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
 						<input hidden id='texto_alterado' name='texto_alterado' required/>
 						{% csrf_token %}

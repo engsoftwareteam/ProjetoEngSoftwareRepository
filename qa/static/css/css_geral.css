@@ -14,10 +14,10 @@
 }
 
 .body-style{
-    width: 100%;
-    /*position: absolute;
+    width: 70% !important;
+    position: absolute;
     top: 50%;
     left: 43%;
     margin-right: -50%;
-    transform: translate(-50%, -50%) }*/
+    transform: translate(-50%, -50%) }
 }

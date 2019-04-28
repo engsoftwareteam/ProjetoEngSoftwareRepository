@@ -13,7 +13,7 @@
         <h4>Poste sua pergunta</h4>
         {% if usuario %}
         <div class='row ml-0 mt-3'>
-            <div class='col-4 px-0'>
+            <div class='col-11 px-0'>
                 <form action='{% url "qa:postar_pergunta" %}' method='post'>
                     {% csrf_token %}
                     <div class="input-group mb-2">

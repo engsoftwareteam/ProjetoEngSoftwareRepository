@@ -14,9 +14,9 @@
         
             <form action='{% url "qa:meu_perfil" %}' method='post'>
                 {% csrf_token %}
-                <div class='col-4 mt-3 ml-3 pl-0'>
+                <div class='col-11 mt-3 ml-3 pl-0'>
                     <div class='row'>
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 col-6 pl-0">
                             <div class="input-group-prepend prepend-width">
                                 <div class="input-group-text full-width justify-content-center">
                                     Usuário
@@ -25,25 +25,7 @@
                             <input type='text' name='username' class="form-control bg-light" value='{{usuario}}' disabled/>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend prepend-width">
-                                <div class="input-group-text full-width justify-content-center">
-                                    Nova Senha
-                                </div>
-                            </div>
-                            <input type='password' name='new_password' id='new_password' class="form-control" autocomplete="new-password"/>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend prepend-width">
-                                <div class="input-group-text full-width justify-content-center">
-                                    Confirme a senha
-                                </div>
-                            </div>
-                            <input type='password' id='new_password2'  class="form-control"/>
-                        </div>
-
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 col-6 pr-0">
                             <div class="input-group-prepend prepend-width">
                                 <div class="input-group-text full-width justify-content-center">
                                     Email
@@ -52,7 +34,16 @@
                             <input type='text' name='email' class="form-control" value='{{email}}'/>
                         </div>
 
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 col-6 pl-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Nova Senha
+                                </div>
+                            </div>
+                            <input type='password' name='new_password' id='new_password' class="form-control" autocomplete="new-password"/>
+                        </div>
+
+                        <div class="input-group mb-3 col-6 pr-0">
                             <div class="input-group-prepend prepend-width">
                                 <div class="input-group-text full-width justify-content-center">
                                     Instituição
@@ -61,7 +52,16 @@
                             <input type='text' name='instituicao' class="form-control" value='{{instituicao}}'/>
                         </div>
 
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 col-6 pl-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Confirme a senha
+                                </div>
+                            </div>
+                            <input type='password' id='new_password2'  class="form-control"/>
+                        </div>
+
+                        <div class="input-group mb-3 col-6 pr-0">
                             <div class="input-group-prepend prepend-width">
                                 <div class="input-group-text full-width justify-content-center">
                                     Profissão
@@ -80,8 +80,8 @@
                         </div>
 
                         <div class="input-group mb-2 justify-content-center">
-                            <input type='submit' class="btn bg-success col-5 mr-1 text-light" value='Salvar alteracoes' id='alteracoesSubmit'/>
-                            <input type='button' class="btn bg-danger col-5 ml-1 text-light" value='Excluir conta' data-toggle='modal' data-target='#confirmDeletar'/>
+                            <input type='submit' class="btn bg-success col-3 mr-1 text-light" value='Salvar Alterações' id='alteracoesSubmit'/>
+                            <input type='button' class="btn bg-danger col-3 ml-1 text-light" value='Excluir Conta' data-toggle='modal' data-target='#confirmDeletar'/>
                         </div>
                     </div>
                 </div>

@@ -14,8 +14,8 @@
 			<h5>Pergunta Selecionada</h5>
 		</div>
 		<div class='row'>
-			<div class='col-4'>
-				<div class="input-group mb-2">
+			<div class='col-11'>
+				<div class="input-group mb-2 pl-0 col-4">
 					<div class="input-group-prepend prepend-width">
 						<div class="input-group-text full-width justify-content-center">
 							Usuário
@@ -39,6 +39,12 @@
 					</div>
 					<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'>{{pergunta.texto}}</textarea>
 				</div>
+				{% if usuario != pergunta.usuario %}
+				<script>
+					$('#perguntaTitulo').attr('disabled', true);
+					$('#perguntaTexto').attr('disabled', true);
+				</script>
+				{% endif %}
 				{% if usuario == pergunta.usuario %}
 					<div class='row ml-0 mt-2 justify-content-center'>
 						<form id='formAlterarPergunta' action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'>
@@ -76,7 +82,7 @@
 		</div>
 		{% if lista_respostas %}
 		<div class='row ml-0'>
-			<div class='col-4 pl-0 mb-1 pt-1' style='height:auto; max-height: 32vh; overflow:auto'>
+			<div class='col-11 pl-0 mb-1 pt-1' style='height:auto; max-height: 32vh; overflow:auto'>
 				{% for resposta in lista_respostas %}
 				<a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>
 					<div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
@@ -105,7 +111,7 @@
 			<h5>Postar Resposta</h5>
 		</div>
 		<div class='row ml-0 mb-4'>
-			<div class='col-4 px-0'>
+			<div class='col-11 px-0'>
 				<form action='{% url "qa:postar_resposta" pergunta.id %}' method='post'>
 					{% csrf_token %}
 					<div class="form-group mb-0">
