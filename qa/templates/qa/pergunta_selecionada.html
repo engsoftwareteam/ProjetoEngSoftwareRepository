@@ -70,7 +70,7 @@
 				{% endif %}
 			</div>
 		</div>
-		<hr/>
+		<hr class='mr-5'/>
 		<div class='row ml-0'>
 			<h5>Respostas</h5>
 		</div>
@@ -100,7 +100,7 @@
 		</div>
         {% endif %}
 
-		<hr/>
+		<hr class='mr-5'/>
 		<div class='row ml-0'>
 			<h5>Postar Resposta</h5>
 		</div>
@@ -109,17 +109,25 @@
 				<form action='{% url "qa:postar_resposta" pergunta.id %}' method='post'>
 					{% csrf_token %}
 					<div class="form-group mb-0">
-						<textarea class="form-control col-12" rows="5" name='texto' required></textarea>
+						<textarea id='respostaTexto' class="form-control col-12 bg-light" rows="5" name='texto' required></textarea>
 					</div>
 					<div class='row mt-2 mx-auto justify-content-end'>
 						<input id='respostaSubmit' type='submit' value='Postar Resposta' class='btn bg-success px-5 text-light'/>
 					</div>
 					<script>
-						if('{{usuario}}' === ''){
-							$('#respostaSubmit').addClass('disabled');
+						if ('{{usuario}}' === ''){
+							flagUser = false
 						}
+						
+						$('#respostaTexto').click(function(e){
+							if(flagUser === false){
+								$('#respostaTexto').attr('disabled', true)
+								alert('Precisa Estar logado');
+							}
+						});
+
 						$('#respostaSubmit').click(function(e){
-							if( $(this).hasClass('disabled') ){
+							if(flagUser === false){
 								e.preventDefault();
 								alert('Precisa Estar logado');
 							}

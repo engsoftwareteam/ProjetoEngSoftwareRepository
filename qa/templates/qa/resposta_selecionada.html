@@ -42,7 +42,7 @@
 			</div>
 		</div>
 
-        <hr/>
+        <hr class='mr-5'/>
 		<div class='row ml-0'>
 			<h5>Resposta</h5>
 		</div>
@@ -63,7 +63,7 @@
 							Resposta
 						</div>
 					</div>
-					<textarea id="respostaTexto" class="form-control col-12" name='texto' rows='4'>{{resposta.texto}}</textarea>
+					<textarea id="respostaTexto" class="form-control col-12 bg-light" name='texto' rows='4' disabled>{{resposta.texto}}</textarea>
 				</div>
 				{% if usuario == resposta.usuario %}
 				<div class='row ml-0 mt-2 justify-content-center'>
@@ -88,6 +88,9 @@
 						<input type='submit' class='btn btn-danger py-1 ml-1' value='Deletar Resposta'/>
 					</form>
 				</div>
+				<script>
+					$('#respostaTexto').removeAttr('disabled');
+				</script>
 				{% endif %}
 			</div>
 		</div>

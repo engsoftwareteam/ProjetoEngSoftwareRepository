@@ -67,7 +67,6 @@ def alterar_pergunta(request, pergunta_id):
 # responsavel por salvar a resposta no BD
 def postar_resposta(request, pergunta_id):
     if request.method == 'POST':
-        usuario = None
         if request.user.is_authenticated:
             usuario = request.user.get_username()
             pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
@@ -81,16 +80,17 @@ def postar_resposta(request, pergunta_id):
 
 # busca pergunta selecionada no BD e renderiza o html com informacoes dela
 def selecionar_resposta(request, resposta_id):
+    usuario = request.user.get_username()
     if request.method  == 'POST':
         resposta = get_object_or_404(Resposta, pk=resposta_id)
         resposta.texto = request.POST['texto_alterado']
         resposta.save()
-        context = {'resposta': resposta}    
+        context = {'resposta': resposta, 'usuario': usuario}    
         return HttpResponseRedirect('/selecionar_resposta/%s' % (resposta_id))
     else:
         resposta = get_object_or_404(Resposta, pk=resposta_id)
         pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
-        context = {'pergunta': pergunta, 'resposta': resposta}    
+        context = {'pergunta': pergunta, 'resposta': resposta, 'usuario': usuario}    
         return render(request, 'qa/resposta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
