@@ -1,5 +1,13 @@
 {% extends 'qa/template.html' %}
 {% block content %}
+    <style>
+        .full-width{
+            width: 100%;
+        }
+        .prepend-width{
+            width: 150px;
+        }
+    </style>
     <div class='container-fluid ml-4 mt-2'>
         <h4>Perfil do Usuário</h4>
         {% if usuario %}
@@ -9,8 +17,8 @@
                 <div class='col-4 mt-3 ml-3 pl-0'>
                     <div class='row'>
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
                                     Usuário
                                 </div>
                             </div>
@@ -18,17 +26,8 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    Email
-                                </div>
-                            </div>
-                            <input type='text' name='email' class="form-control" placeholder='{{email}}'/>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
                                     Nova Senha
                                 </div>
                             </div>
@@ -36,8 +35,8 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
                                     Confirme a senha
                                 </div>
                             </div>
@@ -45,30 +44,39 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Email
+                                </div>
+                            </div>
+                            <input type='text' name='email' class="form-control" value='{{email}}'/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
                                     Instituição
                                 </div>
                             </div>
-                            <input type='text' name='instituicao' class="form-control" placeholder='{{instituicao}}'/>
+                            <input type='text' name='instituicao' class="form-control" value='{{instituicao}}'/>
                         </div>
 
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
                                     Profissão
                                 </div>
                             </div>
-                            <input type='text' name='profissao' class="form-control"  placeholder='{{profissao}}'/>
+                            <input type='text' name='profissao' class="form-control" value='{{profissao}}'/>
                         </div>
 
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
                                     Descrição
                                 </div>
                             </div>
-                            <textarea class="form-control col-12" rows="5" name='descricao' placeholder="{{descricao}}"></textarea>
+                            <textarea class="form-control col-12" rows="5" name='descricao'>{{descricao}}</textarea>
                         </div>
 
                         <div class="input-group mb-2 justify-content-center">

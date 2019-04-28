@@ -6,27 +6,21 @@
 
 	<div class='container-fluid ml-4 mt-2'>
 		<h4>Perguntas Feitas</h4>
-		<div class='container border ml-0 py-2' style="width: 30vw; height: 80vh; overflow-y: scroll;">
-			{% for pergunta in perguntas %}
-			<div class="card mb-2">
-				<div class="card-body py-1"><a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a></div> 
-				<div class="card-footer py-1">Autor: {{pergunta.usuario}}</div>
+		{% if perguntas %}
+			<div class='row ml-0 py-2' style="height:auto; max-height:80vh; overflow-y: auto">
+				<div class='col-4 px-2' style='box-shadow: 0px 0px 3px 0.2px #aaaaaa; margin-left: 3px'>
+					<div class='row mx-0 py-1 border-bottom'>
+						<div class="col-8 font-weight-bold">Título</div> 
+						<div class="col-4 font-weight-bold">Autor</div>
+					</div>
+					{% for pergunta in perguntas %}
+					<div class="row mx-0 border-bottom py-1">
+						<div class="col-8"><a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.titulo}}</a></div> 
+						<div class="col-4">{{pergunta.usuario}}</div>
+					</div>
+					{% endfor %}
+				</div>
 			</div>
-			{% endfor %}
-		</div>
+		{% endif %}
 	</div>
-
-	<!--<div class='container-fluid ml-4 mt-2'>
-		<h4>Perguntas Feitas</h4>
-		{% for pergunta in perguntas %}
-		<div class='row ml-0'>
-			<div class='col-2 col-sm-3 col-md-4 col-lg-5 alert alert-dark' role='alert'>
-				<a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
-			</div>
-			<div class='col-2 col-sm-2 col-md-2 col-lg-2 alert alert-dark' role='alert'>
-				Autor: {{pergunta.usuario}}
-			</div>
-		</div>
-		{% endfor %}
-	</div>-->
 {% endblock %}

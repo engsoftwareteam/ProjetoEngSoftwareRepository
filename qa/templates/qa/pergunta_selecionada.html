@@ -2,46 +2,63 @@
 
 {% block content %}
 	<style>
-		.nolink,.nolink:link,.nolink:visited,.nolink:hover,.nolink:focus,.nolink:active{
-			color: inherit;
-			text-decoration: none;
-		}
-	</style>
-
+        .full-width{
+            width: 100%;
+        }
+        .prepend-width{
+            width: 100px;
+        }
+    </style>
 	<div class='container-fluid ml-2 mt-2'>
 		<div class='row ml-0'>
-			<h4>Pergunta Selecionada</h4>
+			<h5>Pergunta Selecionada</h5>
 		</div>
 		<div class='row'>
 			<div class='col-4'>
 				<div class="input-group mb-2">
-					<div class="input-group-prepend">
-						<div class="input-group-text">
+					<div class="input-group-prepend prepend-width">
+						<div class="input-group-text full-width justify-content-center">
 							Usuário
 						</div>
 					</div>
 					<input type='text' name='username' class="form-control bg-light" value='{{pergunta.usuario}}' disabled/>
 				</div>
-				<form action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'></form>
+				<div class="input-group mb-2">
+					<div class="input-group-prepend prepend-width">
+						<div class="input-group-text full-width justify-content-center">
+							Titulo
+						</div>
+					</div>
+					<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo' value='{{pergunta.titulo}}'/>
+				</div>
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<div class="input-group-text">
+					<div class="input-group-prepend prepend-width">
+						<div class="input-group-text full-width justify-content-center">
 							Pergunta
 						</div>
 					</div>
-					<textarea id="perguntaTexto" class="form-control col-12" name='texto' rows='2'>{{pergunta.texto}}</textarea>
+					<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'>{{pergunta.texto}}</textarea>
 				</div>
 				{% if usuario == pergunta.usuario %}
 					<div class='row ml-0 mt-2 justify-content-center'>
 						<form id='formAlterarPergunta' action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'>
-							<input hidden id='texto_alterado' name='texto_alterado'/>
+							<input hidden id='texto_alterado' name='texto_alterado' required/>
+							<input hidden id='titulo_alterado' name='titulo_alterado' required/>
 							{% csrf_token %}
 							<input type='button' id='alterarPerguntaBtn' class='btn btn-success py-1 mr-1' value='Alterar pergunta'/>
 							<script>
 								$("#alterarPerguntaBtn").click(function(){
+									titulo_alterado = $('#perguntaTitulo').val()
 									texto_alterado = $('#perguntaTexto').val()
-									$('#texto_alterado').val(texto_alterado)
-									$("#formAlterarPergunta").submit();
+									if(titulo_alterado === ''){
+										window.alert('o titulo nao pode ser vazio')
+									} else if(texto_alterado === ''){
+										window.alert('a pergunta nao pode ser vazia')
+									} else{
+										$('#titulo_alterado').val(titulo_alterado)
+										$('#texto_alterado').val(texto_alterado)
+										$("#formAlterarPergunta").submit();
+									}
 								});
 							</script>
 						</form>
@@ -59,18 +76,25 @@
 		</div>
 		{% if lista_respostas %}
 		<div class='row ml-0'>
-			<div class='col-4' style='height:auto; max-height: 35vh; overflow:auto'>
+			<div class='col-4 pl-0 mb-1 pt-1' style='height:auto; max-height: 32vh; overflow:auto'>
 				{% for resposta in lista_respostas %}
-				<div class='border row'>
-					<a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>   
-						<div class='col-12'>
-							Usuario: {{resposta.usuario}}
+				<a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>
+					<div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
+						<div class='row'>
+							<div class='col-6'>
+								resposta #{{forloop.counter}}
+							</div>
+							<div class='col-6 text-right'>
+								autor: {{resposta.usuario}}
+							</div>
 						</div>
-						<div class='col-12'>
-							Resposta: {{resposta.texto}}
+						<div class='row border-top'>
+							<div class='col-12'>
+								<p>{{resposta.texto}}</p>
+							</div>
 						</div>
-					</a> 
-				</div>
+					</div>
+				</a>
 				{% endfor %}
 			</div>
 		</div>
@@ -80,7 +104,7 @@
 		<div class='row ml-0'>
 			<h5>Postar Resposta</h5>
 		</div>
-		<div class='row ml-0'>
+		<div class='row ml-0 mb-4'>
 			<div class='col-4 px-0'>
 				<form action='{% url "qa:postar_resposta" pergunta.id %}' method='post'>
 					{% csrf_token %}

@@ -11,9 +11,10 @@ class Profile(models.Model):
 
 class Pergunta(models.Model):
     usuario = models.CharField(max_length=100, default='usuario default')
+    titulo = models.CharField(max_length=100, blank=True)
     texto = models.CharField(max_length=1000, default='texto default')
     def __str__(self):
-        return self.texto
+        return self.titulo
 
 class Resposta(models.Model):
     pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)

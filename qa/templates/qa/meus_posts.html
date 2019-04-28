@@ -9,7 +9,7 @@
             <ul>
                 {% for pergunta in perguntas %}
                 <li>
-                    <a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
+                    <a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.titulo}}</a>
                 </li>
                 {% endfor %}
             </ul>
@@ -23,7 +23,7 @@
             <ul>
                 {% for resposta in respostas %}
                 <li>
-                    <a href='/selecionar_pergunta/{{resposta.pergunta.id}}'>{{resposta.texto}}</a>
+                    <a href='/selecionar_resposta/{{resposta.id}}'>{{resposta.texto}}</a>
                 </li>
                 {% endfor %}
             </ul>

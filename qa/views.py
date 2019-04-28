@@ -20,11 +20,11 @@ def postar_pergunta(request):
     usuario = request.user.get_username()
     if request.method == 'POST':
         try:
-            pergunta = Pergunta(usuario=usuario, texto=request.POST['texto'])
+            pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'])
             pergunta.save()
         except (KeyError, pergunta.pk == None):
             return HttpResponse("Pergunta nao foi salva")
-        msg = 'Sua pergunta foi postada'/!
+        msg = 'Sua pergunta foi postada'
         context = {'usuario':usuario, 'msg': msg}
         return render(request, 'qa/postar_pergunta.html', context)
     else:
@@ -58,6 +58,7 @@ def deletar_pergunta(request, pergunta_id):
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+    pergunta.titulo = request.POST['titulo_alterado']
     pergunta.texto = request.POST['texto_alterado']
     pergunta.save()
     context = {'pergunta': pergunta}
@@ -106,8 +107,7 @@ def alterar_resposta(request, resposta_id):
     resposta = get_object_or_404(Resposta, pk=resposta_id)
     resposta.texto = request.POST['texto_alterado']
     resposta.save()
-    context = {'resposta': resposta}    
-    return render(request, 'qa/confirmacao_resposta_alterada.html', context)
+    return HttpResponseRedirect('/selecionar_resposta/%s' %(resposta_id))
 
 def logged(request):
     if request.user.is_authenticated:
@@ -176,15 +176,12 @@ def meu_perfil(request):
             login(request,user)
 
         profile = Profile.objects.get(user=request.user)
-        if email != '':
-            user.email=email
-            user.save()
-        if instituicao != '':
-            profile.instituicao = instituicao
-        if profissao != '':
-            profile.profissao = profissao
-        if descricao != '':
-            profile.descricao = descricao
+        user.email=email
+        user.save()
+        profile.instituicao = instituicao
+        profile.profissao = profissao
+        profile.descricao = descricao
+        user.save()
         profile.save()
         return HttpResponseRedirect('/meu_perfil')
     else:

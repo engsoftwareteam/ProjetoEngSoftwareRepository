@@ -1,16 +1,37 @@
 {% extends 'qa/template.html' %}
 
 {% block content %}
+    <style>
+        .full-width{
+            width: 100%;
+        }
+        .prepend-width{
+            width: 100px;
+        }
+    </style>
     <div class='container-fluid ml-4 mt-2'>
         <div class='row ml-0'>
-            <h4>Poste sua pergunta</h4>
+            <h5>Poste sua pergunta</h5>
         </div>
         <div class='row ml-0'>
             <div class='col-4 px-0'>
                 <form action='{% url "qa:postar_pergunta" %}' method='post'>
                     {% csrf_token %}
-                    <div class="form-group mb-0">
-                        <textarea class="form-control col-12" rows="10" name='texto' required></textarea>
+                    <div class="input-group mb-2">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Título
+                                </div>
+                            </div>
+                            <input type='text' class="form-control col-12" name='titulo' required></textarea>
+                        </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Pergunta
+                            </div>
+                        </div>
+                        <textarea class="form-control col-12" rows="3" name='texto' required></textarea>
                     </div>
                     <div class='row mt-2 mx-auto justify-content-end'>
                         <input id='perguntaSubmit' type='submit' value='Postar Pergunta' class='btn bg-success px-5 text-light'/>
