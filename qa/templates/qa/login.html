@@ -8,8 +8,8 @@
 
 {% block content %}
 
-	<div class="simple-login-container">
-		<h2>Faça o seu login</h2>
+	<div class="simple-login-container bg-page">
+		<h4 class='mb-4 text-center text-dark'>Login</h4>
 		<form action='{% url "qa:login_usuario" %}' method='post'>
 			{% csrf_token %}
 			<div class='row'>
@@ -20,20 +20,20 @@
 			
 			<div class='row'>
 				<div class="col-md-12 form-group">
-					<input type="password" class="form-control" name='password' placeholder="Digite a sua senha" id='password' value='{{password}}'/>
+					<input type="password" class="form-control" name='password' placeholder="Senha" id='password' value='{{password}}'/>
 				</div>
 			</div>
 			
 			<div class='row'>
-				<div class="col-md-12 form-group">
-					<input type='submit' class="btn btn-block btn-login" value='Entrar'/>
+				<div class="col-md-12 form-group mb-2">
+					<input type='submit' class="btn btn-block btn-success" value='Entrar'/>
 				</div>
 			</div>
 		</form>
 		
 		<div class="row">
 			<div class="col-md-12">
-				<a href='/registrar_usuario'> Criar um novo usuario </a>
+				<a href='/registrar_usuario' class='text-dark' style='font-size: 1rem;'>Registre-se</a>
 			</div>
 		</div>
 	</div>
