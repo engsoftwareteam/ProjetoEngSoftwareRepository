@@ -12,6 +12,12 @@
 - Marcio Roberto Andrade Souza Filho - 2015104105
 
 # Tecnologias Utilizadas
+- Django 2.2
+- Python 3.7.2
+- JQuery 3.3.1
+- Bootstrap 4.0.0
+- Git
+- Heroku
 
 # Links importantes:
 - Repositorio da disciplina: https://github.com/aserg-ufmg/CursoEngenhariaSoftware
