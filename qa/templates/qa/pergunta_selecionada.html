@@ -56,15 +56,9 @@
 								$("#alterarPerguntaBtn").click(function(){
 									titulo_alterado = $('#perguntaTitulo').val()
 									texto_alterado = $('#perguntaTexto').val()
-									if(titulo_alterado === ''){
-										window.alert('o titulo nao pode ser vazio')
-									} else if(texto_alterado === ''){
-										window.alert('a pergunta nao pode ser vazia')
-									} else{
-										$('#titulo_alterado').val(titulo_alterado)
-										$('#texto_alterado').val(texto_alterado)
-										$("#formAlterarPergunta").submit();
-									}
+									$('#titulo_alterado').val(titulo_alterado)
+									$('#texto_alterado').val(texto_alterado)
+									$("#formAlterarPergunta").submit();
 								});
 							</script>
 						</form>

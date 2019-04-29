@@ -36,7 +36,7 @@ def postar_pergunta(request):
 # renderiza html com a lista de perguntas ja feitas
 def listar_perguntas(request):
     usuario = request.user.get_username()
-    perguntas = get_list_or_404(Pergunta)
+    perguntas = Pergunta.objects.all()
     context = {'perguntas': perguntas, 'usuario':usuario}
     return render(request, 'qa/lista_perguntas.html', context)
 
