@@ -88,12 +88,12 @@
             </form>
                 
             <!-- The Modal -->
-            <div class="modal" id="confirmDeletar">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+            <div class="modal" id="confirmDeletar" style='padding-right: 0px !important'>
+                <div class="modal-dialog" style='top: 25%; left: 8.7%'>
+                    <div class="modal-content" style='box-shadow: 0px 0px 20px 10px #aaaaaa;'>
                         <!-- Modal Header -->
                         <div class="modal-header py-3">
-                            <h4 class="modal-title">Excluir conta.</h4>
+                            <h4 class="modal-title">Confirme sua senha</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         
@@ -102,9 +102,9 @@
                             <form action='{% url "qa:remover_usuario" %}' method='post'>
                                 {% csrf_token %}
                                 <div class="input-group mb-3 mx-auto col-9">
-                                    <input type='password' name='password' class="form-control" placeholder="Confirme sua senha"/>
+                                    <input type='password' name='password' class="form-control" placeholder="Senha"/>
                                     <div class="input-group-append">
-                                        <input type='submit' class="btn bg-danger text-light" value='Deletar conta' id='deletarSubmit'/>
+                                        <input type='submit' class="btn bg-danger text-light" value='Excluir Conta' id='deletarSubmit'/>
                                     </div>
                                 </div>
                             </form>

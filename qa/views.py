@@ -169,7 +169,7 @@ def registrar_usuario(request):
             profile = user_profile.save(commit=False)
             profile.user = user
             profile.save()
-            return HttpResponseRedirect('/home')
+            return HttpResponseRedirect('/login_usuario')
         else:
             print(user_form.errors)
             context = {'msg': "Não registrado"}
