@@ -23,5 +23,5 @@
 - Repositorio da disciplina: https://github.com/aserg-ufmg/CursoEngenhariaSoftware
 - Aplicativo no Heroku: https://qa-project.herokuapp.com/
 - Trello com o quadro de atividades do Sprint 1: https://trello.com/b/zcjO5a7d/qa-engenharia-de-software
-- Burndown do Sprint 1 : https://drive.google.com/drive/folders/1ZFoaDYTkZ88rNalnacEAibw7e6GfyWw5
+- Burndown do Sprint 1 : https://drive.google.com/file/d/1_uNDr3cXHo23vnre3d3RWv0H2UiUPHfM/view?usp=sharing
 - Trello com o quadro de atividades do Sprint 2:
