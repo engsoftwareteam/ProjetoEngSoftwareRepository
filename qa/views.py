@@ -95,7 +95,7 @@ def deletar_resposta(request, resposta_id):
     try:
         resposta.delete()
     except (KeyError, resposta.pk != None):
-        return HttpResponse("Pergunta nao foi deletada")
+        return HttpResponse("Resposta nao foi deletada")
     return render(request, 'qa/confirmacao_resposta_deletada.html')
 
 # responsavel por alterar o texto da pergunta selecionada no BD
