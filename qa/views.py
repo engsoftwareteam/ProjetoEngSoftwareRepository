@@ -5,7 +5,7 @@ from .forms import UserForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Pergunta, Resposta, Profile
+from .models import Pergunta, Resposta, Profile, VotosPerguntas
 
 def home(request):
     if request.user.is_authenticated:
@@ -45,7 +45,8 @@ def selecionar_pergunta(request, pergunta_id):
     usuario = request.user.get_username()
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     lista_respostas = pergunta.resposta_set.all()
-    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario}    
+    VotosTotais = get_list_or_404(VotosPerguntas)
+    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario}#, "VotosTotais": VotosTotais}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -238,9 +239,12 @@ def remover_usuario(request):
     else:
         return HttpResponse("veio de um metodo get")
 
-def upVotePergunta(request, pergunta_id):
+def VotePergunta(request, pergunta_id):
+    usuario = request.user.get_username()
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     pergunta.votos = request.POST['votos']
     pergunta.save()
-    context = {'pergunta': pergunta}
+    voto = VotosPerguntas(pergunta = pergunta, usuario = usuario)
+    voto.save()
+    context = {'pergunta': pergunta, 'voto': voto}
     return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id)) 

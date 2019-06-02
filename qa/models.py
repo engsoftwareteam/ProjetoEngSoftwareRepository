@@ -23,3 +23,9 @@ class Resposta(models.Model):
     texto = models.CharField(max_length=1000)
     def __str__(self):
         return self.texto
+
+class VotosPerguntas(models.Model):
+    pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.titulo

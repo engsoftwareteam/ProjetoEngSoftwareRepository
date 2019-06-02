@@ -16,7 +16,7 @@ urlpatterns = [
     path('postar_resposta/<int:pergunta_id>', views.postar_resposta, name='postar_resposta'),
     path('selecionar_resposta/<int:resposta_id>', views.selecionar_resposta, name='selecionar_resposta'),
     path('alterar_resposta/<int:resposta_id>', views.alterar_resposta, name='alterar_resposta'),
-    path('upVotePergunta/<int:pergunta_id>', views.upVotePergunta, name='upVotePergunta'),
+    path('VotePergunta/<int:pergunta_id>', views.VotePergunta, name='VotePergunta'),
     path('deletar_resposta/<int:resposta_id>', views.deletar_resposta, name='deletar_resposta'),
     path('cadastrar_usuario', TemplateView.as_view(template_name='qa/cadastrar_usuario.html'), name='cadastrar_usuario'),
 
