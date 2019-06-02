@@ -31,7 +31,7 @@
 					</div>
 					<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo' value='{{pergunta.titulo}}'/>
 				</div>
-				<div class="input-group">
+				<div class="input-group mb-2">
 					<div class="input-group-prepend prepend-width">
 						<div class="input-group-text full-width justify-content-center">
 							Pergunta
@@ -39,6 +39,38 @@
 					</div>
 					<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'>{{pergunta.texto}}</textarea>
 				</div>
+				{% if usuario %}
+				<form id='formUpVote' action='{% url "qa:upVotePergunta" pergunta.id %}' method='post'>
+				<div class="input-group">
+					<div class="input-group-prepend prepend-width">
+						<div class="input-group-text full-width justify-content-center">
+							Votos
+						</div>
+					</div>
+					
+						{% csrf_token %}
+						<textarea id="votos" class="form-control col-2 bg-light" name='votos' rows='1'>{{pergunta.votos}}</textarea>
+						<input id='upVote' type='button' value='Up' class='btn bg-success px-2 text-light'/>
+							<script>
+								$("#upVote").click(function(){
+									votosAtuais = parseInt($('#votos').val())
+									votosAlterados = votosAtuais + 1
+									$("#votos").val(votosAlterados.toString(10));
+									$("#formUpVote").submit();
+								});
+							</script>
+						<input id='downVote' type='submit' value='Down' class='btn bg-danger px-2 text-light'/>
+							<script>
+								$("#downVote").click(function(){
+									votosAtuais = parseInt($('#votos').val())
+									votosAlterados = votosAtuais - 1
+									$("#votos").val(votosAlterados.toString(10));
+									$("#formUpVote").submit();
+								});
+							</script>
+				</div>
+				</form>
+				{% endif %}
 				{% if usuario != pergunta.usuario %}
 				<script>
 					$('#perguntaTitulo').attr('disabled', true);

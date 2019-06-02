@@ -237,3 +237,10 @@ def remover_usuario(request):
             return HttpResponseRedirect('/meu_perfil')
     else:
         return HttpResponse("veio de um metodo get")
+
+def upVotePergunta(request, pergunta_id):
+    pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+    pergunta.votos = request.POST['votos']
+    pergunta.save()
+    context = {'pergunta': pergunta}
+    return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id)) 

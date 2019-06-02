@@ -13,6 +13,7 @@ class Pergunta(models.Model):
     usuario = models.CharField(max_length=100, default='usuario default')
     titulo = models.CharField(max_length=100, blank=True)
     texto = models.CharField(max_length=1000, default='texto default')
+    votos = models.IntegerField(default=0)
     def __str__(self):
         return self.titulo
 
