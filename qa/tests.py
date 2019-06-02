@@ -21,6 +21,23 @@ class userTest(TestCase):
         req_data = {'username': 'user@test.com','old_password': 'secret', 'new_password': 'secret2', 'confirm_password': 'secret2'}
         response = self.client.post('/alterar_senha', req_data)
         self.assertRedirects(response, '/login_usuario')
+    def test_meus_posts(self):
+        req_data = {'username': 'user@test.com','password': 'secret'}
+        self.client.post('/registrar_usuario', req_data)
+        self.client.post('/login_usuario', req_data)
+        pergunta = Pergunta(texto='pergunta')
+        pergunta.save()  
+        resposta = Resposta(texto='resposta', pergunta_id=1)
+        resposta.save()
+        response = self.client.post('/meus_posts')
+        self.assertContains(response, 'pergunta')
+        self.assertContains(response, 'resposta')
+    def test_remover_usuario(self):
+        req_data = {'username': 'user@test.com','password': 'secret'}
+        self.client.post('/registrar_usuario', req_data)
+        self.client.post('/login_usuario', req_data)
+        response = self.client.post('/remover_usuario', req_data)
+        self.assertRedirects(response,'/menu')
 
 class perguntaTest(TestCase):
     def setUp(self):
@@ -45,6 +62,13 @@ class perguntaTest(TestCase):
         response = self.client.post('/listar_perguntas')
         self.assertContains(response, 'pergunta')
         self.assertContains(response, 'pergunta2')
+    def test_alterar_pergunta(self):
+        pergunta = Pergunta(texto='pergunta')
+        pergunta.save()
+        req_data = {'texto_alterado': 'pergunta_alterada'}
+        response = self.client.post('/alterar_pergunta/1', req_data)
+        self.assertEquals(response.status_code, 200)
+
 
 class resposta_test(TestCase):
     def setUp(self):
@@ -66,3 +90,10 @@ class resposta_test(TestCase):
         req_data = {'texto_alterado': 'resposta_alterada'}
         response = self.client.post('/alterar_resposta/1', req_data)
         self.assertEquals(response.status_code, 200)
+    def test_deletar_resposta(self):
+        pergunta = Pergunta(texto='pergunta')
+        pergunta.save()  
+        resposta = Resposta(texto='resposta', pergunta_id=1)
+        resposta.save()
+        response = self.client.post('/deletar_resposta/1')
+        self.assertContains(response, 'Sua resposta foi deletada')
