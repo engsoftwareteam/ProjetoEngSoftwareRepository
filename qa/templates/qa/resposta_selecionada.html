@@ -1,124 +1,127 @@
 {% extends 'qa/template.html' %}
 
 {% block content %}
-	<style>
-        .full-width{
-            width: 100%;
-        }
-        .prepend-width{
-            width: 100px;
-        }
-    </style>
-    <div class='container-fluid mt-3 ml-4'>
-        <div class='row ml-0'>
-            <h5>Pergunta</h5>
-		</div>
-		<div class='row'>
-			<div class='col-11'>
-				<div class="input-group mb-2 col-4 pl-0">
-					<div class="input-group-prepend prepend-width">
-						<div class="input-group-text full-width justify-content-center">
-							Usuário
-						</div>
-					</div>
-					<input type='text' name='username' class="form-control bg-light" value='{{pergunta.usuario}}' disabled/>
-				</div>
-				<div class="input-group mb-2">
-					<div class="input-group-prepend prepend-width">
-						<div class="input-group-text full-width justify-content-center">
-							Titulo
-						</div>
-					</div>
-					<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo' value='{{pergunta.titulo}}' disabled/>
-				</div>
-				<div class="input-group">
-					<div class="input-group-prepend prepend-width">
-						<div class="input-group-text full-width justify-content-center">
-							Pergunta
-						</div>
-					</div>
-					<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2' disabled>{{pergunta.texto}}</textarea>
+<style>
+	.full-width {
+		width: 100%;
+	}
+
+	.prepend-width {
+		width: 100px;
+	}
+</style>
+<div class='contai ner-fluid mt-3 ml-4'>
+	<div class='row ml-0'>
+		<h5>Pergunta</h5>
+	</div>
+	<div class='row'>
+		<div class='col-11'>
+			<div class="input-group mb-2 col-4 pl-0">
+				<div class="input-group-prepend prepend-width">
+					Usuário
 				</div>
 			</div>
+			<input type='text' name='username' class="form-control bg-light" value='{{pergunta.usuario}}' disabled />
 		</div>
-
-        <hr class='mr-5'/>
-		<div class='row ml-0'>
-			<h5>Resposta</h5>
+		<div class="input-group mb-2">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Titulo
+				</div>
+			</div>
+			<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo'
+				value='{{pergunta.titulo}}' disabled />
 		</div>
+		<div class="input-group">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Pergunta
+				</div>
+			</div>
+			<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'
+				disabled>{{pergunta.texto}}</textarea>
+		</div>
+	</div>
+</div>
 
-		<div class='row'>
-			<div class='col-11'>
-				<div class="input-group mb-2 col-4 pl-0">
-					<div class="input-group-prepend prepend-width">
-						<div class="input-group-text full-width justify-content-center">
-							Usuário
-						</div>
-					</div>
-					<input type='text' name='username' class="form-control bg-light" value='{{resposta.usuario}}' disabled/>
+<hr class='mr-5' />
+<div class='row ml-0'>
+	<h5>Resposta</h5>
+</div>
+
+<div class='row'>
+	<div class='col-11'>
+		<div class="input-group mb-2 col-4 pl-0">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Usuário
 				</div>
-				<div class="input-group">
-					<div class="input-group-prepend prepend-width">
-						<div class="input-group-text full-width justify-content-center">
-							Resposta
-						</div>
-					</div>
-					<textarea id="respostaTexto" class="form-control col-12 bg-light" name='texto' rows='4' disabled>{{resposta.texto}}</textarea>
+			</div>
+			<input type='text' name='username' class="form-control bg-light" value='{{resposta.usuario}}' disabled />
+		</div>
+		<div class="input-group">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Resposta
 				</div>
-				{% if usuario == resposta.usuario %}
-				<div class='row ml-0 mt-2 justify-content-end pr-3'>
-					<form id='formAlterarResposta' action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
-						<input hidden id='texto_alterado' name='texto_alterado' required/>
-						{% csrf_token %}
-						<input type='button' id='alterarRespostaBtn' class='btn btn-success py-1 mr-1' value='Alterar Resposta'/>
-						<script>
-							function closeAlertBox(){
-								alertBox = document.getElementById("alertBox");
-								alertClose = document.getElementById("alertClose");
-								alertBox.style.visibility = "hidden";
-								alertClose.style.visibility = "hidden";
-							}
-							window.alert = function(msg){
-								var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
-								alertBox = document.createElement("div");
-								document.body.appendChild(alertBox);
-								alertBox.id = id;
-								alertBox.innerHTML = msg;
-								alertClose = document.createElement("div");
-								alertClose.id = closeId;
-								alertClose.innerHTML = "x";
-								alertBox.appendChild(alertClose);
-								alertBox.style.visibility = "visible";
-								alertClose.style.visibility = "visible";
-								alertClose.onclick = closeAlertBox;
-								alertBox.style.left = "1140px";
-								if(sucesso == false)
-								{
-									document.getElementById('alertBox').style.backgroundColor = 'red'
-								}
-							};
-							$("#alterarRespostaBtn").click(function(){
-								texto_alterado = $('#respostaTexto').val()
-								if(texto_alterado === ''){
-									sucesso = false;
-									alert('a resposta nao pode ser vazia')
-								} else{
-									$('#texto_alterado').val(texto_alterado)
-									$("#formAlterarResposta").submit();
-								}
-							});
-						</script>
-					</form>
-					<form action='{% url "qa:deletar_resposta" resposta.id %}' method='post'>
-						{% csrf_token %}
-						<input type='submit' class='btn btn-danger py-1 ml-1' value='Deletar Resposta'/>
-					</form>
-				</div>
+			</div>
+			<textarea id="respostaTexto" class="form-control col-12 bg-light" name='texto' rows='4'
+				disabled>{{resposta.texto}}</textarea>
+		</div>
+		{% if usuario == resposta.usuario %}
+		<div class='row ml-0 mt-2 justify-content-end pr-3'>
+			<form id='formAlterarResposta' action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
+				<input hidden id='texto_alterado' name='texto_alterado' required />
+				{% csrf_token %}
+				<input type='button' id='alterarRespostaBtn' class='btn btn-success py-1 mr-1'
+					value='Alterar Resposta' />
 				<script>
-					$('#respostaTexto').removeAttr('disabled');
+					function closeAlertBox() {
+						alertBox = document.getElementById("alertBox");
+						alertClose = document.getElementById("alertClose");
+						alertBox.style.visibility = "hidden";
+						alertClose.style.visibility = "hidden";
+					}
+					window.alert = function (msg) {
+						var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+						alertBox = document.createElement("div");
+						document.body.appendChild(alertBox);
+						alertBox.id = id;
+						alertBox.innerHTML = msg;
+						alertClose = document.createElement("div");
+						alertClose.id = closeId;
+						alertClose.innerHTML = "x";
+						alertBox.appendChild(alertClose);
+						alertBox.style.visibility = "visible";
+						alertClose.style.visibility = "visible";
+						alertClose.onclick = closeAlertBox;
+						alertBox.style.left = "1140px";
+						if (sucesso == false) {
+							document.getElementById('alertBox').style.backgroundColor = 'red'
+						}
+					};
+					$("#alterarRespostaBtn").click(function () {
+						texto_alterado = $('#respostaTexto').val()
+						if (texto_alterado === '') {
+							sucesso = false;
+							alert('a resposta nao pode ser vazia')
+						} else {
+							$('#texto_alterado').val(texto_alterado)
+							$("#formAlterarResposta").submit();
+						}
+					});
 				</script>
-				{% endif %}
-			</div>
+			</form>
+			<form action='{% url "qa:deletar_resposta" resposta.id %}' method='post'>
+				{% csrf_token %}
+				<input type='submit' class='btn btn-danger py-1 ml-1' value='Deletar Resposta' />
+			</form>
 		</div>
-    </div>
+		<script>
+			$('#respostaTexto').removeAttr('disabled');
+		</script>
+		{% endif %}
+	</div>
+</div>
+</div>
 {% endblock %}
