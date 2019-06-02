@@ -46,7 +46,7 @@ def selecionar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     lista_respostas = pergunta.resposta_set.all()
     VotosTotais = get_list_or_404(VotosPerguntas)
-    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario}#, "VotosTotais": VotosTotais}    
+    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario, "VotosTotais": VotosTotais}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD

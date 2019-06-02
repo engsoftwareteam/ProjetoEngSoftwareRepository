@@ -53,7 +53,7 @@
 							<textarea id="votos" class="form-control col-2 bg-light" name='votos' rows='1'>{{pergunta.votos}}</textarea>
 							<input id='upVote' type='button' value='Up' class='btn bg-success px-2 text-light'/>
 							<input id='downVote' type='submit' value='Down' class='btn bg-danger px-2 text-light'/>
-							{% if VotosTotais != null %}
+							{% if VotosTotais %}
 								{% for voto in VotosTotais %}
 									{% if voto.pergunta == pergunta and voto.usuario == usuario %}
 										<script>

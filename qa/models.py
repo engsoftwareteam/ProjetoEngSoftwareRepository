@@ -26,6 +26,6 @@ class Resposta(models.Model):
 
 class VotosPerguntas(models.Model):
     pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    usuario = models.CharField(max_length=100)
     def __str__(self):
-        return self.titulo
+        return self.usuario
