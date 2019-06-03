@@ -84,6 +84,16 @@
 		</div>
 		<hr class='mr-5'/>
 		<div class='row ml-0'>
+			<h5>Tags</h5>
+		</div>
+		<div class='col-11 pl-0 mb-1 pt-1' style='height:auto; max-height: 32vh; overflow:auto'>
+		
+			{% for tag in tagsList %}
+				<a href="/tags/{{tag}}">{{tag}}</a>
+			{% endfor %}
+		</div>
+		<hr class='mr-5'/>
+		<div class='row ml-0'>
 			<h5>Respostas</h5>
 		</div>
 		{% if lista_respostas %}

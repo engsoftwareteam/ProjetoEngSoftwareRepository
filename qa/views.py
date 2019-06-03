@@ -61,7 +61,7 @@ def selecionar_pergunta(request, pergunta_id):
     for i in tagsList:
     	tagsString = tagsString+i+','
     
-    context = {'pergunta': pergunta, 'tags': tagsString, 'lista_respostas': lista_respostas, 'usuario':usuario}    
+    context = {'pergunta': pergunta, 'tags': tagsString,'tagsList':tagsList,'lista_respostas': lista_respostas, 'usuario':usuario}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -263,3 +263,34 @@ def remover_usuario(request):
             return HttpResponseRedirect('/meu_perfil')
     else:
         return HttpResponse("veio de um metodo get")
+
+def detalha_tag(request,tag):
+    perguntas = Pergunta.objects.all()
+    perguntasSelecionadas = []
+    jsonDec = json.decoder.JSONDecoder()
+    
+    for pergunta in perguntas:
+        tagsList = jsonDec.decode(pergunta.tags)
+        if tag in tagsList:
+            perguntasSelecionadas.append(pergunta)
+    
+    context = {'tag':tag,'perguntas':perguntasSelecionadas}
+    return render(request, 'qa/detalhaTag.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
