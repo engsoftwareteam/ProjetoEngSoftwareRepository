@@ -1,13 +1,10 @@
-language: python # => 1
-    python: # => 2
-      - "3.7"
-    services: # => 3
-      - sqlite3
-    env: # => 4
-      -DJANGO=2.2 DB=sqlite3
-    install: # => 5
-      - pip install -r requirements.txt
-    before_script: # => 6
-      - python manage.py collectstatic
-    script: # => 7
-      - coverage run --source='.' manage.py test qa
+dist: xenial   # required for Python >= 3.7
+language: python
+python:
+  - "3.7"
+install:
+  - pip install -r requirements.txt
+before_script:
+  - python manage.py collectstatic
+script:
+  - coverage run --source='.' manage.py test qa
