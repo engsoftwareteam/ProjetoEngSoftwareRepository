@@ -9,7 +9,7 @@ install:
   - pip install -q Django==$DJANGO_VERSION  
   - pip install -r requirements_build.txt
 script:
-  -  coverage run manage.py test qa -k
+  -  coverage run manage.py test qa
 after_script:
   - coverage report
 deploy:
