@@ -9,7 +9,9 @@ install:
   - pip install -q Django==$DJANGO_VERSION  
   - pip install -r requirements_build.txt
 script:
-  - python manage.py test -k
+  -  coverage run manage.py test qa -k
+after_script:
+  - coverage report
 deploy:
   provider: heroku
   api_key: a0976ff9-b000-4815-816d-fbe06692d9ba
