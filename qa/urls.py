@@ -16,6 +16,8 @@ urlpatterns = [
     path('postar_resposta/<int:pergunta_id>', views.postar_resposta, name='postar_resposta'),
     path('selecionar_resposta/<int:resposta_id>', views.selecionar_resposta, name='selecionar_resposta'),
     path('alterar_resposta/<int:resposta_id>', views.alterar_resposta, name='alterar_resposta'),
+    path('VotePergunta/<int:pergunta_id>', views.VotePergunta, name='VotePergunta'),
+    path('VoteResposta/<int:pergunta_id>/<int:resposta_id>', views.VoteResposta, name='VoteResposta'),
     path('deletar_resposta/<int:resposta_id>', views.deletar_resposta, name='deletar_resposta'),
     path('cadastrar_usuario', TemplateView.as_view(template_name='qa/cadastrar_usuario.html'), name='cadastrar_usuario'),
 
@@ -24,5 +26,7 @@ urlpatterns = [
     path('logout_usuario', views.logout_usuario, name='logout_usuario'),
     path('logged', views.logged, name='logged'),
     path('meus_posts', views.meus_posts, name='meus_posts'),
-    path('remover_usuario', views.remover_usuario, name='remover_usuario')
+    path('remover_usuario', views.remover_usuario, name='remover_usuario'),
+    
+    path('tags/<str:tag>', views.detalha_tag, name='detalhaTag'),
 ]

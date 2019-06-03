@@ -31,7 +31,7 @@
 					</div>
 					<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo' value='{{pergunta.titulo}}'/>
 				</div>
-				<div class="input-group">
+				<div class="input-group mb-2">
 					<div class="input-group-prepend prepend-width">
 						<div class="input-group-text full-width justify-content-center">
 							Pergunta
@@ -39,10 +39,61 @@
 					</div>
 					<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'>{{pergunta.texto}}</textarea>
 				</div>
+				<div class="input-group">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Tags
+                            </div>
+                        </div>
+                        <textarea id="perguntaTags" class="form-control col-12" rows="3" name="tags" placeholder="Digite as tags separadas por vírgulas." required>{{tags}}</textarea>
+                    </div>
+					<form id='formUpVote' action='{% url "qa:VotePergunta" pergunta.id %}' method='post'>
+					<div class="input-group">
+						<div class="input-group-prepend prepend-width">
+							<div class="input-group-text full-width justify-content-center">
+								Votos
+							</div>
+						</div>
+						
+							{% csrf_token %}
+							<textarea id="votos" class="form-control col-2 bg-light" name='votos' rows='1'>{{pergunta.votos}}</textarea>
+							{% if usuario %}
+							<input id='upVote' type='button' value='Up' class='btn bg-success px-2 text-light'/>
+							<input id='downVote' type='button' value='Down' class='btn bg-danger px-2 text-light'/>
+							{% if VotosTotais %}
+								{% for voto in VotosTotais %}
+									{% if voto.pergunta == pergunta and voto.usuario == usuario %}
+										<script>
+											$('#upVote').attr('disabled', true);
+											$('#downVote').attr('disabled', true);
+										</script>
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+							<script>
+								$("#upVote").click(function(){
+									votosAtuais = parseInt($('#votos').val())
+									votosAlterados = votosAtuais + 1
+									$("#votos").val(votosAlterados.toString(10));
+									$("#formUpVote").submit();
+								});
+							</script>
+							<script>
+								$("#downVote").click(function(){
+									votosAtuais = parseInt($('#votos').val())
+									votosAlterados = votosAtuais - 1
+									$("#votos").val(votosAlterados.toString(10));
+									$("#formUpVote").submit();
+								});
+							</script>
+							{% endif %}
+					</div>
+					</form>
 				{% if usuario != pergunta.usuario %}
 				<script>
 					$('#perguntaTitulo').attr('disabled', true);
 					$('#perguntaTexto').attr('disabled', true);
+					$('#perguntaTags').attr('disabled', true);
 				</script>
 				{% endif %}
 				{% if usuario == pergunta.usuario %}
@@ -50,14 +101,17 @@
 						<form id='formAlterarPergunta' action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'>
 							<input hidden id='texto_alterado' name='texto_alterado' required/>
 							<input hidden id='titulo_alterado' name='titulo_alterado' required/>
+							<input hidden id='tags_alterado' name='tags_alterado' required/>
 							{% csrf_token %}
 							<input type='button' id='alterarPerguntaBtn' class='btn btn-success py-1 mr-1' value='Alterar pergunta'/>
 							<script>
 								$("#alterarPerguntaBtn").click(function(){
 									titulo_alterado = $('#perguntaTitulo').val()
 									texto_alterado = $('#perguntaTexto').val()
+									tags_alterado = $('#perguntaTags').val()
 									$('#titulo_alterado').val(titulo_alterado)
 									$('#texto_alterado').val(texto_alterado)
+									$('#tags_alterado').val(tags_alterado)
 									$("#formAlterarPergunta").submit();
 								});
 							</script>
@@ -72,29 +126,79 @@
 		</div>
 		<hr class='mr-5'/>
 		<div class='row ml-0'>
+			<h5>Tags</h5>
+		</div>
+		<div class='col-11 pl-0 mb-1 pt-1' style='height:auto; max-height: 32vh; overflow:auto'>
+		
+			{% for tag in tagsList %}
+				<a href="/tags/{{tag}}">{{tag}}</a>,
+			{% endfor %}
+		</div>
+		<hr class='mr-5'/>
+		<div class='row ml-0'>
 			<h5>Respostas</h5>
 		</div>
 		{% if lista_respostas %}
 		<div class='row ml-0'>
 			<div class='col-11 pl-0 mb-1 pt-1' style='height:auto; max-height: 32vh; overflow:auto'>
 				{% for resposta in lista_respostas %}
-				<a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>
 					<div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
-						<div class='row'>
-							<div class='col-6'>
-								resposta #{{forloop.counter}}
+						<a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>
+							<div class='row'>
+								<div class='col-6'>
+									resposta #{{forloop.counter}}
+								</div>
+								<div class='col-6 text-right'>
+									autor: {{resposta.usuario}}
+								</div>
 							</div>
-							<div class='col-6 text-right'>
-								autor: {{resposta.usuario}}
+							<div class='row border-top'>
+								<div class='col-12'>
+									<p>{{resposta.texto}}</p>
+								</div>
 							</div>
-						</div>
+						</a>
 						<div class='row border-top'>
-							<div class='col-12'>
-								<p>{{resposta.texto}}</p>
+							<form id='formUpVoteResposta{{resposta.id}}' action='{% url "qa:VoteResposta" pergunta.id resposta.id %}' method='post'>
+							{% csrf_token %}
+							<div class='input-group'>	
+								<textarea id="votosResposta{{resposta.id}}" class="form-control col-3 bg-light" name='votosResposta{{resposta.id}}' rows='1'>{{resposta.votos}}</textarea>
+								{% if usuario %}
+								<input id='upVoteResposta{{resposta.id}}' type='button' value='Up' class='btn bg-success px-2 text-light'/>
+								<input id='downVoteResposta{{resposta.id}}' type='button' value='Down' class='btn bg-danger px-2 text-light'/>
+								{% endif %}
 							</div>
+							{% if usuario %}
+								{% if VotosTotaisRespostas %}
+									{% for voto in VotosTotaisRespostas %}
+										{% if voto.resposta == resposta and voto.usuario == usuario %}
+											<script>
+												$('#upVoteResposta{{resposta.id}}').attr('disabled', true);
+												$('#downVoteResposta{{resposta.id}}').attr('disabled', true);
+											</script>
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+							{% endif %}
+							<script>
+								$("#upVoteResposta{{resposta.id}}").click(function(){
+									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
+									votosAlterados = votosAtuais + 1
+									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
+									$("#formUpVoteResposta{{resposta.id}}").submit();
+								});
+							</script>
+							<script>
+								$("#downVoteResposta{{resposta.id}}").click(function(){
+									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
+									votosAlterados = votosAtuais - 1
+									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
+									$("#formUpVoteResposta{{resposta.id}}").submit();
+								});
+							</script>
+							</form>
 						</div>
 					</div>
-				</a>
 				{% endfor %}
 			</div>
 		</div>
