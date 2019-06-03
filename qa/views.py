@@ -5,7 +5,7 @@ from .forms import UserForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Pergunta, Resposta, Profile
+from .models import Pergunta, Resposta, Profile, VotosPerguntas, VotosRespostas
 
 import json
 
@@ -53,15 +53,15 @@ def listar_perguntas(request):
 def selecionar_pergunta(request, pergunta_id):
     usuario = request.user.get_username()
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
-    lista_respostas = pergunta.resposta_set.all()
-    
+    lista_respostas = pergunta.resposta_set.all()  
     jsonDec = json.decoder.JSONDecoder()
     tagsList = jsonDec.decode(pergunta.tags)
     tagsString = ''
     for i in tagsList:
     	tagsString = tagsString+i+','
-    
-    context = {'pergunta': pergunta, 'tags': tagsString,'tagsList':tagsList,'lista_respostas': lista_respostas, 'usuario':usuario}    
+    VotosTotais = VotosPerguntas.objects.all()
+    VotosTotaisRespostas = VotosRespostas.objects.all()
+    context = {'VotosTotaisRespostas': VotosTotaisRespostas, 'pergunta': pergunta,'tags': tagsString,'tagsList':tagsList, 'lista_respostas': lista_respostas, 'usuario':usuario, "VotosTotais": VotosTotais}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -253,7 +253,6 @@ def meus_posts(request):
     context = {'perguntas': perguntas, 'respostas': respostas, 'usuario':usuario}
     return render(request, 'qa/meus_posts.html', context)
 
-
 def remover_usuario(request):
     if request.method == 'POST':
         username = request.user.get_username()
@@ -281,20 +280,22 @@ def detalha_tag(request,tag):
     context = {'tag':tag,'perguntas':perguntasSelecionadas,'usuario':usuario}
     return render(request, 'qa/detalhaTag.html', context)
 
+def VotePergunta(request, pergunta_id):
+    usuario = request.user.get_username()
+    pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+    pergunta.votos = request.POST['votos']
+    pergunta.save()
+    voto = VotosPerguntas(pergunta = pergunta, usuario = usuario)
+    voto.save()
+    context = {'pergunta': pergunta, 'voto': voto}
+    return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def VoteResposta(request, pergunta_id, resposta_id):
+    usuario = request.user.get_username()
+    resposta = get_object_or_404(Resposta, pk=resposta_id)
+    resposta.votos = request.POST[str('votosResposta'+str(resposta_id))]
+    resposta.save()
+    voto = VotosRespostas(resposta = resposta, usuario = usuario)
+    voto.save()
+    context = {'usuario': usuario, 'voto': voto, 'resposta': resposta}
+    return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id))
