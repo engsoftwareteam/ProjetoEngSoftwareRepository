@@ -174,9 +174,9 @@
 							</script>
 							<script>
 								$("#downVoteResposta{{resposta.id}}").click(function(){
-									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
+									votosAtuais = parseInt($('#votosResposta').val())
 									votosAlterados = votosAtuais - 1
-									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
+									$("#votosResposta").val(votosAlterados.toString(10));
 									$("#formUpVoteResposta{{resposta.id}}").submit();
 								});
 							</script>
