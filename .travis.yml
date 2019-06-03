@@ -1,10 +1,10 @@
 language: python # => 1
     python: # => 2
-      - "3.7.2"
+      - "3.7"
     services: # => 3
-      - postgres
+      - sqlite3
     env: # => 4
-      -DJANGO=2.2 DB=postgres
+      -DJANGO=2.2 DB=sqlite3
     install: # => 5
       - pip install -r requirements.txt
     before_script: # => 6
