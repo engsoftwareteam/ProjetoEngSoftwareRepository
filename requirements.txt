@@ -15,15 +15,12 @@ idna==2.8
 isort==4.3.16
 kiwisolver==1.1.0
 lazy-object-proxy==1.3.1
-matplotlib==3.0.3
 mccabe==0.6.1
 numpy==1.16.3
-panda==0.3.1
 pep8==1.7.1
 Pillow==6.0.0
 psycopg2==2.8.1
 pycodestyle==2.5.0
-pyfemm==0.1.0
 pyflakes==2.1.1
 pylint==2.3.1
 pyparsing==2.4.0
