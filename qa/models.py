@@ -21,11 +21,18 @@ class Resposta(models.Model):
     pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
     usuario = models.CharField(max_length=100)
     texto = models.CharField(max_length=1000)
+    votos = models.IntegerField(default=0)
     def __str__(self):
         return self.texto
 
 class VotosPerguntas(models.Model):
     pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
+    usuario = models.CharField(max_length=100)
+    def __str__(self):
+        return self.usuario
+
+class VotosRespostas(models.Model):
+    resposta = models.ForeignKey(Resposta, on_delete=models.CASCADE)
     usuario = models.CharField(max_length=100)
     def __str__(self):
         return self.usuario

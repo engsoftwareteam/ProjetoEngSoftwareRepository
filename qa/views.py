@@ -5,7 +5,7 @@ from .forms import UserForm, ProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Pergunta, Resposta, Profile, VotosPerguntas
+from .models import Pergunta, Resposta, Profile, VotosPerguntas, VotosRespostas
 
 def home(request):
     if request.user.is_authenticated:
@@ -46,7 +46,8 @@ def selecionar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     lista_respostas = pergunta.resposta_set.all()
     VotosTotais = VotosPerguntas.objects.all()
-    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario, "VotosTotais": VotosTotais}    
+    VotosTotaisRespostas = VotosRespostas.objects.all()
+    context = {'VotosTotaisRespostas': VotosTotaisRespostas, 'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario, "VotosTotais": VotosTotais}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -247,4 +248,14 @@ def VotePergunta(request, pergunta_id):
     voto = VotosPerguntas(pergunta = pergunta, usuario = usuario)
     voto.save()
     context = {'pergunta': pergunta, 'voto': voto}
-    return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id)) 
+    return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id))
+
+def VoteResposta(request, pergunta_id, resposta_id):
+    usuario = request.user.get_username()
+    resposta = get_object_or_404(Resposta, pk=resposta_id)
+    resposta.votos = request.POST['votosResposta']
+    resposta.save()
+    voto = VotosRespostas(resposta = resposta, usuario = usuario)
+    voto.save()
+    context = {'usuario': usuario, 'voto': voto, 'resposta': resposta}
+    return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id))
