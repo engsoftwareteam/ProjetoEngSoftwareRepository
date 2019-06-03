@@ -29,7 +29,7 @@ def postar_pergunta(request):
             if tagsList[-1]=='':
                 tagsList.pop()
             tagsJson = json.dumps(tagsList)
-            pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'], tags = tagsJson)
+            pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'], tags = tagsJson, votos = 0)
             pergunta.save()
         except (KeyError, pergunta.pk == None):
             msg = 'Sua pergunta não foi postada'
