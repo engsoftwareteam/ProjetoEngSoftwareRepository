@@ -80,8 +80,18 @@ def deletar_pergunta(request, pergunta_id):
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+    
+    tagsString = request.POST['tags_alterado']
+    tagsList = tagsString.split(',')
+    for i in range(len(tagsList)):
+        tagsList[i] = tagsList[i].strip()
+    if tagsList[-1]=='':
+        tagsList.pop()
+    tagsJson = json.dumps(tagsList)
+    
     pergunta.titulo = request.POST['titulo_alterado']
     pergunta.texto = request.POST['texto_alterado']
+    pergunta.tags = tagsJson
     pergunta.save()
     context = {'pergunta': pergunta}
     return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id))   

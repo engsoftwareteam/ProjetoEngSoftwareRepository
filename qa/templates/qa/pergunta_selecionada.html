@@ -59,14 +59,17 @@
 						<form id='formAlterarPergunta' action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'>
 							<input hidden id='texto_alterado' name='texto_alterado' required/>
 							<input hidden id='titulo_alterado' name='titulo_alterado' required/>
+							<input hidden id='tags_alterado' name='tags_alterado' required/>
 							{% csrf_token %}
 							<input type='button' id='alterarPerguntaBtn' class='btn btn-success py-1 mr-1' value='Alterar pergunta'/>
 							<script>
 								$("#alterarPerguntaBtn").click(function(){
 									titulo_alterado = $('#perguntaTitulo').val()
 									texto_alterado = $('#perguntaTexto').val()
+									tags_alterado = $('#perguntaTags').val()
 									$('#titulo_alterado').val(titulo_alterado)
 									$('#texto_alterado').val(texto_alterado)
+									$('#tags_alterado').val(tags_alterado)
 									$("#formAlterarPergunta").submit();
 								});
 							</script>
