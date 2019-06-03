@@ -268,6 +268,7 @@ def remover_usuario(request):
         return HttpResponse("veio de um metodo get")
 
 def detalha_tag(request,tag):
+    usuario = request.user.get_username()
     perguntas = Pergunta.objects.all()
     perguntasSelecionadas = []
     jsonDec = json.decoder.JSONDecoder()
@@ -277,7 +278,7 @@ def detalha_tag(request,tag):
         if tag in tagsList:
             perguntasSelecionadas.append(pergunta)
     
-    context = {'tag':tag,'perguntas':perguntasSelecionadas}
+    context = {'tag':tag,'perguntas':perguntasSelecionadas,'usuario':usuario}
     return render(request, 'qa/detalhaTag.html', context)
 
 
