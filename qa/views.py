@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Pergunta, Resposta, Profile
 
+import json
+
 def home(request):
     if request.user.is_authenticated:
         usuario = request.user.get_username()
@@ -20,7 +22,14 @@ def postar_pergunta(request):
     usuario = request.user.get_username()
     if request.method == 'POST':
         try:
-            pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'])
+            tagsString = request.POST['tags']
+            tagsList = tagsString.split(',')
+            for i in range(len(tagsList)):
+                tagsList[i] = tagsList[i].strip()
+            if tagsList[-1]=='':
+                tagsList.pop()
+            tagsJson = json.dumps(tagsList)
+            pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'], tags = tagsJson)
             pergunta.save()
         except (KeyError, pergunta.pk == None):
             msg = 'Sua pergunta não foi postada'
@@ -45,7 +54,14 @@ def selecionar_pergunta(request, pergunta_id):
     usuario = request.user.get_username()
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     lista_respostas = pergunta.resposta_set.all()
-    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario}    
+    
+    jsonDec = json.decoder.JSONDecoder()
+    tagsList = jsonDec.decode(pergunta.tags)
+    tagsString = ''
+    for i in tagsList:
+    	tagsString = tagsString+i+','
+    
+    context = {'pergunta': pergunta, 'tags': tagsString,'tagsList':tagsList,'lista_respostas': lista_respostas, 'usuario':usuario}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -64,8 +80,18 @@ def deletar_pergunta(request, pergunta_id):
 # responsavel por alterar o texto da pergunta selecionada no BD
 def alterar_pergunta(request, pergunta_id):
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
+    
+    tagsString = request.POST['tags_alterado']
+    tagsList = tagsString.split(',')
+    for i in range(len(tagsList)):
+        tagsList[i] = tagsList[i].strip()
+    if tagsList[-1]=='':
+        tagsList.pop()
+    tagsJson = json.dumps(tagsList)
+    
     pergunta.titulo = request.POST['titulo_alterado']
     pergunta.texto = request.POST['texto_alterado']
+    pergunta.tags = tagsJson
     pergunta.save()
     context = {'pergunta': pergunta}
     return HttpResponseRedirect("/selecionar_pergunta/%s" % (pergunta_id))   
@@ -88,16 +114,19 @@ def postar_resposta(request, pergunta_id):
 # busca pergunta selecionada no BD e renderiza o html com informacoes dela
 def selecionar_resposta(request, resposta_id):
     usuario = request.user.get_username()
+    resposta = get_object_or_404(Resposta, pk=resposta_id)
+    pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
+    
+    jsonDec = json.decoder.JSONDecoder()
+    tagsList = jsonDec.decode(pergunta.tags)
+    
     if request.method  == 'POST':
-        resposta = get_object_or_404(Resposta, pk=resposta_id)
         resposta.texto = request.POST['texto_alterado']
         resposta.save()
-        context = {'resposta': resposta, 'usuario': usuario}    
+        context = {'resposta': resposta, 'usuario': usuario,'tagsList':tagsList}    
         return HttpResponseRedirect('/selecionar_resposta/%s' % (resposta_id))
     else:
-        resposta = get_object_or_404(Resposta, pk=resposta_id)
-        pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
-        context = {'pergunta': pergunta, 'resposta': resposta, 'usuario': usuario}    
+        context = {'pergunta': pergunta, 'resposta': resposta, 'usuario': usuario,'tagsList':tagsList}    
         return render(request, 'qa/resposta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
@@ -237,3 +266,35 @@ def remover_usuario(request):
             return HttpResponseRedirect('/meu_perfil')
     else:
         return HttpResponse("veio de um metodo get")
+
+def detalha_tag(request,tag):
+    usuario = request.user.get_username()
+    perguntas = Pergunta.objects.all()
+    perguntasSelecionadas = []
+    jsonDec = json.decoder.JSONDecoder()
+    
+    for pergunta in perguntas:
+        tagsList = jsonDec.decode(pergunta.tags)
+        if tag in tagsList:
+            perguntasSelecionadas.append(pergunta)
+    
+    context = {'tag':tag,'perguntas':perguntasSelecionadas,'usuario':usuario}
+    return render(request, 'qa/detalhaTag.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -24,5 +24,7 @@ urlpatterns = [
     path('logout_usuario', views.logout_usuario, name='logout_usuario'),
     path('logged', views.logged, name='logged'),
     path('meus_posts', views.meus_posts, name='meus_posts'),
-    path('remover_usuario', views.remover_usuario, name='remover_usuario')
+    path('remover_usuario', views.remover_usuario, name='remover_usuario'),
+    
+    path('tags/<str:tag>', views.detalha_tag, name='detalhaTag'),
 ]
