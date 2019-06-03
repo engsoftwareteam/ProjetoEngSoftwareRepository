@@ -1,0 +1,11 @@
+language: python # => 1
+    python: # => 2
+      - "3.7.2"
+    services: # => 3
+      - postgres
+    env: # => 4
+      -DJANGO=2.2 DB=postgres
+    install: # => 5
+      - pip install -r requirements.txt
+    script: # => 7
+      - coverage run --source='.' manage.py test qa
