@@ -13,4 +13,4 @@ script:
 deploy:
   provider: heroku
   api_key: a0976ff9-b000-4815-816d-fbe06692d9ba
-  app: qa
+  app: qa-project
