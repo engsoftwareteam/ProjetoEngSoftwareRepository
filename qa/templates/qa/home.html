@@ -1,0 +1,53 @@
+{% extends 'qa/template.html' %}
+
+{% block content %}
+	<div class='container-fluid ml-4 mt-3'>
+		<h4 class='mb-3'>Página Inicial</h4>
+		<h5>Objetivos:</h5>
+		<ul>
+			<li>Desenvolver um fórum Q&A, tendo como referência o Stack Overflow</li>
+			<li>Usar os conhecimentos de Engenharia de Software durante o desenvolvimento do site.</li>
+			
+		</ul>
+		
+		<h5>Participantes:</h5>
+		<ul>
+			<li>Eduardo de Carvalho Filho</li>
+			<li>Geraldo Silva Júnior</li>
+			<li>Jhonatan Corrêa</li>
+			<li>Luísa  Reis</li>
+			<li>Marcio Souza Filho</li>
+		</ul>
+		
+	</div>
+	{% if msg %}
+		<script>
+			function closeAlertBox(){
+			alertBox = document.getElementById("alertBox");
+			alertClose = document.getElementById("alertClose");
+			alertBox.style.visibility = "hidden";
+			alertClose.style.visibility = "hidden";
+		}
+		window.alert = function(msg){
+			var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+			alertBox = document.createElement("div");
+			document.body.appendChild(alertBox);
+			alertBox.id = id;
+			alertBox.innerHTML = msg;
+			alertClose = document.createElement("div");
+			alertClose.id = closeId;
+			alertClose.innerHTML = "x";
+			alertBox.appendChild(alertClose);
+			alertBox.style.visibility = "visible";
+			alertClose.style.visibility = "visible";
+			alertClose.onclick = closeAlertBox;
+			if(sucesso == false)
+			{
+				document.getElementById('alertBox').style.backgroundColor = 'red'
+			}
+		};
+		alert('{{msg}}')
+		</script>
+	{% endif %}
+{% endblock %}
+

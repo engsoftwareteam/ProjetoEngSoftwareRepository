@@ -1,50 +1,64 @@
-<!DOCTYPE html>
-<html>
+{% extends 'qa/template.html' %}
 
-    <head>
-        <meta charset='utf-8'/>
-        <meta name='viewport" content="width=device-width, initial-scale=1.0'/>
-        <meta http-equiv='X-UA-Compatible" content='IE=edge'/>
-
-        <title>Meus posts</title>
-
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </head>
-
-    <body>
-        <div class='container-fluid ml-3'>
-            <h3>Perguntas</h3>
+{% block content %}
+    <div class='container-fluid ml-4 mt-3'>
+        <h4>Meus Posts</h4>
+        {% if usuario %}
+            <h5>Perguntas</h5>
             {% if perguntas %}
-            <ul>
-                {% for pergunta in perguntas %}
-                <li>
-                    <a href='/selecionar_pergunta/{{pergunta.id}}'>{{pergunta.texto}}</a>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>Nao ha perguntas</p>
+                <div class='row ml-0'>
+                    <div class='col-11 pl-0 mb-1 pt-1' style='height:auto; max-height: 35vh; overflow:auto'>
+                        {% for pergunta in perguntas %}
+                        <a class='nolink' href='/selecionar_pergunta/{{pergunta.id}}'>
+                            <div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        {{pergunta.titulo}}
+                                    </div>
+                                </div>
+                                <div class='row border-top'>
+                                    <div class='col-12'>
+                                        {{pergunta.texto}}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
             {% endif %}
-            <hr/>
-            <h3>Respostas</h3>
+
+            <hr class='mr-5'/>
+            <h5>Respostas</h5>
 
             {% if respostas %}
-            <ul>
-                {% for resposta in respostas %}
-                <li>
-                    <a href='/selecionar_pergunta/{{resposta.pergunta.id}}'>{{resposta.texto}}</a>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>Nao ha respostas</p>
+                <div class='row ml-0'>
+                    <div class='col-11 pl-0 mb-1 pt-1' style='height:auto; max-height: 35vh; overflow:auto'>
+                        {% for resposta in respostas %}
+                            <div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        <a href='/selecionar_pergunta/{{resposta.pergunta.id}}'>Pergunta: {{resposta.pergunta.titulo}}</a>
+                                    </div>
+                                </div>
+                                <a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>
+                                    <div class='row border-top'>
+                                        <div class='col-12'>
+                                            {{resposta.texto}}
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
             {% endif %}
-            <div class='row'>
-                <a href='/menu'>Voltar ao menu</a>
-            </div>
-        </div>
-    </body>
-</html>
+        {% else %}
+        <span class='mt-3'>
+            É preciso fazer <a href='/login_usuario'>Login</a> para visualizar seus posts.
+        </span>
+            
+        {% endif %}
+    </div>
+{% endblock %}

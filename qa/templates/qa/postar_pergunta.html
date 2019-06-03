@@ -1,36 +1,88 @@
-<!DOCTYPE html>
-<html>
+{% extends 'qa/template.html' %}
 
-    <head>
-        <meta charset='utf-8'/>
-        <meta name='viewport" content="width=device-width, initial-scale=1.0'/>
-        <meta http-equiv='X-UA-Compatible" content='IE=edge'/>
-        <title>Postar Pergunta</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <div class='container-fluid ml-3'>
-            <div class='row'>
-                <p style='font-weight:bold'>Essa e' a pagina onde se faz as perguntas</p>
-            </div>
-            <form action='{% url "qa:postar_pergunta" %}' method='post'>
-                {% csrf_token %}
-                <div class='row'>
-                        <label>
-                            Texto:
-                            <input type='text' name='texto' value='{{texto}}'/>
-                        </label>
+{% block content %}
+    <style>
+        .full-width{
+            width: 100%;
+        }
+        .prepend-width{
+            width: 100px;
+        }
+    </style>
+    <div class='container-fluid ml-4 mt-3'>
+        <h4>Poste sua pergunta</h4>
+        {% if usuario %}
+        <div class='row ml-0 mt-3'>
+            <div class='col-11 px-0'>
+                <form action='{% url "qa:postar_pergunta" %}' method='post'>
+                    {% csrf_token %}
+                    <div class="input-group mb-2">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Título
+                                </div>
+                            </div>
+                            <input type='text' class="form-control col-12" name='titulo' required></textarea>
+                        </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Pergunta
+                            </div>
+                        </div>
+                        <textarea class="form-control col-12" rows="3" name='texto' required></textarea>
                     </div>
-                <div class='row mt-2'>
-                    <input type='submit' value='Postar Pergunta'/>
-                </div>
-            </form>
-            <div class='row'>
-                <a href='/menu'>Voltar ao menu</a>
+                    <div class='row mt-2 mx-auto justify-content-end'>
+                        <input id='perguntaSubmit' type='submit' value='Postar Pergunta' class='btn bg-success px-5 text-light'/>
+                    </div>
+                    <script>
+                        if('{{usuario}}' === ''){
+                            $('#perguntaSubmit').addClass('disabled');
+                        }
+                        $('#perguntaSubmit').click(function(e){
+                            if( $(this).hasClass('disabled') ){
+                                e.preventDefault();
+                                alert('Precisa Estar logado');
+                            }
+                        });
+                    </script>
+                </form>
             </div>
         </div>
-    </body>
-</html>
+        {% else %}
+        <span class='mt-3'>
+            É preciso fazer <a href='/login_usuario'>Login</a> para postar perguntas.
+        </span>
+        {% endif %}
+    </div>
+    {% if msg %}
+        <script>
+            function closeAlertBox(){
+            alertBox = document.getElementById("alertBox");
+            alertClose = document.getElementById("alertClose");
+            alertBox.style.visibility = "hidden";
+            alertClose.style.visibility = "hidden";
+        }
+        window.alert = function(msg){
+            var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+            alertBox = document.createElement("div");
+            document.body.appendChild(alertBox);
+            alertBox.id = id;
+            alertBox.innerHTML = msg;
+            alertClose = document.createElement("div");
+            alertClose.id = closeId;
+            alertClose.innerHTML = "x";
+            alertBox.appendChild(alertClose);
+            alertBox.style.visibility = "visible";
+            alertClose.style.visibility = "visible";
+            alertClose.onclick = closeAlertBox;
+            if(sucesso == false)
+            {
+                document.getElementById('alertBox').style.backgroundColor = 'red'
+            }
+        };
+        alert('{{msg}}')
+        </script>
+    {% endif %}
+{% endblock %}
+

@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import django_heroku
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -26,6 +27,7 @@ SECRET_KEY = 'xgyp+7$yjvme!v5l-=a2z&2k&q_-$w@@9f^*8@$971t3u$3+g)'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -69,6 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'esproject.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -78,6 +81,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -97,6 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -111,10 +116,11 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_URL = '/login_usuario'
-STATIC_ROOT = ''
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join('static'),
-)
 
-django_heroku.settings(locals())
+try:
+    # Configure Django App for Heroku.
+    import django_heroku 
+    django_heroku.settings(locals())
+except ImportError:
+    found = False

@@ -1,0 +1,18 @@
+dist: xenial
+language: python
+python:
+  - "3.7.2"
+services: postgresql
+env:
+  - DJANGO_VERSION=2.2
+install:
+  - pip install -q Django==$DJANGO_VERSION  
+  - pip install -r requirements_build.txt
+script:
+  -  coverage run manage.py test qa -k
+after_script:
+  - coverage report
+deploy:
+  provider: heroku
+  api_key: a0976ff9-b000-4815-816d-fbe06692d9ba
+  app: qa-project

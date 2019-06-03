@@ -1,0 +1,134 @@
+{% extends 'qa/template.html' %}
+{% block content %}
+    <style>
+        .full-width{
+            width: 100%;
+        }
+        .prepend-width{
+            width: 150px;
+        }
+    </style>
+    <div class='container-fluid ml-4 mt-3'>
+        <h4>Perfil do Usuário</h4>
+        {% if usuario %}
+        
+            <form action='{% url "qa:meu_perfil" %}' method='post'>
+                {% csrf_token %}
+                <div class='col-11 mt-3 ml-3 pl-0'>
+                    <div class='row'>
+                        <div class="input-group mb-3 col-6 pl-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Usuário
+                                </div>
+                            </div>
+                            <input type='text' name='username' class="form-control bg-light" value='{{usuario}}' disabled/>
+                        </div>
+
+                        <div class="input-group mb-3 col-6 pr-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Email
+                                </div>
+                            </div>
+                            <input type='text' name='email' class="form-control" value='{{email}}'/>
+                        </div>
+
+                        <div class="input-group mb-3 col-6 pl-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Nova Senha
+                                </div>
+                            </div>
+                            <input type='password' name='new_password' id='new_password' class="form-control" autocomplete="new-password"/>
+                        </div>
+
+                        <div class="input-group mb-3 col-6 pr-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Instituição
+                                </div>
+                            </div>
+                            <input type='text' name='instituicao' class="form-control" value='{{instituicao}}'/>
+                        </div>
+
+                        <div class="input-group mb-3 col-6 pl-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Confirme a senha
+                                </div>
+                            </div>
+                            <input type='password' id='new_password2'  class="form-control"/>
+                        </div>
+
+                        <div class="input-group mb-3 col-6 pr-0">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Profissão
+                                </div>
+                            </div>
+                            <input type='text' name='profissao' class="form-control" value='{{profissao}}'/>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend prepend-width">
+                                <div class="input-group-text full-width justify-content-center">
+                                    Descrição
+                                </div>
+                            </div>
+                            <textarea class="form-control col-12" rows="5" name='descricao'>{{descricao}}</textarea>
+                        </div>
+
+                        <div class="input-group mb-2 justify-content-center">
+                            <input type='submit' class="btn bg-success col-3 mr-1 text-light" value='Salvar Alterações' id='alteracoesSubmit'/>
+                            <input type='button' class="btn bg-danger col-3 ml-1 text-light" value='Excluir Conta' data-toggle='modal' data-target='#confirmDeletar'/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+                
+            <!-- The Modal -->
+            <div class="modal" id="confirmDeletar" style='padding-right: 0px !important'>
+                <div class="modal-dialog" style='top: 25%; left: 8.7%'>
+                    <div class="modal-content" style='box-shadow: 0px 0px 20px 10px #aaaaaa;'>
+                        <!-- Modal Header -->
+                        <div class="modal-header py-3">
+                            <h4 class="modal-title">Confirme sua senha</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        
+                        <!-- Modal body -->
+                        <div class="modal-body p-0">
+                            <form action='{% url "qa:remover_usuario" %}' method='post'>
+                                {% csrf_token %}
+                                <div class="input-group mb-3 mx-auto col-9">
+                                    <input type='password' name='password' class="form-control" placeholder="Senha"/>
+                                    <div class="input-group-append">
+                                        <input type='submit' class="btn bg-danger text-light" value='Excluir Conta' id='deletarSubmit'/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $('#alteracoesSubmit').click(function(e){
+                    if($('#new_password').val() === $('#new_password2').val()) {
+                        
+                    } else {
+                        e.preventDefault();
+                        alert('Senhas nao coincidem');
+                    }
+                });
+            </script>
+        
+        {% else %}
+        <span class='mt-3'>
+            É preciso fazer <a href='/login_usuario'>Login</a> para visualizar seu perfil.
+        </span>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+#alertBox{
+    position:absolute;
+    top:1px;
+    left:40vw;
+    border:none;
+    background-color: #4CAF50;
+    padding: 25px;
+    visibility: hidden;
+    color:white;
+}
+#alertClose{
+    position: absolute;
+    right:0;
+    top: 0;
+    background-color: none;
+    border: none;
+    color: white;
+    width: 1em;
+    text-align: center; 
+    cursor: pointer;
+}

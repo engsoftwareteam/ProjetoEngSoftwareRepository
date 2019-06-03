@@ -1,88 +1,167 @@
-<!DOCTYPE html>
-<html>
+{% extends 'qa/template.html' %}
 
-<head>
-    <meta charset='utf-8'/>
-    <meta name='viewport" content="width=device-width, initial-scale=1.0'/>
-    <meta http-equiv='X-UA-Compatible" content='IE=edge'/>
-    
-    <title>Pergunta Selecionada</title>
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <div class='container-fluid ml-3'>
-        <div class='row'>
-            <p style='font-weight:bold'>Informações da pergunta selecionada</p>
-        </div>
-        <div class='row'>
-            Usuario: {{pergunta.usuario}}
-        </div>
-        <form action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'>
-            {% csrf_token %}
-            <div class='row'>
-                <label>
-                    Pergunta:
-                    <input type='text' name='texto_alterado' value='{{pergunta.texto}}'/>
-                    <input type='submit' value='Alterar pergunta'/>
-                </label>
-            </div>
-        </form>
-        <form action='{% url "qa:deletar_pergunta" pergunta.id %}' method='post'>
-            {% csrf_token %}
-            <div>
-                <input type='submit' value='Deletar pergunta'/>
-            </div>
-        </form>
-        <hr/>
-        <div class='row'>
-            <p style='font-weight:bold'>Respostas</p>
-        </div>
-
-        {% if lista_respostas %}
-            {% for resposta in lista_respostas %}
-                <div class='row'>
-                    <a href='/selecionar_resposta/{{resposta.id}}'>Resposta {{forloop.counter}}</a>     
-                </div>
-                <div class='row'>
-                    Usuario: {{resposta.usuario}}
-                </div>
-                <div class='row mb-2'>
-                    Resposta: {{resposta.texto}}
-                </div>
-            {% endfor %}
+{% block content %}
+	<style>
+        .full-width{
+            width: 100%;
+        }
+        .prepend-width{
+            width: 100px;
+        }
+    </style>
+	<div class='container-fluid ml-4 mt-3'>
+		<div class='row ml-0'>
+			<h5>Pergunta Selecionada</h5>
+		</div>
+		<div class='row'>
+			<div class='col-11'>
+				<div class="input-group mb-2 pl-0 col-4">
+					<div class="input-group-prepend prepend-width">
+						<div class="input-group-text full-width justify-content-center">
+							Usuário
+						</div>
+					</div>
+					<input type='text' name='username' class="form-control bg-light" value='{{pergunta.usuario}}' disabled/>
+				</div>
+				<div class="input-group mb-2">
+					<div class="input-group-prepend prepend-width">
+						<div class="input-group-text full-width justify-content-center">
+							Titulo
+						</div>
+					</div>
+					<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo' value='{{pergunta.titulo}}'/>
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend prepend-width">
+						<div class="input-group-text full-width justify-content-center">
+							Pergunta
+						</div>
+					</div>
+					<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'>{{pergunta.texto}}</textarea>
+				</div>
+				{% if usuario != pergunta.usuario %}
+				<script>
+					$('#perguntaTitulo').attr('disabled', true);
+					$('#perguntaTexto').attr('disabled', true);
+				</script>
+				{% endif %}
+				{% if usuario == pergunta.usuario %}
+					<div class='row ml-0 mt-2 justify-content-center'>
+						<form id='formAlterarPergunta' action='{% url "qa:alterar_pergunta" pergunta.id %}' method='post'>
+							<input hidden id='texto_alterado' name='texto_alterado' required/>
+							<input hidden id='titulo_alterado' name='titulo_alterado' required/>
+							{% csrf_token %}
+							<input type='button' id='alterarPerguntaBtn' class='btn btn-success py-1 mr-1' value='Alterar pergunta'/>
+							<script>
+								$("#alterarPerguntaBtn").click(function(){
+									titulo_alterado = $('#perguntaTitulo').val()
+									texto_alterado = $('#perguntaTexto').val()
+									$('#titulo_alterado').val(titulo_alterado)
+									$('#texto_alterado').val(texto_alterado)
+									$("#formAlterarPergunta").submit();
+								});
+							</script>
+						</form>
+						<form action='{% url "qa:deletar_pergunta" pergunta.id %}' method='post'>
+							{% csrf_token %}
+							<input type='submit' class='btn btn-danger py-1 ml-1' value='Deletar pergunta'/>
+						</form>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+		<hr class='mr-5'/>
+		<div class='row ml-0'>
+			<h5>Respostas</h5>
+		</div>
+		{% if lista_respostas %}
+		<div class='row ml-0'>
+			<div class='col-11 pl-0 mb-1 pt-1' style='height:auto; max-height: 32vh; overflow:auto'>
+				{% for resposta in lista_respostas %}
+				<a class='nolink' href='/selecionar_resposta/{{resposta.id}}'>
+					<div class='container mb-2' style='box-shadow: 0px 0px 1px 0.1px #aaaaaa; margin-left: 1px'>
+						<div class='row'>
+							<div class='col-6'>
+								resposta #{{forloop.counter}}
+							</div>
+							<div class='col-6 text-right'>
+								autor: {{resposta.usuario}}
+							</div>
+						</div>
+						<div class='row border-top'>
+							<div class='col-12'>
+								<p>{{resposta.texto}}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+				{% endfor %}
+			</div>
+		</div>
         {% endif %}
 
-        <hr/>
-        <div class='row'>
-            <p style='font-weight:bold'>Postar Resposta</p>
-        </div>
-        <form action='{% url "qa:postar_resposta" pergunta.id %}' method='post'>
-            {% csrf_token %}
-            <div class='row'>
-                <label>
-                    Texto:
-                    <input type='text' name='texto' value='{{texto}}'/>
-                </label>
-            </div>
-            <div class='row mt-2'>
-                <input type='submit' value='Postar Resposta'/>
-            </div>
-        </form>
-        <hr/>
-        <div class='row'>
-            <p style='font-weight:bold'>Backlinks</p>
-        </div>
-        <div class='row'>
-            <a href='/listar_perguntas'>Mostrar perguntas feitas</a>
-        </div>
-        <div class='row'>
-            <a href='/menu'>Voltar para o menu</a>
-        </div>
+		<hr class='mr-5'/>
+		<div class='row ml-0'>
+			<h5>Postar Resposta</h5>
+		</div>
+		<div class='row ml-0 mb-4'>
+			<div class='col-11 px-0'>
+				<form action='{% url "qa:postar_resposta" pergunta.id %}' method='post'>
+					{% csrf_token %}
+					<div class="form-group mb-0">
+						<textarea id='respostaTexto' class="form-control col-12 bg-light" rows="5" name='texto' required></textarea>
+					</div>
+					<div class='row mt-2 mx-auto justify-content-end'>
+						<input id='respostaSubmit' type='submit' value='Postar Resposta' class='btn bg-success px-5 text-light'/>
+					</div>
+					<script>
+						function closeAlertBox(){
+							alertBox = document.getElementById("alertBox");
+							alertClose = document.getElementById("alertClose");
+							alertBox.style.visibility = "hidden";
+							alertClose.style.visibility = "hidden";
+						}
+						window.alert = function(msg){
+							var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+							alertBox = document.createElement("div");
+							document.body.appendChild(alertBox);
+							alertBox.id = id;
+							alertBox.innerHTML = msg;
+							alertClose = document.createElement("div");
+							alertClose.id = closeId;
+							alertClose.innerHTML = "x";
+							alertBox.appendChild(alertClose);
+							alertBox.style.visibility = "visible";
+							alertClose.style.visibility = "visible";
+							alertClose.onclick = closeAlertBox;
+							alertBox.style.left = "1140px";
+							if(sucesso == false)
+							{
+								document.getElementById('alertBox').style.backgroundColor = 'red'
+							}
+						};
+						if ('{{usuario}}' === ''){
+							flagUser = false
+						}
+						
+						$('#respostaTexto').click(function(e){
+							if(flagUser === false){
+								$('#respostaTexto').attr('disabled', true)
+								sucesso = false
+								alert('Precisa Estar logado');
+							}
+						});
+
+						$('#respostaSubmit').click(function(e){
+							if(flagUser === false){
+								e.preventDefault();
+								sucesso=false;
+								alert('Precisa Estar logado');
+							}
+						});
+					</script>
+				</form>
+			</div>
+		</div>
     </div>
-</body>
-</html>
+{% endblock %}

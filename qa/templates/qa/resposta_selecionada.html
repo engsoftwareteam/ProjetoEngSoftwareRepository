@@ -1,64 +1,127 @@
-<!DOCTYPE html>
-<html>
+{% extends 'qa/template.html' %}
 
-<head>
-    <meta charset='utf-8'/>
-    <meta name='viewport" content="width=device-width, initial-scale=1.0'/>
-    <meta http-equiv='X-UA-Compatible" content='IE=edge'/>
-    
-    <title>Pergunta Selecionada</title>
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</head>
+{% block content %}
+<style>
+	.full-width {
+		width: 100%;
+	}
 
-<body>
-    <div class='container-fluid ml-3'>
-        <div class='row'>
-            <p style='font-weight:bold'>Informações da pergunta</p>
-        </div>
-        <div class='row'>
-            Usuario: {{pergunta.usuario}}
-        </div>
-        <div class='row'>
-            Pergunta: {{pergunta.texto}}
-        </div>
-        <hr/>
-        <div class='row'>
-            <p style='font-weight:bold'>Informações da resposta</p>
-        </div>
-        <div class='row'>
-            Usuario: {{resposta.usuario}}
-        </div>
-        <form action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
-            {% csrf_token %}
-            <div class='row'>
-                <label>
-                    Resposta:
-                    <input type='text' name='texto_alterado' value='{{resposta.texto}}'/>
-                    <input type='submit' value='Alterar resposta'/>
-                </label>
-            </div>
-        </form>
-        <form action='{% url "qa:deletar_resposta" resposta.id %}' method='post'>
-            {% csrf_token %}
-            <div>
-                <input type='submit' value='Deletar resposta'/>
-            </div>
-        </form>
-        <hr/>
-        
-        <div class='row'>
-            <p style='font-weight:bold'>Backlinks</p>
-        </div>
-        <div class='row'>
-            <a href='/listar_perguntas'>Mostrar perguntas feitas</a>
-        </div>
-        <div class='row'>
-            <a href='/menu'>Voltar para o menu</a>
-        </div>
-    </div>
-</body>
-</html>
+	.prepend-width {
+		width: 100px;
+	}
+</style>
+<div class='contai ner-fluid mt-3 ml-4'>
+	<div class='row ml-0'>
+		<h5>Pergunta</h5>
+	</div>
+	<div class='row'>
+		<div class='col-11'>
+			<div class="input-group mb-2 col-4 pl-0">
+				<div class="input-group-prepend prepend-width">
+					Usuário
+				</div>
+			</div>
+			<input type='text' name='username' class="form-control bg-light" value='{{pergunta.usuario}}' disabled />
+		</div>
+		<div class="input-group mb-2">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Titulo
+				</div>
+			</div>
+			<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo'
+				value='{{pergunta.titulo}}' disabled />
+		</div>
+		<div class="input-group">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Pergunta
+				</div>
+			</div>
+			<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'
+				disabled>{{pergunta.texto}}</textarea>
+		</div>
+	</div>
+</div>
+
+<hr class='mr-5' />
+<div class='row ml-0'>
+	<h5>Resposta</h5>
+</div>
+
+<div class='row'>
+	<div class='col-11'>
+		<div class="input-group mb-2 col-4 pl-0">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Usuário
+				</div>
+			</div>
+			<input type='text' name='username' class="form-control bg-light" value='{{resposta.usuario}}' disabled />
+		</div>
+		<div class="input-group">
+			<div class="input-group-prepend prepend-width">
+				<div class="input-group-text full-width justify-content-center">
+					Resposta
+				</div>
+			</div>
+			<textarea id="respostaTexto" class="form-control col-12 bg-light" name='texto' rows='4'
+				disabled>{{resposta.texto}}</textarea>
+		</div>
+		{% if usuario == resposta.usuario %}
+		<div class='row ml-0 mt-2 justify-content-end pr-3'>
+			<form id='formAlterarResposta' action='{% url "qa:alterar_resposta" resposta.id %}' method='post'>
+				<input hidden id='texto_alterado' name='texto_alterado' required />
+				{% csrf_token %}
+				<input type='button' id='alterarRespostaBtn' class='btn btn-success py-1 mr-1'
+					value='Alterar Resposta' />
+				<script>
+					function closeAlertBox() {
+						alertBox = document.getElementById("alertBox");
+						alertClose = document.getElementById("alertClose");
+						alertBox.style.visibility = "hidden";
+						alertClose.style.visibility = "hidden";
+					}
+					window.alert = function (msg) {
+						var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+						alertBox = document.createElement("div");
+						document.body.appendChild(alertBox);
+						alertBox.id = id;
+						alertBox.innerHTML = msg;
+						alertClose = document.createElement("div");
+						alertClose.id = closeId;
+						alertClose.innerHTML = "x";
+						alertBox.appendChild(alertClose);
+						alertBox.style.visibility = "visible";
+						alertClose.style.visibility = "visible";
+						alertClose.onclick = closeAlertBox;
+						alertBox.style.left = "1140px";
+						if (sucesso == false) {
+							document.getElementById('alertBox').style.backgroundColor = 'red'
+						}
+					};
+					$("#alterarRespostaBtn").click(function () {
+						texto_alterado = $('#respostaTexto').val()
+						if (texto_alterado === '') {
+							sucesso = false;
+							alert('a resposta nao pode ser vazia')
+						} else {
+							$('#texto_alterado').val(texto_alterado)
+							$("#formAlterarResposta").submit();
+						}
+					});
+				</script>
+			</form>
+			<form action='{% url "qa:deletar_resposta" resposta.id %}' method='post'>
+				{% csrf_token %}
+				<input type='submit' class='btn btn-danger py-1 ml-1' value='Deletar Resposta' />
+			</form>
+		</div>
+		<script>
+			$('#respostaTexto').removeAttr('disabled');
+		</script>
+		{% endif %}
+	</div>
+</div>
+</div>
+{% endblock %}

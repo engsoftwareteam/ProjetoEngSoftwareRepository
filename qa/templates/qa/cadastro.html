@@ -1,0 +1,129 @@
+{% extends 'qa/template.html' %}
+{% block content %}
+    <style>
+        .full-width{
+            width: 100%;
+        }
+        .prepend-width{
+            width: 150px;
+        }
+    </style>
+    <div class='container-fluid ml-4 mt-3'>
+        <h4>Registre-se</h4>        
+        <form action='{% url "qa:registrar_usuario" %}' method='post'>
+            {% csrf_token %}
+            <div class='col-6 mt-3 ml-3 pl-0'>
+                <div class='row'>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Usuário
+                            </div>
+                        </div>
+                        <input type='text' name='username' class="form-control bg-light" required/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Senha
+                            </div>
+                        </div>
+                        <input type='password' id='password' name='password' class="form-control" required/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Confirmar Senha
+                            </div>
+                        </div>
+                        <input type='password' id='password_confirm'  class="form-control"/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Email
+                            </div>
+                        </div>
+                        <input type='text' name='email' class="form-control"/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Instituição
+                            </div>
+                        </div>
+                        <input type='text' name='instituicao' class="form-control"/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Profissão
+                            </div>
+                        </div>
+                        <input type='text' name='profissao' class="form-control"/>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Descrição
+                            </div>
+                        </div>
+                        <textarea class="form-control col-12" rows="5" name='descricao' value='{{descricao}}'></textarea>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <input id='registrarSubmit' type='submit' class="btn text-light bg-success mx-auto" value='Registrar' style='width: 50%'/>
+                    </div>
+                    <script>
+                        function closeAlertBox(){
+							alertBox = document.getElementById("alertBox");
+							alertClose = document.getElementById("alertClose");
+							alertBox.style.visibility = "hidden";
+							alertClose.style.visibility = "hidden";
+						}
+						window.alert = function(msg){
+							var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+							alertBox = document.createElement("div");
+							document.body.appendChild(alertBox);
+							alertBox.id = id;
+							alertBox.innerHTML = msg;
+							alertClose = document.createElement("div");
+							alertClose.id = closeId;
+							alertClose.innerHTML = "x";
+							alertBox.appendChild(alertClose);
+							alertBox.style.visibility = "visible";
+							alertClose.style.visibility = "visible";
+							alertClose.onclick = closeAlertBox;
+							alertBox.style.left = "1120px";
+							if(sucesso == false)
+							{
+								document.getElementById('alertBox').style.backgroundColor = 'red'
+							}
+						};
+                        $('#registrarSubmit').click(function(e){
+                            if($('#password').val() === $('#password_confirm').val()) {
+                                
+                            } else {
+                                e.preventDefault();
+                                sucesso = false;
+                                alert('Senhas nao coincidem');
+                            }
+                        });
+                    </script>
+                    {% if msg %}
+                        <script>
+                            sucesso = false;
+                            alert('{{msg}}');
+                        </script>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
