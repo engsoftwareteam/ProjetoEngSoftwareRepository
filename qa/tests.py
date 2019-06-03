@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import Profile, Pergunta, Resposta
+from .models import Profile, Pergunta, Resposta, VotosPerguntas
 from django.shortcuts import get_object_or_404
 
 # Create your tests here.
@@ -71,7 +71,7 @@ class perguntaTest(TestCase):
         pergunta.save()
         req_data = {'texto_alterado': 'pergunta_alterada', 'tags_alterado':'tag3,tag4', 'titulo_alterado':'hello'}
         response = self.client.post('/alterar_pergunta/1', req_data)
-        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.status_code, 302)    	
 
 
 class resposta_test(TestCase):
@@ -98,7 +98,36 @@ class resposta_test(TestCase):
     def test_deletar_resposta(self):
         pergunta = Pergunta(texto='pergunta')
         pergunta.save()  
+        vote = VotosPerguntas(usuario= 'user1', pergunta=pergunta)
+        vote.save()
         resposta = Resposta(texto='resposta', pergunta_id=1)
         resposta.save()
         response = self.client.post('/deletar_resposta/1')
         self.assertContains(response, 'Página Inicial')
+        
+class vote_pergunta_test(TestCase):
+    def setUp(self):
+        self.client = Client()
+    def test_vote_perguta(self):
+        req_data = {'username': 'user1@test.com','password': 'secret', 'email': 'useremail@test.com'}
+        self.client.post('/registrar_usuario', req_data)
+        req_data = {'username': 'user1@test.com','password': 'secret'}
+        self.client.post('/login_usuario', req_data)
+        pergunta = Pergunta(texto='pergunta', tags='tag1,tag2',votos=0)
+        pergunta.save()   
+        req_data={'votos':'1'}
+        response = self.client.post('/VotePergunta/1', req_data)
+        self.assertEquals(response.status_code, 302)
+    def test_vote_resposta(self):
+        req_data = {'username': 'user1@test.com','password': 'secret', 'email': 'useremail@test.com'}
+        self.client.post('/registrar_usuario', req_data)
+        req_data = {'username': 'user1@test.com','password': 'secret'}
+        self.client.post('/login_usuario', req_data)
+        pergunta = Pergunta(texto='pergunta', tags='tag1,tag2',votos=0)
+        pergunta.save()   
+        resposta = Resposta(texto='resposta', pergunta_id=1, votos=0)
+        resposta.save()
+        req_data={'votosResposta1':'1'}
+        response = self.client.post('/VoteResposta/1/1', req_data)
+        self.assertEquals(response.status_code, 302)
+				
