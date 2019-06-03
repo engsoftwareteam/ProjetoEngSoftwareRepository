@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Pergunta, Resposta, Profile
 
+import json
+
 def home(request):
     if request.user.is_authenticated:
         usuario = request.user.get_username()
@@ -20,7 +22,14 @@ def postar_pergunta(request):
     usuario = request.user.get_username()
     if request.method == 'POST':
         try:
-            pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'])
+            tagsString = request.POST['tags']
+            tagsList = tagsString.split(',')
+            for i in range(len(tagsList)):
+                tagsList[i] = tagsList[i].strip()
+            if tagsList[-1]=='':
+                tagsList.pop()
+            tagsJson = json.dumps(tagsList)
+            pergunta = Pergunta(usuario=usuario, titulo=request.POST['titulo'], texto=request.POST['texto'], tags = tagsJson)
             pergunta.save()
         except (KeyError, pergunta.pk == None):
             msg = 'Sua pergunta não foi postada'
@@ -45,7 +54,14 @@ def selecionar_pergunta(request, pergunta_id):
     usuario = request.user.get_username()
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     lista_respostas = pergunta.resposta_set.all()
-    context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario}    
+    
+    jsonDec = json.decoder.JSONDecoder()
+    tagsList = jsonDec.decode(pergunta.tags)
+    tagsString = ''
+    for i in tagsList:
+    	tagsString = tagsString+i+','
+    
+    context = {'pergunta': pergunta, 'tags': tagsString, 'lista_respostas': lista_respostas, 'usuario':usuario}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD

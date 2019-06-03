@@ -31,7 +31,7 @@
 					</div>
 					<input type='text' id="perguntaTitulo" class="form-control col-12 bg-light" name='titulo' value='{{pergunta.titulo}}'/>
 				</div>
-				<div class="input-group">
+				<div class="input-group mb-2">
 					<div class="input-group-prepend prepend-width">
 						<div class="input-group-text full-width justify-content-center">
 							Pergunta
@@ -39,10 +39,19 @@
 					</div>
 					<textarea id="perguntaTexto" class="form-control col-12 bg-light" name='texto' rows='2'>{{pergunta.texto}}</textarea>
 				</div>
+				<div class="input-group">
+                        <div class="input-group-prepend prepend-width">
+                            <div class="input-group-text full-width justify-content-center">
+                                Tags
+                            </div>
+                        </div>
+                        <textarea id="perguntaTags" class="form-control col-12" rows="3" name="tags" placeholder="Digite as tags separadas por vírgulas." required>{{tags}}</textarea>
+                    </div>
 				{% if usuario != pergunta.usuario %}
 				<script>
 					$('#perguntaTitulo').attr('disabled', true);
 					$('#perguntaTexto').attr('disabled', true);
+					$('#perguntaTags').attr('disabled', true);
 				</script>
 				{% endif %}
 				{% if usuario == pergunta.usuario %}
