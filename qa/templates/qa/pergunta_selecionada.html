@@ -146,7 +146,7 @@
 							<form id='formUpVoteResposta{{resposta.id}}' action='{% url "qa:VoteResposta" pergunta.id resposta.id %}' method='post'>
 							{% csrf_token %}
 							<div class='input-group'>	
-								<textarea id="votosResposta{{resposta.id}}" class="form-control col-3 bg-light" name='votosResposta' rows='1'>{{resposta.votos}}</textarea>
+								<textarea id="votosResposta{{resposta.id}}" class="form-control col-3 bg-light" name='votosResposta{{resposta.id}}' rows='1'>{{resposta.votos}}</textarea>
 								{% if usuario %}
 								<input id='upVoteResposta{{resposta.id}}' type='button' value='Up' class='btn bg-success px-2 text-light'/>
 								<input id='downVoteResposta{{resposta.id}}' type='button' value='Down' class='btn bg-danger px-2 text-light'/>
@@ -166,17 +166,17 @@
 							{% endif %}
 							<script>
 								$("#upVoteResposta{{resposta.id}}").click(function(){
-									votosAtuais = parseInt($('#votosResposta').val())
+									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
 									votosAlterados = votosAtuais + 1
-									$("#votosResposta").val(votosAlterados);
+									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
 									$("#formUpVoteResposta{{resposta.id}}").submit();
 								});
 							</script>
 							<script>
 								$("#downVoteResposta{{resposta.id}}").click(function(){
-									votosAtuais = parseInt($('#votosResposta').val())
+									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
 									votosAlterados = votosAtuais - 1
-									$("#votosResposta").val(votosAlterados.toString(10));
+									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
 									$("#formUpVoteResposta{{resposta.id}}").submit();
 								});
 							</script>
