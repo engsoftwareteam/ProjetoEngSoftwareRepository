@@ -12,5 +12,5 @@ script:
   - python manage.py test -k
 deploy:
   provider: heroku
-  api_key: xgyp+7$yjvme!v5l-=a2z&2k&q_-$w@@9f^*8@$971t3u$3+g)
+  api_key: a0976ff9-b000-4815-816d-fbe06692d9ba
   app: qa
