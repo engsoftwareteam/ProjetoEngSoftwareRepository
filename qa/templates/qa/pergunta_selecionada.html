@@ -72,6 +72,8 @@
 							{% endif %}
 							<script>
 								$("#upVote").click(function(){
+									$('#upVote').attr('disabled', true);
+									$('#downVote').attr('disabled', true);
 									votosAtuais = parseInt($('#votos').val())
 									votosAlterados = votosAtuais + 1
 									$("#votos").val(votosAlterados.toString(10));
@@ -80,6 +82,8 @@
 							</script>
 							<script>
 								$("#downVote").click(function(){
+									$('#upVote').attr('disabled', true);
+									$('#downVote').attr('disabled', true);
 									votosAtuais = parseInt($('#votos').val())
 									votosAlterados = votosAtuais - 1
 									$("#votos").val(votosAlterados.toString(10));
@@ -181,7 +185,9 @@
 								{% endif %}
 							{% endif %}
 							<script>
-								$("#upVoteResposta{{resposta.id}}").click(function(){
+								$("#upVoteResposta{{resposta.id}}").click(function(){								
+									$('#upVoteResposta{{resposta.id}}').attr('disabled', true);
+									$('#downVoteResposta{{resposta.id}}').attr('disabled', true);
 									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
 									votosAlterados = votosAtuais + 1
 									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
@@ -190,6 +196,8 @@
 							</script>
 							<script>
 								$("#downVoteResposta{{resposta.id}}").click(function(){
+									$('#upVoteResposta{{resposta.id}}').attr('disabled', true);
+									$('#downVoteResposta{{resposta.id}}').attr('disabled', true);
 									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
 									votosAlterados = votosAtuais - 1
 									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
