@@ -51,7 +51,7 @@ class perguntaTest(TestCase):
         self.client.post('/registrar_usuario', req_data)
         req_data = {'username': 'user@test.com','password': 'secret'}
         self.client.post('/login_usuario', req_data)
-        req_data={'texto':'pergunta', 'titulo':'new'}
+        req_data={'texto':'pergunta', 'titulo':'new', 'tags':'tag1,tag2','votos':0}
         response = self.client.post('/postar_pergunta', req_data)
         self.assertEquals(response.status_code,200)
     def test_deletar_pergunta(self):
@@ -67,11 +67,11 @@ class perguntaTest(TestCase):
         response = self.client.post('/listar_perguntas')
         self.assertEquals(response.status_code, 200)
     def test_alterar_pergunta(self):
-        pergunta = Pergunta(texto='pergunta')
+        pergunta = Pergunta(texto='pergunta', tags='tag1,tag2',votos=0)
         pergunta.save()
-        req_data = {'texto_alterado': 'pergunta_alterada'}
-        response = self.client.post('/selecionar_pergunta/1', req_data)
-        self.assertEquals(response.status_code, 200)
+        req_data = {'texto_alterado': 'pergunta_alterada', 'tags_alterado':'tag3,tag4', 'titulo_alterado':'hello'}
+        response = self.client.post('/alterar_pergunta/1', req_data)
+        self.assertEquals(response.status_code, 302)
 
 
 class resposta_test(TestCase):
