@@ -253,7 +253,7 @@ def VotePergunta(request, pergunta_id):
 def VoteResposta(request, pergunta_id, resposta_id):
     usuario = request.user.get_username()
     resposta = get_object_or_404(Resposta, pk=resposta_id)
-    resposta.votos = request.POST['votosResposta']
+    resposta.votos = request.POST['votosResposta{{resposta.id}}']
     resposta.save()
     voto = VotosRespostas(resposta = resposta, usuario = usuario)
     voto.save()

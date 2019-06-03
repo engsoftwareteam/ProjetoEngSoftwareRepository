@@ -143,39 +143,41 @@
 							</div>
 						</a>
 						<div class='row border-top'>
-							<form id='formUpVoteResposta' action='{% url "qa:VoteResposta" pergunta.id resposta.id %}' method='post'>
+							<form id='formUpVoteResposta{{resposta.id}}' action='{% url "qa:VoteResposta" pergunta.id resposta.id %}' method='post'>
 							{% csrf_token %}
 							<div class='input-group'>	
-								<textarea id="votosResposta" class="form-control col-2 bg-light" name='votosResposta' rows='1'>{{resposta.votos}}</textarea>
-								<input id='upVoteResposta' type='button' value='Up' class='btn bg-success px-2 text-light'/>
-								<input id='downVoteResposta' type='button' value='Down' class='btn bg-danger px-2 text-light'/>
+								<textarea id="votosResposta{{resposta.id}}" class="form-control col-3 bg-light" name='votosResposta' rows='1'>{{resposta.votos}}</textarea>
+								{% if usuario %}
+								<input id='upVoteResposta{{resposta.id}}' type='button' value='Up' class='btn bg-success px-2 text-light'/>
+								<input id='downVoteResposta{{resposta.id}}' type='button' value='Down' class='btn bg-danger px-2 text-light'/>
+								{% endif %}
 							</div>
 							{% if usuario %}
 								{% if VotosTotaisRespostas %}
 									{% for voto in VotosTotaisRespostas %}
 										{% if voto.resposta == resposta and voto.usuario == usuario %}
 											<script>
-												$('#upVoteResposta').attr('disabled', true);
-												$('#downVoteResposta').attr('disabled', true);
+												$('#upVoteResposta{{resposta.id}}').attr('disabled', true);
+												$('#downVoteResposta{{resposta.id}}').attr('disabled', true);
 											</script>
 										{% endif %}
 									{% endfor %}
 								{% endif %}
 							{% endif %}
 							<script>
-								$("#upVoteResposta").click(function(){
+								$("#upVoteResposta{{resposta.id}}").click(function(){
 									votosAtuais = parseInt($('#votosResposta').val())
 									votosAlterados = votosAtuais + 1
 									$("#votosResposta").val(votosAlterados);
-									$("#formUpVoteResposta").submit();
+									$("#formUpVoteResposta{{resposta.id}}").submit();
 								});
 							</script>
 							<script>
-								$("#downVoteResposta").click(function(){
-									votosAtuais = parseInt($('#votosResposta').val())
+								$("#downVoteResposta{{resposta.id}}").click(function(){
+									votosAtuais = parseInt($('#votosResposta{{resposta.id}}').val())
 									votosAlterados = votosAtuais - 1
-									$("#votosResposta").val(votosAlterados.toString(10));
-									$("#formUpVoteResposta").submit();
+									$("#votosResposta{{resposta.id}}").val(votosAlterados.toString(10));
+									$("#formUpVoteResposta{{resposta.id}}").submit();
 								});
 							</script>
 							</form>
