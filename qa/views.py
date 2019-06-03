@@ -114,16 +114,19 @@ def postar_resposta(request, pergunta_id):
 # busca pergunta selecionada no BD e renderiza o html com informacoes dela
 def selecionar_resposta(request, resposta_id):
     usuario = request.user.get_username()
+    resposta = get_object_or_404(Resposta, pk=resposta_id)
+    pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
+    
+    jsonDec = json.decoder.JSONDecoder()
+    tagsList = jsonDec.decode(pergunta.tags)
+    
     if request.method  == 'POST':
-        resposta = get_object_or_404(Resposta, pk=resposta_id)
         resposta.texto = request.POST['texto_alterado']
         resposta.save()
-        context = {'resposta': resposta, 'usuario': usuario}    
+        context = {'resposta': resposta, 'usuario': usuario,'tagsList':tagsList}    
         return HttpResponseRedirect('/selecionar_resposta/%s' % (resposta_id))
     else:
-        resposta = get_object_or_404(Resposta, pk=resposta_id)
-        pergunta = get_object_or_404(Pergunta, pk=resposta.pergunta.id)
-        context = {'pergunta': pergunta, 'resposta': resposta, 'usuario': usuario}    
+        context = {'pergunta': pergunta, 'resposta': resposta, 'usuario': usuario,'tagsList':tagsList}    
         return render(request, 'qa/resposta_selecionada.html', context)
 
 # responsavel por deletar a pergunta selecionada do BD
