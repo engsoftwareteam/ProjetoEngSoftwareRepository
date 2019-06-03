@@ -45,7 +45,7 @@ def selecionar_pergunta(request, pergunta_id):
     usuario = request.user.get_username()
     pergunta = get_object_or_404(Pergunta, pk=pergunta_id)
     lista_respostas = pergunta.resposta_set.all()
-    VotosTotais = get_list_or_404(VotosPerguntas)
+    VotosTotais = VotosPerguntas.objects.all()
     context = {'pergunta': pergunta, 'lista_respostas': lista_respostas, 'usuario':usuario, "VotosTotais": VotosTotais}    
     return render(request, 'qa/pergunta_selecionada.html', context)
 
