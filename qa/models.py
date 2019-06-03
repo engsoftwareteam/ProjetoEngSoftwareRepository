@@ -12,7 +12,7 @@ class Profile(models.Model):
 class Pergunta(models.Model):
     usuario = models.CharField(max_length=100, default='usuario default')
     titulo = models.CharField(max_length=100, blank=True)
-    texto = models.TextField(max_length=10000, default='texto default')
+    texto = models.TextField(max_length=1000, default='texto default')
     #A lista de Tags será guardada como uma String JSON serializado.
     tags = models.TextField(null=True)
     votos = models.IntegerField(default=0)
